@@ -102,16 +102,16 @@ in {
             add_header X-Content-Type-Options nosniff;
             add_header Referrer-Policy same-origin;
             add_header X-Download-Options noopen;
-
-                     proxy_cache					pleroma_media_cache;
-                     proxy_cache_key				$host$uri$is_args$args$slice_range;
-                     proxy_set_header			Range $slice_range;
-                     proxy_cache_valid			200 206 301 304 1h;
-                     proxy_cache_lock			on;
-                     proxy_ignore_client_abort	on;
-                     proxy_buffering				on;
-                     chunked_transfer_encoding	on;
           '';
+
+          # proxy_cache					pleroma_media_cache;
+          # proxy_cache_key				$host$uri$is_args$args$slice_range;
+          # proxy_set_header			Range $slice_range;
+          # proxy_cache_valid			200 206 301 304 1h;
+          # proxy_cache_lock			on;
+          # proxy_ignore_client_abort	on;
+          # proxy_buffering				on;
+          # chunked_transfer_encoding	on;
         };
       };
     };
