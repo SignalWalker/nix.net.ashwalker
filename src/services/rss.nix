@@ -33,6 +33,8 @@ in {
 		defaultUser = "ash";
 		passwordFile = config.age.secrets.freshrssPassword.path;
 	};
+	age.secrets.freshrssPassword.owner = "freshrss";
+	age.secrets.freshrssDbPassword.owner = "freshrss";
     services.nginx.virtualHosts."rss.${config.networking.fqdn}" = {
       enableACME = true;
       forceSSL = true;
