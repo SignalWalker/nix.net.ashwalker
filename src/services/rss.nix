@@ -22,10 +22,10 @@ in {
       };
       virtualHost = "rss.${config.networking.fqdn}";
     };
-	services.nginx.virtualHosts.${config.services.tt-rss.virtualHost} = {
-	  enableACME = true;
-	  addSSL = true;
-	};
+    services.nginx.virtualHosts.${config.services.tt-rss.virtualHost} = {
+      enableACME = true;
+      addSSL = true;
+    };
   };
   meta = {};
 }

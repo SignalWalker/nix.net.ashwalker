@@ -10,6 +10,7 @@ in {
   options = with lib; {};
   disabledModules = [];
   imports = [];
-  config = {};
+  config = {
+  };
   meta = {};
 }
