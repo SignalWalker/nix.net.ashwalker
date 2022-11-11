@@ -28,7 +28,7 @@ in {
 		baseUrl = "https://${config.services.freshrss.virtualHost}";
 		database.type = "pgsql";
 		defaultUser = "ash";
-		passwordFile = age.secrets.freshrssPassword.path;
+		passwordFile = config.age.secrets.freshrssPassword.path;
 	};
     services.nginx.virtualHosts."rss.${config.networking.fqdn}" = {
       enableACME = true;
