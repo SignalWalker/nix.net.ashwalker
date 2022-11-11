@@ -11,9 +11,6 @@ in {
   disabledModules = [];
   imports = lib.signal.fs.path.listFilePaths ./services;
   config = {
-    services."ashwalker-net" = {
-      enable = true;
-    };
   };
   meta = {};
 }
