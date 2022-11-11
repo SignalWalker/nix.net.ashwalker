@@ -26,7 +26,10 @@ in {
 		enable = true;
 		virtualHost = "rss.${config.networking.fqdn}";
 		baseUrl = "https://${config.services.freshrss.virtualHost}";
-		database.type = "pgsql";
+		database = {
+			type = "pgsql";
+			passFile = config.age.secrets.freshrssDbPassword.path;
+		};
 		defaultUser = "ash";
 		passwordFile = config.age.secrets.freshrssPassword.path;
 	};
