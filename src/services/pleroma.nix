@@ -13,6 +13,8 @@ in {
   config = {
     services.pleroma = {
       enable = true;
+	  configs = [
+	  ];
     };
     services.nginx = {
       upstreams."phoenix" = {
