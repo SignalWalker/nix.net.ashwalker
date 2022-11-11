@@ -15,7 +15,6 @@ in {
       enable = true;
       ssl = {
         enable = true;
-        autoRenewEmail = "ash@ashwalker.net";
       };
     };
   };
