@@ -111,7 +111,6 @@ in {
                      proxy_ignore_client_abort	on;
                      proxy_buffering				on;
                      chunked_transfer_encoding	on;
-                     slice						1m;
           '';
         };
       };
