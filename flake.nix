@@ -43,6 +43,8 @@
   }:
     with builtins; let
       std = nixpkgs.lib;
+      hlib = homelib.lib;
+      signal = hlib.signal;
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
       signalModules.default = {
