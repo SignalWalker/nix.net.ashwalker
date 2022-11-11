@@ -13,6 +13,12 @@ in {
   config = {
     services.nginx = {
       enable = true;
+
+      recommendedTlsSettings = true;
+      recommendedOptimisation = true;
+      recommendedGzipSettings = true;
+
+      recommendedProxySettings = false;
     };
     networking.firewall.allowedTCPPorts = [80 443];
   };
