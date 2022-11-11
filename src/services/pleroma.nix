@@ -14,9 +14,14 @@ in {
     environment.systemPackages = with pkgs; [exiftool];
     services.postgresql = {
       ensureDatabases = ["pleroma"];
-      ensureUsers.${config.services.pleroma.user}.ensurePermissions = {
-        "DATABASE \"pleroma\"" = "ALL PRIVILEGES";
-      };
+      ensureUsers = [
+        {
+          name = ${config.services.pleroma.user};
+          ensurePermissions = {
+            "DATABASE \"pleroma\"" = "ALL PRIVILEGES";
+          };
+        }
+      ];
     };
     services.pleroma = {
       enable = true;
