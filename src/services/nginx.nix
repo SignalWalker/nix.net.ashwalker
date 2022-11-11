@@ -9,11 +9,11 @@ with builtins; let
 in {
   options = with lib; {};
   disabledModules = [];
-  imports = lib.signal.fs.path.listFilePaths ./services;
+  imports = [];
   config = {
-    services."ashwalker-net" = {
-      enable = true;
-    };
+  	services.nginx = {
+		enable = true;
+	};
   };
   meta = {};
 }
