@@ -12,7 +12,7 @@ in {
   imports = [];
   config = {
     services.tt-rss = {
-      enable = enable;
+      enable = true;
       pubSubHubbub.enable = true;
       selfUrlPath = "https://rss.${config.networking.fqdn}";
       registration = {
