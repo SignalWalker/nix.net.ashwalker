@@ -12,8 +12,8 @@ in {
   imports = [];
   config = {
     security.acme = {
-	  defaults.email = "ash@ashwalker.net";
-	};
+      defaults.email = "ash@ashwalker.net";
+    };
   };
   meta = {};
 }

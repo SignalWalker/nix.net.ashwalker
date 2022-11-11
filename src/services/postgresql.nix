@@ -12,12 +12,11 @@ in {
   imports = [];
   config = {
     services.postgresql = {
-	  enable = true;
-	  package = pkgs.postgresql_14;
-	  extraPlugins = with pkgs.postgresql_14.pkgs; [
-
-	  ];
-	};
+      enable = true;
+      package = pkgs.postgresql_14;
+      extraPlugins = with pkgs.postgresql_14.pkgs; [
+      ];
+    };
   };
   meta = {};
 }

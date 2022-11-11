@@ -16,11 +16,11 @@ in {
       pubSubHubbub.enable = true;
       selfUrlPath = "https://rss.${config.networking.fqdn}";
       registration = {
-	    enable = false;
+        enable = false;
         notifyAddress = "ash@ashwalker.net";
         maxUsers = 1;
       };
-	  virtualHost = "rss.${config.networking.fqdn}";
+      virtualHost = "rss.${config.networking.fqdn}";
     };
   };
   meta = {};
