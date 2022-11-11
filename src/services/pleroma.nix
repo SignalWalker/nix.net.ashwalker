@@ -66,7 +66,7 @@ in {
     services.nginx = {
       upstreams."phoenix" = {
         extraConfig = ''
-          server 127.0.0.1:4000 max_fails=5 fail_timeout=60s
+          server 127.0.0.1:4000 max_fails=5 fail_timeout=60s;
         '';
       };
       virtualHosts."social.${config.networking.fqdn}" = {
