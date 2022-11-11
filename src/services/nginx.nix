@@ -11,9 +11,9 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-  	services.nginx = {
-		enable = true;
-	};
+    services.nginx = {
+      enable = true;
+    };
   };
   meta = {};
 }
