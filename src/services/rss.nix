@@ -20,7 +20,7 @@ in {
         notifyAddress = "ash@ashwalker.net";
         maxUsers = 1;
       };
-      virtualHost = "rss";
+      virtualHost = "rss.${config.networking.fqdn}";
     };
   };
   meta = {};
