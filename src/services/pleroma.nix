@@ -16,7 +16,7 @@ in {
       ensureDatabases = ["pleroma"];
       ensureUsers = [
         {
-          name = ${config.services.pleroma.user};
+          name = config.services.pleroma.user;
           ensurePermissions = {
             "DATABASE \"pleroma\"" = "ALL PRIVILEGES";
           };
