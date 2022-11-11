@@ -22,7 +22,6 @@ in {
       };
       virtualHosts."social.${config.networking.fqdn}" = {
         enableACME = true;
-        addSSL = true;
         forceSSL = true;
         extraConfig = ''
           pgzip_vary on;
