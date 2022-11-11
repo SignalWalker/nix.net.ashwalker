@@ -16,7 +16,7 @@ in {
       pubSubHubbub.enable = true;
       selfUrlPath = "https://${config.services.tt-rss.virtualHost}";
       registration = {
-        enable = true;
+        enable = false;
         notifyAddress = "ash@ashwalker.net";
         maxUsers = 1;
       };
