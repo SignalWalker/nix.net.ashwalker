@@ -7,10 +7,12 @@
 with builtins; let
   std = pkgs.lib;
 in {
-  options = with lib; {};
+  options.signal.services.pleroma = with lib; {
+    enable = mkEnableOption "pleroma";
+  };
   disabledModules = [];
   imports = [];
-  config = {
+  config = lib.mkIf config.signal.services.pleroma.enable {
     environment.systemPackages = with pkgs; [exiftool];
     services.postgresql = {
       ensureDatabases = ["pleroma"];
