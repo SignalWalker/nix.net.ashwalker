@@ -14,7 +14,7 @@ in {
   disabledModules = [];
   imports = [];
   config = lib.mkIf config.signal.services.pleroma.enable {
-    environment.systemPackages = with pkgs; [exiftool];
+    # environment.systemPackages = with pkgs; [exiftool];
     services.postgresql = {
       ensureDatabases = ["pleroma"];
       ensureUsers = [
@@ -28,6 +28,10 @@ in {
     };
     age.secrets.pleroma = {
       file = ./pleroma/pleroma.age;
+      owner = config.services.pleroma.user;
+    };
+    age.secrets.pleromaDbPassword = {
+      file = ./pleroma/pleromaDbPassword.age;
       owner = config.services.pleroma.user;
     };
     services.pleroma = {
@@ -67,7 +71,7 @@ in {
 
           config :pleroma, configurable_from_database: true
 
-          config :pleroma, Pleroma.Upload, filters: [Pleroma.Upload.Filter.Exiftool]
+          # config :pleroma, Pleroma.Upload, filters: [Pleroma.Upload.Filter.Exiftool]
         ''
       ];
     };
