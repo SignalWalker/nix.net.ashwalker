@@ -14,7 +14,7 @@ in {
   disabledModules = [];
   imports = [];
   config = lib.mkIf config.signal.services.pleroma.enable {
-    # environment.systemPackages = with pkgs; [exiftool];
+    environment.systemPackages = with pkgs; [exiftool awk];
     services.postgresql = {
       ensureDatabases = ["pleroma"];
       ensureUsers = [
@@ -43,7 +43,7 @@ in {
 
           config :pleroma, Pleroma.Web.Endpoint,
           	url: [host: "${vhost}", scheme: "https", port: 443],
-            	http: [ip: {127, 0, 0, 1}, port: 4000]
+            http: [ip: {127, 0, 0, 1}, port: 4000]
 
           config :pleroma, :instance,
           	name: "Signal Garden",
