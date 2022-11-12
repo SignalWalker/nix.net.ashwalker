@@ -39,7 +39,7 @@
 
     # pkgs
     ashwalker-net = {
-      url = "gitlab:signalwalker/ashwalker-net";
+      url = "github:signalwalker/net.ashwalker";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
