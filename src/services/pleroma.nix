@@ -32,7 +32,7 @@ in {
     };
     services.pleroma = {
       enable = true;
-      secretConfigFile = config.ages.secrets.pleroma.path;
+      secretConfigFile = config.age.secrets.pleroma.path;
       configs = [
         ''
           import Config
