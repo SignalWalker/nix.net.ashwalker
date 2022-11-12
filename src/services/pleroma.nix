@@ -41,7 +41,7 @@ in {
           	url: [host: "${vhost}", scheme: "https", port: 443],
             	http: [ip: {127, 0, 0, 1}, port: 4000]
 
-          config :pleroma :instance,
+          config :pleroma, :instance,
           	name: "Signal Garden",
           	email: "admin@${vhost}",
           	notify_email: "daemon@${vhost}",
