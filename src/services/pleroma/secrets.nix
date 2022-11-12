@@ -4,4 +4,5 @@ let
   keys = [srv-host ash];
 in {
   "pleroma.age".publicKeys = keys;
+  "pleromaDbPassword.age".publicKeys = keys;
 }
