@@ -4,4 +4,6 @@ let
   keys = [srv-host ash];
 in {
   "ttrssEnvironment.age".publicKeys = keys;
+  "rssUserPassword.age".publicKeys = keys;
+  "rssDbPassword.age".publicKeys = keys;
 }
