@@ -23,7 +23,7 @@ in {
       };
       virtualHost = vhost;
     };
-    age.secrets.ttrssEnvironment.file = ../../secrets/ttrssEnvironment.age;
+    age.secrets.ttrssEnvironment.file = ./rss/ttrssEnvironment.age;
     systemd.services.phpfpm-tt-rss = {
       serviceConfig = {
         EnvironmentFile = config.age.secrets.ttrssEnvironment.path;
