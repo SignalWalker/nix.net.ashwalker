@@ -36,6 +36,11 @@ in {
       virtualHost = "bridge.${vhost}";
       whitelist = ["*"];
     };
+	users.users.rssbridge = {
+		isSystemUser = true;
+		group = "rssbridge";
+	};
+	users.groups.rssbridge = {};
     # services.freshrss = {
     # 	enable = true;
     # 	virtualHost = "rss.${config.networking.fqdn}";
