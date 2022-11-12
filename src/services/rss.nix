@@ -27,24 +27,24 @@ in {
     # age.secrets.ttrssEnvironment.file = ./rss/ttrssEnvironment.age;
     # systemd.services.phpfpm-tt-rss.serviceConfig.EnvironmentFile = config.age.secrets.ttrssEnvironment.path;
     # systemd.services.tt-rss.serviceConfig.EnvironmentFile = config.age.secrets.ttrssEnvironment.path;
-    age.secrets.rssUserPassword = {
-      file = ./rss/rssUserPassword.age;
-      owner = "freshrss";
-    };
-    age.secrets.rssDbPassword = {
-      file = ./rss/rssDbPassword.age;
-      owner = "freshrss";
-    };
+	age.secrets.rssUserPassword = {
+		file = ./rss/rssUserPassword.age;
+    	owner = "freshrss";
+	};
+	age.secrets.rssDbPassword = {
+		file = ./rss/rssDbPassword.age;
+    	owner = "freshrss";
+	};
     services.freshrss = {
-      enable = true;
-      virtualHost = "rss.${config.networking.fqdn}";
-      baseUrl = "https://${config.services.freshrss.virtualHost}";
-      database = {
-        type = "sqlite";
-        passFile = config.age.secrets.rssDbPassword.path;
-      };
-      defaultUser = "ash";
-      passwordFile = config.age.secrets.rssUserPassword.path;
+    	enable = true;
+    	virtualHost = "rss.${config.networking.fqdn}";
+    	baseUrl = "https://${config.services.freshrss.virtualHost}";
+    	database = {
+    		type = "sqlite";
+    		passFile = config.age.secrets.rssDbPassword.path;
+    	};
+    	defaultUser = "ash";
+    	passwordFile = config.age.secrets.rssUserPassword.path;
     };
     services.nginx.virtualHosts."${vhost}" = {
       enableACME = true;
@@ -55,7 +55,7 @@ in {
       # user = "rssbridge";
       # group = "rssbridge";
       virtualHost = "bridge.${vhost}";
-      whitelist = ["*"];
+      whitelist = ["AO3" "Bandcamp Bridge" "Github Repositories Search" "NyaaTorrents"];
     };
     # users.users.rssbridge = {
     #   isSystemUser = true;
