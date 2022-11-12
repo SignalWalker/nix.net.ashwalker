@@ -67,9 +67,7 @@
         };
         outputs = dependencies: {
           nixosModules = {lib, ...}: {
-            options = with lib; {
-              signal.ashwalker-net.secrets = inputs.secrets;
-            };
+            options = with lib; {};
             imports = [./nixos-module.nix];
             config = {};
           };

@@ -26,7 +26,7 @@ in {
     age.secrets.ttrssEnvironment.file = ../../secrets/ttrssEnvironment;
     systemd.services.phpfpm-tt-rss = {
       serviceConfig = {
-        EnvironmentFile = age.secrets.ttrssEnvironment.path;
+        EnvironmentFile = config.age.secrets.ttrssEnvironment.path;
       };
     };
     services.rss-bridge = {
