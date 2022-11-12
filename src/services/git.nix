@@ -6,6 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
+  domain = "src.${config.networking.fqdn}";
 in {
   options = with lib; {};
   disabledModules = [];

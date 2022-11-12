@@ -6,9 +6,10 @@
 }:
 with builtins; let
   std = pkgs.lib;
+  vhost = "social.${config.networking.fqdn}";
 in {
   options.signal.services.pleroma = with lib; {
-    enable = mkEnableOption "pleroma";
+    enable = (mkEnableOption "pleroma") // {default = true;};
   };
   disabledModules = [];
   imports = [];
@@ -25,20 +26,25 @@ in {
         }
       ];
     };
+    age.secrets.pleroma = {
+      file = ./pleroma/pleroma.age;
+      owner = config.services.pleroma.user;
+    };
     services.pleroma = {
       enable = true;
+      secretConfigFile = config.ages.secrets.pleroma.path;
       configs = [
         ''
           import Config
 
           config :pleroma, Pleroma.Web.Endpoint,
-          	url: [host: "social.${config.networking.fqdn}", scheme: "https", port: 443],
+          	url: [host: "${vhost}", scheme: "https", port: 443],
             	http: [ip: {127, 0, 0, 1}, port: 4000]
 
           config :pleroma :instance,
-          	name: "social.${config.networking.fqdn}",
-          	email: "ash@ashwalker.net",
-          	notify_email: "daemon@social.${config.networking.fqdn}",
+          	name: "Signal Garden",
+          	email: "admin@${vhost}",
+          	notify_email: "daemon@${vhost}",
           	limit: 5000,
           	registrations_open: false
 
@@ -53,7 +59,7 @@ in {
           	hostname: "localhost"
 
           config :web_push_encryption, :vapid_details,
-          	subject: "mailto:ash@ashwalker.net"
+          	subject: "mailto:admin@${vhost}"
 
           config :pleroma, :database, rum_enabled: false
           config :pleroma, :instance, static_dir: "${config.services.pleroma.stateDir}/static"
@@ -71,7 +77,7 @@ in {
           server 127.0.0.1:4000 max_fails=5 fail_timeout=60s;
         '';
       };
-      virtualHosts."social.${config.networking.fqdn}" = {
+      virtualHosts."${vhost}" = {
         http2 = true;
         enableACME = true;
         forceSSL = true;
