@@ -31,11 +31,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-	# secrets
-	agenix = {
-		url = "github:ryantm/agenix";
-		inputs.nixpkgs.follows = "nixpkgs";
-	};
+    # secrets
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # pkgs
     ashwalker-net = {
@@ -62,14 +62,14 @@
           outputs = {
             sysbase.nixosModules = ["default"];
             ashwalker-net.nixosModules = ["default"];
-			agenix.nixosModules = ["age"];
+            agenix.nixosModules = ["age"];
           };
         };
         outputs = dependencies: {
           nixosModules = {lib, ...}: {
-		  	options = with lib; {
-				signal.ashwalker-net.secrets = inputs.secrets;
-			};
+            options = with lib; {
+              signal.ashwalker-net.secrets = inputs.secrets;
+            };
             imports = [./nixos-module.nix];
             config = {};
           };
