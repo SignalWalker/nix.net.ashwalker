@@ -163,6 +163,26 @@
         "type": "github"
       }
     },
+    "funkwhale": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1660676854,
+        "narHash": "sha256-rEYCqRxIHBNtbFkGCllq7n3YSGuf7A+VzeUpsH0b3Ac=",
+        "owner": "mmai",
+        "repo": "funkwhale-flake",
+        "rev": "bda0049875ed662fa52c6beaa8f54d048ee448c7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mmai",
+        "repo": "funkwhale-flake",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -319,6 +339,7 @@
         "agenix": "agenix",
         "alejandra": "alejandra",
         "ashwalker-net": "ashwalker-net",
+        "funkwhale": "funkwhale",
         "home-manager": "home-manager",
         "homebase": "homebase",
         "homelib": "homelib",

@@ -42,6 +42,12 @@
       url = "github:signalwalker/net.ashwalker";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # music
+    funkwhale = {
+      url = "github:mmai/funkwhale-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     self,
