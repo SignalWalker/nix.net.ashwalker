@@ -20,6 +20,9 @@ in {
         notifyAddress = "ash@ashwalker.net";
         maxUsers = 0;
       };
+      auth = {
+        autoLogin = false;
+      };
       virtualHost = "rss.${config.networking.fqdn}";
     };
     # services.freshrss = {
