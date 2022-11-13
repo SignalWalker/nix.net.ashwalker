@@ -35,10 +35,12 @@ in {
       };
     };
     services.postgresql = {
-      ensureUsers = {
-        name = wiki.database.user;
-        ensurePermissions = {"DATABASE ${wiki.database.name}" = "ALL PRIVILEGES";};
-      };
+      ensureUsers = [
+        {
+          name = wiki.database.user;
+          ensurePermissions = {"DATABASE ${wiki.database.name}" = "ALL PRIVILEGES";};
+        }
+      ];
       ensureDatabases = [wiki.database.name];
     };
     systemd.services.mediawiki-init = {
