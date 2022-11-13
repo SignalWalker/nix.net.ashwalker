@@ -21,7 +21,7 @@ in {
       file = ./wiki/wikiDbPassword.age;
     };
     services.mediawiki = {
-      enable = false;
+      enable = true;
       name = "SignalWiki";
       passwordFile = config.age.secrets.wikiAdminPassword.path;
       database = {
