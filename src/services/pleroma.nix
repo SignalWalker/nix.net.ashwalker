@@ -14,7 +14,7 @@ in {
   disabledModules = [];
   imports = [];
   config = lib.mkIf config.signal.services.pleroma.enable {
-    environment.systemPackages = with pkgs; [exiftool awk];
+    environment.systemPackages = with pkgs; [exiftool];
     services.postgresql = {
       ensureDatabases = ["pleroma"];
       ensureUsers = [
