@@ -54,46 +54,46 @@ in {
         enableACME = true;
         forceSSL = wiki.virtualHost.forceSSL;
         root = "${config.services.mediawiki.package}/share/mediawiki";
-        location."/" = {
+        locations."/" = {
           tryFiles = "$uri $uri/ @rewrite";
         };
-        location."@rewrite" = {
+        locations."@rewrite" = {
           extraConfig = ''
             rewrite ^/(.*)$ /index.php?title=$1&$args;
           '';
         };
-        location."^~ /maintenance/" = {
+        locations."^~ /maintenance/" = {
           return = "403";
         };
-        location."/rest.php" = {
+        locations."/rest.php" = {
           tryFiles = "$uri $uri/ /rest.php?$args";
         };
-        location."~ \\.php$" = {
+        locations."~ \\.php$" = {
           fastcgiParams."SCRIPT_FILENAME" = "$request_filename";
           extraConfig = ''
             include fastcgi_params;
             fastcgi_pass unix:${phpfpm.socket};
           '';
         };
-        location."~* \\.(js|css|png|jpg|jpeg|gif|ico)$" = {
+        locations."~* \\.(js|css|png|jpg|jpeg|gif|ico)$" = {
           tryFiles = "$uri /index.php";
           extraConfig = ''
             expires max;
             log_not_found off;
           '';
         };
-        location."/_.gif" = {
+        locations."/_.gif" = {
           extraConfig = ''
             expires max;
             empty_gif;
           '';
         };
-        location."^~ /cache/" = {
+        locations."^~ /cache/" = {
           extraConfig = ''
             deny all;
           '';
         };
-        location."/dumps" = {
+        locations."/dumps" = {
           root = "/var/lib/mediawiki/local";
           extraConfig = ''
             autoindex on;
