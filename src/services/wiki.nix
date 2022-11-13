@@ -10,10 +10,12 @@ with builtins; let
   wiki = config.services.mediawiki;
   phpfpm = config.services.phpfpm.pools.mediawiki;
 in {
-  options = with lib; {};
+  options.signal.services.wiki = with lib; {
+    enable = mkEnableOption "wiki";
+  };
   disabledModules = [];
   imports = [];
-  config = {
+  config = lib.mkIf config.signal.services.wiki.enable {
     age.secrets.wikiAdminPassword = {
       file = ./wiki/wikiAdminPassword.age;
     };
