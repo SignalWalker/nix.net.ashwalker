@@ -36,10 +36,10 @@ in {
       meta.enable = true;
       settings."meta.sr.ht" = {};
 
-      git.enable = true;
+      git.enable = false;
       settings."git.sr.ht" = {};
 
-      hg.enable = true;
+      hg.enable = false;
       settings."hg.sr.ht" = {};
 
       hub.enable = false;
