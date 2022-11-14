@@ -61,6 +61,6 @@ in {
         security.acme.certs.${domain}.extraDomainNames = [srvdn];
         services.nginx.virtualHosts."${srvdn}".useACMEHost = domain;
       })
-      config.sourcehut.services);
+      ["meta" "git"]);
   meta = {};
 }
