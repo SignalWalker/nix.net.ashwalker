@@ -28,7 +28,7 @@ in {
       nginx = {
         enable = config.services.nginx.enable;
         virtualHost = {
-          addSSL = true;
+          forceSSL = true;
         };
       };
       postgresql.enable = config.services.postgresql.enable;
