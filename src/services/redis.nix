@@ -11,9 +11,9 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    services.redis = {
-      enable = true;
-    };
+    # services.redis = {
+    #   enable = true;
+    # };
   };
   meta = {};
 }

@@ -15,9 +15,15 @@ in {
     services.sourcehut = {
       enable = true;
 
+      nginx = {
+        enable = config.services.nginx.enable;
+        virtualHost = {
+          forceSSL = true;
+        };
+      };
       postgresql.enable = config.services.postgresql.enable;
       postfix.enable = config.services.postfix.enable;
-      redis.enable = config.services.redis.enable;
+      redis.enable = true;
 
       settings."sr.ht" = {
         environment = "production";
@@ -26,13 +32,6 @@ in {
         network-key = config.age.secrets.srcNetworkKey.path;
       };
       settings.webhooks.private-key = config.age.secrets.srcWebhookKey.path;
-
-      nginx = {
-        enable = config.services.nginx.enable;
-        virtualHost = {
-          forceSSL = true;
-        };
-      };
 
       meta.enable = true;
       settings."meta.sr.ht" = {};
