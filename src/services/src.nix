@@ -28,7 +28,7 @@ in {
       nginx = {
         enable = config.services.nginx.enable;
         virtualHost = {
-          forceSSL = true;
+          addSSL = true;
         };
       };
       postgresql.enable = config.services.postgresql.enable;
@@ -48,7 +48,7 @@ in {
 
       settings.mail = {
         pgp-key-id = "mail.src.ashwalker.net";
-        pgp-pubkey = toString ./src/srcMailPubKey.key;
+        pgp-pubkey = toString ./src/srcMailPubKey.key; # the toString is load-bearing
         pgp-privkey = config.age.secrets.srcMailKey.path;
         smtp-from = "daemon@${domain}";
       };
@@ -56,7 +56,7 @@ in {
       meta.enable = true;
       settings."meta.sr.ht" = {};
 
-      git.enable = true;
+      git.enable = false;
       settings."git.sr.ht" = {};
 
       hg.enable = false;
