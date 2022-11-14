@@ -17,6 +17,7 @@ in {
 
       postgresql.enable = config.services.postgresql.enable;
       postfix.enable = config.services.postfix.enable;
+      redis.enable = config.services.redis.enable;
 
       settings."sr.ht" = {
         environment = "production";
