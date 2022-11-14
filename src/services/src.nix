@@ -7,7 +7,7 @@
 with builtins; let
   std = pkgs.lib;
   domain = "src.${config.networking.fqdn}";
-  srht = config.services.srht;
+  srht = config.services.sourcehut;
 in {
   options = with lib; {};
   disabledModules = [];
