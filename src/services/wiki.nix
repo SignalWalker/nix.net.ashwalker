@@ -75,7 +75,6 @@ in {
         locations."~ \\.php$" = {
           fastcgiParams."SCRIPT_FILENAME" = "$request_filename";
           extraConfig = ''
-            include fastcgi_params;
             fastcgi_pass unix:${phpfpm.socket};
           '';
         };
