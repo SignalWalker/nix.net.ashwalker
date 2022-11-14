@@ -29,7 +29,6 @@ in {
       nginx = {
         enable = config.services.nginx.enable;
         virtualHost = {
-          enableACME = true;
           forceSSL = true;
         };
       };
