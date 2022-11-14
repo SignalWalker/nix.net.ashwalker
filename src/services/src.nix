@@ -8,11 +8,14 @@ with builtins; let
   std = pkgs.lib;
   domain = "src.${config.networking.fqdn}";
   srht = config.services.sourcehut;
+  cfg = config.signal.services.src;
 in {
-  options = with lib; {};
+  options.signal.services.src = with lib; {
+    enable = mkEnableOption "code forge";
+  };
   disabledModules = [];
   imports = [];
-  config = {
+  config = lib.mkIf cfg.enable {
     age.secrets = {
       srcNetworkKey = {file = ./src/srcNetworkKey.age;};
       srcServiceKey = {file = ./src/srcServiceKey.age;};
