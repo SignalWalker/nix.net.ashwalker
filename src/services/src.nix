@@ -44,7 +44,7 @@ in {
 
       settings.mail = {
         pgp-key-id = "mail.src.ashwalker.net";
-        pgp-pubkey = ./src/srcMailPubKey.key;
+        pgp-pubkey = toString ./src/srcMailPubKey.key;
         pgp-privkey = config.age.secrets.srcMailKey.path;
         smtp-from = "daemon@${domain}";
       };
