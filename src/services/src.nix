@@ -12,6 +12,12 @@ in {
   disabledModules = [];
   imports = [];
   config = {
+    age.secrets = {
+      srcNetworkKey = {file = ./src/srcNetworkKey.age;};
+      srcServiceKey = {file = ./src/srcServiceKey.age;};
+      srcWebhookKey = {file = ./src/srcWebhookKey.age;};
+      srcMailKey = {file = ./src/srcMailKey.age;};
+    };
     services.sourcehut = {
       enable = true;
 
@@ -32,6 +38,27 @@ in {
         network-key = config.age.secrets.srcNetworkKey.path;
       };
       settings.webhooks.private-key = config.age.secrets.srcWebhookKey.path;
+
+      settings.mail = {
+        pgp-key-id = "mail.src.ashwalker.net";
+        pgp-pubkey = ''
+          -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+          mDMEY3KZiBYJKwYBBAHaRw8BAQdALDVoGsmAFtbybN98M78KCsiM60sKvgfmv40n
+          i5Dt1Py0Vm1haWwuc3JjLmFzaHdhbGtlci5uZXQgKHNyYy5hc2h3YWxrZXIubmV0
+          IG1haWwgZGFlbW9uKSA8bWFpbC5kYWVtb25Ac3JjLmFzaHdhbGtlci5uZXQ+iJAE
+          ExYIADgWIQTK8BOymNg8JCPOUGfN8ISEdKEe9AUCY3KZiAIbAwULCQgHAgYVCgkI
+          CwIEFgIDAQIeAQIXgAAKCRDN8ISEdKEe9LvqAP9jL+RehM2gITTLtBR8b6h4HToy
+          iTEB2mBU2zLpPKka5wD/Z5qJ77v+4pBc8TVxozG4oG/3B3DcU8hoUFZFSA5NwAS4
+          OARjcpmIEgorBgEEAZdVAQUBAQdAH7piGDgBAyor9TLCkZzCJbv5nOI47jTIsoLx
+          Xj4zmwQDAQgHiHgEGBYIACAWIQTK8BOymNg8JCPOUGfN8ISEdKEe9AUCY3KZiAIb
+          DAAKCRDN8ISEdKEe9AoBAQCj4fuRfiM2IGF+t697yLv5dXeedM+cN8Pg/v8xLkUQ
+          vAD+MwCvV2iohI3ZV9jQjOwR9BTHoVhkZtqIMTUBEJGDsw4=
+          =AeB1
+          -----END PGP PUBLIC KEY BLOCK-----
+        '';
+        pgp-privkey = config.age.secrets.srcMailKey.path;
+      };
 
       meta.enable = true;
       settings."meta.sr.ht" = {};

@@ -6,4 +6,5 @@ in {
   "srcNetworkKey.age".publicKeys = keys;
   "srcServiceKey.age".publicKeys = keys;
   "srcWebhookKey.age".publicKeys = keys;
+  "srcMailKey.age".publicKeys = keys;
 }
