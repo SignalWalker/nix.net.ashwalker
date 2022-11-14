@@ -36,6 +36,9 @@ in {
         global-domain = domain;
         origin = "https://${domain}";
         network-key = config.age.secrets.srcNetworkKey.path;
+        service-key = config.age.secrets.srcServiceKey.path;
+        owner-email = "admin@${domain}";
+        owner-name = "Ash Walker";
       };
       settings.webhooks.private-key = config.age.secrets.srcWebhookKey.path;
 
@@ -58,6 +61,7 @@ in {
           -----END PGP PUBLIC KEY BLOCK-----
         '';
         pgp-privkey = config.age.secrets.srcMailKey.path;
+        smtp-from = "daemon@${domain}";
       };
 
       meta.enable = true;
