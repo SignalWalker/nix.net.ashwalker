@@ -7,6 +7,7 @@
 with builtins; let
   std = pkgs.lib;
   domain = "src.${config.networking.fqdn}";
+  srht = config.services.srht;
 in {
   options = with lib; {};
   disabledModules = [];
@@ -16,7 +17,10 @@ in {
       srcNetworkKey = {file = ./src/srcNetworkKey.age;};
       srcServiceKey = {file = ./src/srcServiceKey.age;};
       srcWebhookKey = {file = ./src/srcWebhookKey.age;};
-      srcMailKey = {file = ./src/srcMailKey.age;};
+      srcMailKey = {
+        file = ./src/srcMailKey.age;
+        owner = srht.meta.user;
+      };
     };
     services.sourcehut = {
       enable = true;
@@ -65,13 +69,13 @@ in {
       settings."todo.sr.ht" = {};
     };
 
-    security.acme.certs.${domain}.extraDomainNames = map (srv: "${srv}.${domain}") config.services.sourcehut.services;
+    security.acme.certs.${domain}.extraDomainNames = map (srv: "${srv}.${domain}") srht.services;
 
     services.nginx.virtualHosts =
       foldl'
       (acc: srvc: std.recursiveUpdate acc {"meta.${domain}".useACMEHost = domain;})
       {"${domain}".enableACME = true;}
-      config.services.sourcehut.services;
+      srht.services;
   };
   meta = {};
 }
