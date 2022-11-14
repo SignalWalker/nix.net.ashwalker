@@ -12,7 +12,7 @@ in {
   imports = [];
   config = {
     services.postfix = {
-	  enable = false;
+      enable = false;
       origin = config.networking.fqdn;
     };
   };
