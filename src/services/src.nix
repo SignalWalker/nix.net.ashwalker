@@ -56,7 +56,7 @@ in {
       meta.enable = true;
       settings."meta.sr.ht" = {};
 
-      git.enable = false;
+      git.enable = true;
       settings."git.sr.ht" = {};
 
       hg.enable = false;
