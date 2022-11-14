@@ -50,13 +50,13 @@ in {
       settings."todo.sr.ht" = {};
     };
 
-    security.acme.certs.${domain}.extraDomainNames = map (srv: "${srv}.${domain}") config.sourcehut.services;
+    security.acme.certs.${domain}.extraDomainNames = map (srv: "${srv}.${domain}") config.services.sourcehut.services;
 
     services.nginx.virtualHosts =
       foldl'
       (acc: srvc: std.recursiveUpdate acc {"meta.${domain}".useACMEHost = domain;})
       {"${domain}".enableACME = true;}
-      config.sourcehut.services;
+      config.services.sourcehut.services;
   };
   meta = {};
 }
