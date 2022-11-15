@@ -73,11 +73,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1668532309,
-        "narHash": "sha256-bEK0EZ28xpR55sScfLSCqyxS7Eif2B990PnauX9sV5g=",
+        "lastModified": 1668533028,
+        "narHash": "sha256-lb2slaEe/WPJojt6z1yIXG+L6lKu4R5ywhoQ7esPfoc=",
         "owner": "signalwalker",
         "repo": "net.ashwalker",
-        "rev": "3f54f8430b01e72e5a9ca82094b7ee117e57ee34",
+        "rev": "c39adaa8692ad3932ff002ef1029e3d70a7c9485",
         "type": "github"
       },
       "original": {
