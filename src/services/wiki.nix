@@ -50,6 +50,7 @@ in {
     };
     services.httpd.enable = lib.mkForce false; # services.mediawiki enables this by default
     services.phpfpm.pools.mediawiki = {
+      group = lib.mkForce config.services.nginx.group;
       settings."listen.owner" = lib.mkForce config.services.nginx.user;
       settings."listen.group" = lib.mkForce config.services.nginx.group;
     };

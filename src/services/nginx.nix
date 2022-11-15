@@ -17,8 +17,7 @@ in {
       recommendedTlsSettings = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
-
-      recommendedProxySettings = false;
+      recommendedProxySettings = true;
     };
     networking.firewall.allowedTCPPorts = [80 443];
   };
