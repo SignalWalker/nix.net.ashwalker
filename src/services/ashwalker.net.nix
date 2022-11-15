@@ -19,7 +19,7 @@ in {
     services.nginx.virtualHosts."${net.domain}" = {
       enableACME = true;
       addSSL = true;
-      extraAliases = ["www.${net.domain}"];
+      serverAliases = ["www.${net.domain}"];
     };
   };
   meta = {};
