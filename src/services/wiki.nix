@@ -11,7 +11,7 @@ with builtins; let
   phpfpm = config.services.phpfpm.pools.mediawiki;
 in {
   options.signal.services.wiki = with lib; {
-    enable = (mkEnableOption "wiki") // {default = true;};
+    enable = (mkEnableOption "wiki") // {default = false;};
   };
   disabledModules = [];
   imports = [];
