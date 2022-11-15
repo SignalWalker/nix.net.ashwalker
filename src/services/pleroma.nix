@@ -93,7 +93,6 @@ in {
         http2 = true;
         enableACME = true;
         forceSSL = true;
-        recommendedProxySettings = false;
         extraConfig = ''
           client_max_body_size 16m;
           ignore_invalid_headers off;
@@ -105,6 +104,7 @@ in {
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         '';
         locations."/" = {
+          recommendedProxySettings = false;
           proxyPass = "http://phoenix";
           extraConfig = ''
              	etag on;
