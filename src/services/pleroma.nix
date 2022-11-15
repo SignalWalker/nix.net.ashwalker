@@ -38,48 +38,58 @@ in {
       enable = true;
       secretConfigFile = config.age.secrets.pleroma.path;
       configs = [
+        "import Config"
+
         ''
-                      import Config
-
-                      config :pleroma, Pleroma.Web.Endpoint,
-                      	url: [host: "${vhost}", scheme: "https", port: 443],
-                        http: [ip: {127, 0, 0, 1}, port: 4000]
-
-                      config :pleroma, :instance,
-                      	name: "Signal Garden",
-                      	email: "admin@${vhost}",
-                      	notify_email: "daemon@${vhost}",
-          registrations_open: false,
-             invites_enabled: true,
-           	federating: true,
-           	federation_incoming_replies_max_depth: nil,
-           	allow_relay: true,
-           	public: true,
-           	safe_dm_mentions: true,
-           	external_user_synchronization: true,
-           	cleanup_attachments: true
-
-                      config :pleroma, :media_proxy,
-                      	enabled: false,
-                        redirect_on_failure: true
-
-                      config :pleroma, Pleroma.Repo,
-                      	adapter: Ecto.Adapters.Postgres,
-                      	username: "${config.services.pleroma.user}",
-                      	database: "pleroma",
-                      	hostname: "localhost"
-
-                      config :web_push_encryption, :vapid_details,
-                      	subject: "mailto:admin@${vhost}"
-
-                      config :pleroma, :database, rum_enabled: false
-                      config :pleroma, :instance, static_dir: "${config.services.pleroma.stateDir}/static"
-                      config :pleroma, Pleroma.Uploaders.Local, uploads: "${config.services.pleroma.stateDir}/uploads"
-
-                      config :pleroma, configurable_from_database: true
-
-                      # config :pleroma, Pleroma.Upload, filters: [Pleroma.Upload.Filter.Exiftool]
+               config :pleroma, Pleroma.Web.Endpoint,
+          url: [host: "${vhost}", scheme: "https", port: 443],
+          http: [ip: {127, 0, 0, 1}, port: 4000]
         ''
+
+        ''
+                     config :pleroma, :instance,
+                name: "Signal Garden",
+                email: "admin@${vhost}",
+                notify_email: "daemon@${vhost}",
+          description: "Ash Walker's personal Pleroma instance",
+                registrations_open: false,
+                invites_enabled: true,
+                federating: true,
+                federation_incoming_replies_max_depth: nil,
+                allow_relay: true,
+                public: true,
+                safe_dm_mentions: true,
+                external_user_synchronization: true,
+                cleanup_attachments: true
+        ''
+
+        ''
+          config :pleroma, :media_proxy,
+          	enabled: false,
+          	redirect_on_failure: true
+        ''
+
+        ''
+          config :pleroma, Pleroma.Repo,
+          	adapter: Ecto.Adapters.Postgres,
+          	username: "${config.services.pleroma.user}",
+          	database: "pleroma",
+          	hostname: "localhost"
+        ''
+
+        ''
+          config :web_push_encryption, :vapid_details,
+          	subject: "mailto:admin@${vhost}"
+        ''
+
+        "config :pleroma, :database, rum_enabled: false"
+
+        "config :pleroma, :instance, static_dir: \"${config.services.pleroma.stateDir}/static\""
+        "config :pleroma, Pleroma.Uploaders.Local, uploads: \"${config.services.pleroma.stateDir}/uploads\""
+
+        "config :pleroma, configurable_from_database: true"
+
+        # config :pleroma, Pleroma.Upload, filters: [Pleroma.Upload.Filter.Exiftool]
       ];
     };
     services.nginx = {
