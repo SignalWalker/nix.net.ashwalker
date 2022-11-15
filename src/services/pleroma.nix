@@ -105,14 +105,16 @@ in {
         enableACME = true;
         forceSSL = true;
         extraConfig = ''
-          client_max_body_size 16m;
-          ignore_invalid_headers off;
+                client_max_body_size 16m;
+                ignore_invalid_headers off;
 
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection "upgrade";
-          proxy_set_header Host $host;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+          rewrite ^/@([^/]+)$ /users/$1 last;
         '';
         locations."/" = {
           recommendedProxySettings = false;
