@@ -49,16 +49,7 @@ in {
                       	name: "Signal Garden",
                       	email: "admin@${vhost}",
                       	notify_email: "daemon@${vhost}",
-             description: "Ash Walker's personal Pleroma instance",
-          registrations_open: false,
-             invites_enabled: true,
-           	federating: true,
-           	federation_incoming_replies_max_depth: nil,
-           	allow_relay: true,
-           	public: true,
-           	safe_dm_mentions: true,
-           	external_user_synchronization: true,
-           	cleanup_attachments: true
+          registrations_open: false
 
                       config :pleroma, :media_proxy,
                       	enabled: false,
