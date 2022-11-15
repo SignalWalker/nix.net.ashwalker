@@ -43,13 +43,21 @@ in {
 
                       config :pleroma, Pleroma.Web.Endpoint,
                       	url: [host: "${vhost}", scheme: "https", port: 443],
-                        http: [ip: {127, 0, 0, 1}, port: 4000],
+                        http: [ip: {127, 0, 0, 1}, port: 4000]
 
                       config :pleroma, :instance,
                       	name: "Signal Garden",
                       	email: "admin@${vhost}",
                       	notify_email: "daemon@${vhost}",
-          registrations_open: false
+          registrations_open: false,
+             invites_enabled: true,
+           	federating: true,
+           	federation_incoming_replies_max_depth: nil,
+           	allow_relay: true,
+           	public: true,
+           	safe_dm_mentions: true,
+           	external_user_synchronization: true,
+           	cleanup_attachments: true
 
                       config :pleroma, :media_proxy,
                       	enabled: false,
