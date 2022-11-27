@@ -281,9 +281,8 @@ in {
         '';
         extraSettingsPost = ''
           $wgSecretKey = file_get_contents('${wiki.secretKey}');
-        '' + (std.optionalString (wiki.database.passwordFile != null) ''
-      	  $wgDBpassword = file_get_contents('${wiki.database.passwordFile}');
-		'');
+		  ${std.optionalString (wiki.database.passwordFile != null) "$wgDBpassword = file_get_contents('${wiki.database.passwordFile}');"}
+        '';
 		skins = let
 			skinsDir = "${wiki.package}/share/mediawiki/skins";
 		in {
@@ -358,6 +357,9 @@ in {
           }
         ];
         ensureDatabases = [wiki.database.name];
+		authentication = let db = wiki.database; in ''
+		host	${db.name}	${db.user}	samehost	password
+		'';
       };
       services.mediawiki = {
         database.port = lib.mkDefault config.services.postgresql.port;
