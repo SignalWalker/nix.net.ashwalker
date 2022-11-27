@@ -11,7 +11,7 @@ in {
   options.services.mediawiki = with lib; {
     enableSignal = mkEnableOption "improved configuration";
     scriptsDir = mkOption {
-      type = types.package;
+      type = types.str;
       readOnly = true;
       default = "${wiki.package}/share/mediawiki/maintenance";
     };
