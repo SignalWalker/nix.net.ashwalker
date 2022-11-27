@@ -316,23 +316,20 @@ in {
             tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
           fi
 
-          echo "exit( wfGetDB( DB_MASTER )->tableExists( 'user' ) ? 1 : 0 );" | \
-            ${pkgs.php}/bin/php ${wiki.scriptsDir}/eval.php --conf ${wiki.settingsFile} && \
-                  ${pkgs.php}/bin/php ${wiki.scriptsDir}/install.php \
-                  	--confpath /tmp \
-                  	--scriptpath / \
-                  	--dbserver ${db.host}${std.optionalString (db.socket != null) ":${db.socket}"} \
-                  	--dbport ${toString db.port} \
-                  	--dbname ${db.name} \
-                  	${std.optionalString (db.tablePrefix != null) "--dbprefix ${db.tablePrefix}"} \
-                  	--dbuser ${db.user} \
-                  	${std.optionalString (db.passwordFile != null) "--dbpassfile ${db.passwordFile}"} \
-                  	--passfile ${wiki.passwordFile} \
-                  	--dbtype ${db.type} \
-                  	${wiki.name} \
-                  	admin
-
-          # ${pkgs.php}/bin/php ${wiki.scriptsDir}/update.php --conf ${wiki.settingsFile} --quick
+          echo "exit( wfGetDB( DB_MASTER )->tableExists( '${db.name}' ) ? 1 : 0 );" | ${pkgs.php}/bin/php ${wiki.scriptsDir}/eval.php --conf ${wiki.settingsFile} \
+            && ${pkgs.php}/bin/php ${wiki.scriptsDir}/install.php \
+			  --confpath /tmp \
+			  --scriptpath / \
+			  --dbserver ${db.host}${std.optionalString (db.socket != null) ":${db.socket}"} \
+			  --dbport ${toString db.port} \
+			  --dbname ${db.name} \
+			  ${std.optionalString (db.tablePrefix != null) "--dbprefix ${db.tablePrefix}"} \
+			  --dbuser ${db.user} \
+			  ${std.optionalString (db.passwordFile != null) "--dbpassfile ${db.passwordFile}"} \
+			  --passfile ${wiki.passwordFile} \
+			  --dbtype ${db.type} \
+			  ${wiki.name} \
+			  admin
         '';
         serviceConfig = {
           Type = "oneshot";
@@ -368,6 +365,7 @@ in {
       };
     })
     (lib.mkIf (wiki.reverseProxy.type == "nginx") {
+	  services.mediawiki.phpfpm.listenGroup = config.services.nginx.group;
       services.nginx = let
         phpfpm = config.services.phpfpm.pools.mediawiki;
       in {
