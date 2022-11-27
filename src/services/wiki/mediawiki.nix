@@ -250,7 +250,7 @@ in {
         type = types.str;
         default = config.services.mediawiki.group;
       };
-      settings = mkOption {
+      extraSettings = mkOption {
         type = with types; attrsOf (oneOf [str int bool]);
         default = {};
       };
@@ -290,8 +290,10 @@ in {
       services.phpfpm.pools.mediawiki = {
         inherit (wiki) user group;
         phpEnv.MEDIAWIKI_CONFIG = pkgs.writeText "LocalSettings.php" wiki.settings;
-        settings."listen.owner" = wiki.php.listenOwner;
-        settings."listen.group" = wiki.php.listenGroup;
+		settings = wiki.phpfpm.extraSettings // {
+			"listen.owner" = wiki.phpfpm.listenOwner;
+			"listen.group" = wiki.phpfpm.listenGroup;
+		};
       };
       systemd.services.mediawiki-init = let
         db = wiki.database;
