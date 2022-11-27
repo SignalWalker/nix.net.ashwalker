@@ -45,6 +45,8 @@ in {
       settings = {
         wgArticlePath = "/wiki/$1";
 		wgServer = "//${wiki.reverseProxy.hostName}";
+		wgCanonicalServer = "https:${wiki.settings.wgServer}";
+		wgCapitalLinks = false;
       };
     };
     services.nginx.virtualHosts.${wiki.reverseProxy.hostName} = {

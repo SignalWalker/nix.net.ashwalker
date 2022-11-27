@@ -81,7 +81,6 @@ in {
               };
               wgCanonicalServer = mkOption {
                 type = types.str;
-                default = "http://${config.wgServer}";
               };
               wgSitename = mkOption {
                 type = types.str;
@@ -119,13 +118,12 @@ in {
               };
               wgDBserver = mkOption {
                 type = types.str;
-                default = "${wiki.database.host}:${
-                  if wiki.database.socket != null
-                  then wiki.database.socket
-                  else toString wiki.database.port
-                }";
                 readOnly = true;
               };
+			  wgDBport = mkOption {
+			  	type = types.port;
+				default = config.services.postgresql.port; # this option is only used if wgDBtype is "postgres"
+			  };
               wgDBname = mkOption {
                 type = types.str;
                 default = wiki.database.name;
@@ -272,6 +270,9 @@ in {
       environment.systemPackages = [wiki.scripts];
       services.mediawiki = {
         enable = lib.mkForce false;
+		database = {
+			host = lib.mkDefault "127.0.0.1";
+		};
         extraSettingsPre = ''
           if ( !defined( 'MEDIAWIKI' ) ) {
           	exit;
@@ -281,6 +282,11 @@ in {
         extraSettingsPost = ''
           $wgSecretKey = file_get_contents("${wiki.secretKey}");
         '';
+		skins = {
+		  MonoBook = "${wiki.package}/share/mediawiki/skins/MonoBook";
+		  Timeless = "${wiki.package}/share/mediawiki/skins/Timeless";
+		  Vector = "${wiki.package}/share/mediawiki/skins/Vector";
+		};
       };
       users.users.${wiki.user} = {
         inherit (wiki) group;
@@ -350,6 +356,8 @@ in {
       };
       services.mediawiki = {
         database.port = lib.mkDefault config.services.postgresql.port;
+		settings.wgDBserver = "127.0.0.1";
+		settings.wgDBport = config.services.postgresql.port;
       };
     })
     (lib.mkIf (wiki.reverseProxy.type == "nginx") {
