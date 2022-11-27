@@ -281,7 +281,7 @@ in {
         '';
         extraSettingsPost = ''
           $wgSecretKey = file_get_contents('${wiki.secretKey}');
-        '' ++ (std.optionalString (wiki.database.passwordFile != null) ''
+        '' + (std.optionalString (wiki.database.passwordFile != null) ''
       	  $wgDBpassword = file_get_contents('${wiki.database.passwordFile}');
 		'');
 		skins = let
