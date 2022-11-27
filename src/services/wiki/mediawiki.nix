@@ -313,7 +313,7 @@ in {
         after = ["postgresql.service"];
         script = ''
           if ! test -e "${wiki.secretKey}"; then
-            tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.stateDir}/secret.key
+            tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
           fi
 
           echo "exit( wfGetDB( DB_MASTER )->tableExists( 'user' ) ? 1 : 0 );" | \
@@ -332,7 +332,7 @@ in {
                   	${wiki.name} \
                   	admin
 
-          ${pkgs.php}/bin/php ${wiki.scriptsDir}/update.php --conf ${wiki.settingsFile} --quick
+          # ${pkgs.php}/bin/php ${wiki.scriptsDir}/update.php --conf ${wiki.settingsFile} --quick
         '';
         serviceConfig = {
           Type = "oneshot";
