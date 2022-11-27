@@ -277,8 +277,8 @@ in {
           	exit;
           }
         '';
+      	# $wgDBpassword = file_get_contents("${wiki.database.passwordFile}");
         extraSettingsPost = ''
-          $wgDBpassword = file_get_contents("${wiki.database.passwordFile}");
           $wgSecretKey = file_get_contents("${wiki.secretKey}");
         '';
       };

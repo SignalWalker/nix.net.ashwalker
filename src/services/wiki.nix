@@ -36,25 +36,16 @@ in {
       passwordFile = config.age.secrets.wikiAdminPassword.path;
       database = {
         type = "postgres";
-        passwordFile = config.age.secrets.wikiDbPassword.path;
+        # passwordFile = config.age.secrets.wikiDbPassword.path;
       };
       reverseProxy = {
         type = "nginx";
         hostName = vhost;
       };
-      extraSettingsPre = ''
-         	if ( !defined( 'MEDIAWIKI' ) ) {
-        	exit;
-        }
-      '';
       settings = {
         wgArticlePath = "/wiki/$1";
 		wgServer = "//${wiki.reverseProxy.hostName}";
       };
-      extraSettingsPost = ''
-        $wgDBpassword = file_get_contents("${wiki.database.passwordFile}");
-        $wgSecretKey = file_get_contents("${wiki.stateDir}/secret.key");
-      '';
     };
     services.nginx.virtualHosts.${wiki.reverseProxy.hostName} = {
       enableACME = true;
