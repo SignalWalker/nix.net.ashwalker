@@ -279,10 +279,11 @@ in {
           	exit;
           }
         '';
-      	# $wgDBpassword = file_get_contents("${wiki.database.passwordFile}");
         extraSettingsPost = ''
-          $wgSecretKey = file_get_contents("${wiki.secretKey}");
-        '';
+          $wgSecretKey = file_get_contents('${wiki.secretKey}');
+        '' ++ (std.optionalString (wiki.database.passwordFile != null) ''
+      	  $wgDBpassword = file_get_contents('${wiki.database.passwordFile}');
+		'');
 		skins = let
 			skinsDir = "${wiki.package}/share/mediawiki/skins";
 		in {

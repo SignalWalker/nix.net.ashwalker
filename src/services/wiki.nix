@@ -36,7 +36,7 @@ in {
       passwordFile = config.age.secrets.wikiAdminPassword.path;
       database = {
         type = "postgres";
-        # passwordFile = config.age.secrets.wikiDbPassword.path;
+        passwordFile = config.age.secrets.wikiDbPassword.path;
       };
       reverseProxy = {
         type = "nginx";
