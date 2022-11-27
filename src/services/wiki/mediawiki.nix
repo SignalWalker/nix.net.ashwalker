@@ -230,14 +230,15 @@ in {
         wiki.extraSettingsPre
         (toString wiki.settings)
         wiki.extraSettingsPost
-        (std.mapAttrsToList (k: v: "wfLoadSkin('${k}', '${v}');") wiki.skins)
-        (std.mapAttrsToList (k: v: "wfLoadExtensions('${k}'${
+	  ]
+	  ++ (std.mapAttrsToList (k: v: "wfLoadSkin('${k}', '${v}');") wiki.skins)
+      ++ (std.mapAttrsToList (k: v: "wfLoadExtensions('${k}'${
             if v == null
             then ""
             else ", '${v}'"
           });")
           wiki.extensions)
-      ]);
+      );
       readOnly = true;
     };
     phpfpm = {
