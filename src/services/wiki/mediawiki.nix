@@ -230,7 +230,7 @@ in {
         (toString wiki.settings)
         wiki.extraSettingsPost
 	  ]
-	  ++ (std.mapAttrsToList (k: v: "wfLoadSkin('${k}', '${v}');") wiki.skins)
+	  ++ (std.mapAttrsToList (k: v: "wfLoadSkin('${k}', '${v}/skin.json');") wiki.skins)
       ++ (std.mapAttrsToList (k: v: "wfLoadExtensions('${k}'${
             if v == null
             then ""
@@ -283,10 +283,13 @@ in {
         extraSettingsPost = ''
           $wgSecretKey = file_get_contents("${wiki.secretKey}");
         '';
-		skins = {
-		  MonoBook = "${wiki.package}/share/mediawiki/skins/MonoBook";
-		  Timeless = "${wiki.package}/share/mediawiki/skins/Timeless";
-		  Vector = "${wiki.package}/share/mediawiki/skins/Vector";
+		skins = let
+			skinsDir = "${wiki.package}/share/mediawiki/skins";
+		in {
+		  MonoBook = "${skinsDir}/MonoBook";
+		  Timeless = "${skinsDir}/Timeless";
+		  Vector = "${skinsDir}/Vector";
+		  MinervaNeue = "${skinsDir}/MinervaNeue";
 		};
       };
       users.users.${wiki.user} = {
