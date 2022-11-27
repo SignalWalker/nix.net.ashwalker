@@ -225,10 +225,10 @@ in {
     };
     settingsFile = mkOption {
       type = types.path;
-      default = pkgs.writeText "LocalSettings.php" (concatStringsSep "\n" [
+      default = pkgs.writeText "LocalSettings.php" (concatStringsSep "\n" ([
         "<?php"
         wiki.extraSettingsPre
-        (wiki.settings.__toString wiki.settings)
+        (toString wiki.settings)
         wiki.extraSettingsPost
 	  ]
 	  ++ (std.mapAttrsToList (k: v: "wfLoadSkin('${k}', '${v}');") wiki.skins)
@@ -238,7 +238,7 @@ in {
             else ", '${v}'"
           });")
           wiki.extensions)
-      );
+      ));
       readOnly = true;
     };
     phpfpm = {
