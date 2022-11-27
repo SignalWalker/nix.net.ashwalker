@@ -198,6 +198,7 @@ in {
                   subMap = {
                     "string" = val: "\"${val}\"";
                     "path" = val: "\"${val}\"";
+					"bool" = val: if val then "true" else "false";
                     __default = val: toString val;
                   };
                   typeMap = {
