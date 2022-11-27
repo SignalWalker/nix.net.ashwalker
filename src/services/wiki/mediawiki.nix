@@ -228,7 +228,7 @@ in {
       default = pkgs.writeText "LocalSettings.php" (concatStringsSep "\n" [
         "<?php"
         wiki.extraSettingsPre
-        (toString wiki.settings)
+        (wiki.settings.__toString wiki.settings)
         wiki.extraSettingsPost
 	  ]
 	  ++ (std.mapAttrsToList (k: v: "wfLoadSkin('${k}', '${v}');") wiki.skins)
