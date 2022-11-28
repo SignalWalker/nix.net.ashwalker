@@ -297,6 +297,12 @@ in {
         inherit (wiki) user group;
         phpEnv.MEDIAWIKI_CONFIG = toString wiki.settingsFile;
 		settings = {
+			"pm" = "dynamic";
+        	"pm.max_children" = 32;
+        	"pm.start_servers" = 2;
+        	"pm.min_spare_servers" = 2;
+        	"pm.max_spare_servers" = 4;
+        	"pm.max_requests" = 500;
 			"listen.owner" = wiki.phpfpm.listenOwner;
 			"listen.group" = wiki.phpfpm.listenGroup;
 		};
