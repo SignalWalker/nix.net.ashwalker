@@ -136,7 +136,8 @@ in {
               };
 			  wgDBport = mkOption {
 			  	type = types.port;
-				default = config.services.postgresql.port; # this option is only used if wgDBtype is "postgres"
+				default = wiki.database.port;
+				readOnly = true;
 			  };
               wgDBname = mkOption {
                 type = types.str;
@@ -394,9 +395,8 @@ in {
 		# '';
       };
       services.mediawiki = {
-        database.port = lib.mkDefault config.services.postgresql.port;
+        database.port = config.services.postgresql.port;
 		settings.wgDBserver = "/run/postgresql";
-		settings.wgDBport = config.services.postgresql.port;
       };
 	  systemd.services.mediawiki-init.after = ["postgresql.service"];
     })
