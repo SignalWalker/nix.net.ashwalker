@@ -437,7 +437,7 @@ in {
 			'';
 		  };
 		  locations."= /favicon.ico" = {
-			alias = "${sPath}/images/6/64/Favicon.ico";
+			alias = "${sPath}/${wiki.uploadsDirName}/6/64/Favicon.ico";
 			extraConfig = ''
 			add_header Cache-Control "public";
 			expires 7d;
