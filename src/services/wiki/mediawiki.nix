@@ -342,7 +342,11 @@ in {
 			"listen.group" = wiki.phpfpm.listenGroup;
 		};
       };
-	  systemd.services."phpfpm-mediawiki".serviceConfig = systemdDirCfg;
+	  systemd.tmpfiles.rules = [
+	  	"d '${wiki.stateDir}' 0700 ${wiki.user} ${wiki.group} - -"
+	  	"d '${wiki.cacheDir}' 0600 ${wiki.user} ${wiki.group} - -"
+	  	"d '${wiki.logsDir}'  0600 ${wiki.user} ${wiki.group} - -"
+	  ];
       systemd.services.mediawiki-init = let
         db = wiki.database;
       in {
@@ -358,7 +362,7 @@ in {
             tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
           fi
         '';
-        serviceConfig = systemdDirCfg // {
+        serviceConfig = {
           Type = "oneshot";
           User = wiki.user;
           Group = wiki.group;
