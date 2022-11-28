@@ -296,7 +296,7 @@ in {
       services.phpfpm.pools.mediawiki = {
         inherit (wiki) user group;
         phpEnv.MEDIAWIKI_CONFIG = toString wiki.settingsFile;
-		settings = wiki.phpfpm.extraSettings // {
+		settings = {
 			"listen.owner" = wiki.phpfpm.listenOwner;
 			"listen.group" = wiki.phpfpm.listenGroup;
 		};
