@@ -286,16 +286,7 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = let
-  	systemdDirCfg = {
-	  CacheDirectory = [wiki.cacheDirName];
-	  CacheDirectoryMode = 0600;
-	  StateDirectory = [wiki.stateDirName];
-	  StateDirectoryMode = 0700;
-	  LogsDirectory = [wiki.logsDirName];
-	  LogsDirectoryMode = 0600;
-	};
-  in lib.mkIf wiki.enableSignal (lib.mkMerge [
+  config = lib.mkIf wiki.enableSignal (lib.mkMerge [
     {
       environment.systemPackages = [wiki.scripts];
       services.mediawiki = {
@@ -343,9 +334,9 @@ in {
 		};
       };
 	  systemd.tmpfiles.rules = [
-	  	"d '${wiki.stateDir}' 0700 ${wiki.user} ${wiki.group} - -"
-	  	"d '${wiki.cacheDir}' 0600 ${wiki.user} ${wiki.group} - -"
-	  	"d '${wiki.logsDir}'  0600 ${wiki.user} ${wiki.group} - -"
+	  	"d '${wiki.stateDir}' 0750 ${wiki.user} ${wiki.group} - -"
+	  	"d '${wiki.cacheDir}' 0750 ${wiki.user} ${wiki.group} - -"
+	  	"d '${wiki.logsDir}'  0750 ${wiki.user} ${wiki.group} - -"
 	  ];
       systemd.services.mediawiki-init = let
         db = wiki.database;
@@ -369,6 +360,12 @@ in {
           PrivateTmp = true;
           ProtectHome = true;
           ProtectSystem = "full";
+		  CacheDirectory = [wiki.cacheDirName];
+		  CacheDirectoryMode = 0700;
+		  StateDirectory = [wiki.stateDirName];
+		  StateDirectoryMode = 0700;
+		  LogsDirectory = [wiki.logsDirName];
+		  LogsDirectoryMode = 0700;
         };
       };
     }
