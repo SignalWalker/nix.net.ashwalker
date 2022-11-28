@@ -381,8 +381,8 @@ in {
 		};
 		services.mediawiki = {
 			database.port = lib.mkDefault 3306;
-			database.socket = "/run/mysqld/mysqld.sock";
-			settings.wgDBserver = "${wiki.database.host}:${wiki.database.socket}";
+			# database.socket = "/run/mysqld/mysqld.sock";
+			settings.wgDBserver = "${wiki.database.host}${if wiki.database.socket != null then ":${wiki.database.socket}" else ""}";
 		};
 		systemd.services.mediawiki-init.after = [ "mysql.service" ];
 	})
