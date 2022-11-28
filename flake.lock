@@ -73,11 +73,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1668533028,
-        "narHash": "sha256-lb2slaEe/WPJojt6z1yIXG+L6lKu4R5ywhoQ7esPfoc=",
+        "lastModified": 1669660834,
+        "narHash": "sha256-1scfXZm1gva7OrPtJSEXG9G728hszoS/AKdMpKWPINU=",
         "owner": "signalwalker",
         "repo": "net.ashwalker",
-        "rev": "c39adaa8692ad3932ff002ef1029e3d70a7c9485",
+        "rev": "6b1dd397eb29d3932de1a1d2a2b4d6c4d34937d7",
         "type": "github"
       },
       "original": {
@@ -320,11 +320,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1669535121,
-        "narHash": "sha256-koZLM7oWVGrjyHnYDo7/w5qlmUn9UZUKSFNfmIjueE8=",
+        "lastModified": 1669597967,
+        "narHash": "sha256-R+2NaDkXsYkOpFOhmVR8jBZ77Pq55Z6ilaqwFLLn000=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b45ec953794bb07922f0468152ad1ebaf8a084b3",
+        "rev": "be9e3762e719211368d186f547f847737baad720",
         "type": "github"
       },
       "original": {
