@@ -410,7 +410,7 @@ in {
 			expires 7d;
 			'';
 		  };
-		  locations."/favicon.ico" = {
+		  locations."= /favicon.ico" = {
 			alias = "${sPath}/images/6/64/Favicon.ico";
 			extraConfig = ''
 			add_header Cache-Control "public";
