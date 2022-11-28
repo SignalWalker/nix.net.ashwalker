@@ -363,6 +363,21 @@ in {
         };
       };
     }
+	(lib.mkIf (wiki.database.type == "mysql") {
+		services.mysql = {
+			ensureDatabases = [ wiki.database.name ];
+			ensureUsers = [
+				{
+					name = wiki.database.user;
+					ensurePermissions = { "${cfg.database.name}.*" = "ALL PRIVILEGES"; };
+				}
+			];
+		};
+		services.mediawiki = {
+			settings.wgDBserver = "/run/mysql";
+		};
+		systemd.services.mediawiki-init.after = [ "mysql.service" ];
+	})
     (lib.mkIf (wiki.database.type == "postgres") {
       services.postgresql = {
         ensureUsers = [
@@ -384,6 +399,7 @@ in {
 	  systemd.services.mediawiki-init.after = ["postgresql.service"];
     })
     (lib.mkIf (wiki.reverseProxy.type == "nginx") {
+	  services.mediawiki.phpfpm.listenOwner = config.services.nginx.group;
 	  services.mediawiki.phpfpm.listenGroup = config.services.nginx.group;
       services.nginx = let
         pool = config.services.phpfpm.pools.mediawiki;
