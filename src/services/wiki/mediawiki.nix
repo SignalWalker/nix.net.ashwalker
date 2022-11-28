@@ -249,10 +249,6 @@ in {
         type = types.str;
         default = config.services.mediawiki.group;
       };
-      extraSettings = mkOption {
-        type = with types; attrsOf (oneOf [str int bool]);
-        default = {};
-      };
     };
     reverseProxy = {
       type = mkOption {
@@ -310,14 +306,21 @@ in {
       in {
         wantedBy = ["multi-user.target"];
         before = ["phpfpm-mediawiki.service"];
-        after = ["postgresql.service"];
-        script = ''
+        script = let
+			php = "${pkgs.php}/bin/php";
+			scripts = wiki.scriptsDir;
+			settings = wiki.settingsFile;
+		in ''
           if ! test -e "${wiki.secretKey}"; then
+		  	echo "Secret key not found. Generating a new one..."
             tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
           fi
 
-          echo "exit( wfGetDB( DB_MASTER )->tableExists( '${db.name}' ) ? 1 : 0 );" | ${pkgs.php}/bin/php ${wiki.scriptsDir}/eval.php --conf ${wiki.settingsFile} \
-            && ${pkgs.php}/bin/php ${wiki.scriptsDir}/install.php \
+		  echo "Checking for existence of MediaWiki database ('${db.name}')..."
+
+          if ! ( echo 'exit( wfGetDB( DB_MASTER )->tableExists( '${db.name}' ) ? 1 : 0 );' | ${php} ${scripts}/eval.php --conf ${settings} ); then
+		  	echo "Database not detected. Running MediaWiki installation script..."
+            ${php} ${scripts}/install.php \
 			  --confpath /tmp \
 			  --scriptpath / \
 			  --dbserver ${db.host}${std.optionalString (db.socket != null) ":${db.socket}"} \
@@ -330,6 +333,7 @@ in {
 			  --dbtype ${db.type} \
 			  ${wiki.name} \
 			  admin
+		  fi
         '';
         serviceConfig = {
           Type = "oneshot";
@@ -363,6 +367,7 @@ in {
 		settings.wgDBserver = "127.0.0.1";
 		settings.wgDBport = config.services.postgresql.port;
       };
+	  systemd.services.mediawiki-init.after = ["postgresql.service"];
     })
     (lib.mkIf (wiki.reverseProxy.type == "nginx") {
 	  services.mediawiki.phpfpm.listenGroup = config.services.nginx.group;
