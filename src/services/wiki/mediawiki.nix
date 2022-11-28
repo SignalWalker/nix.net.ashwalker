@@ -364,13 +364,13 @@ in {
           }
         ];
         ensureDatabases = [wiki.database.name];
-		authentication = let db = wiki.database; in ''
-		host	${db.name}	${db.user}	samehost	password
-		'';
+		# authentication = let db = wiki.database; in ''
+		# host	${db.name}	${db.user}	samehost	password
+		# '';
       };
       services.mediawiki = {
         database.port = lib.mkDefault config.services.postgresql.port;
-		settings.wgDBserver = "127.0.0.1";
+		settings.wgDBserver = "/run/postgresql";
 		settings.wgDBport = config.services.postgresql.port;
       };
 	  systemd.services.mediawiki-init.after = ["postgresql.service"];
