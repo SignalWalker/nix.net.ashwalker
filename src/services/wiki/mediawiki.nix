@@ -378,7 +378,7 @@ in {
     (lib.mkIf (wiki.reverseProxy.type == "nginx") {
 	  services.mediawiki.phpfpm.listenGroup = config.services.nginx.group;
       services.nginx = let
-        phpfpm = config.services.phpfpm.pools.mediawiki;
+        pool = config.services.phpfpm.pools.mediawiki;
 		wg = wiki.settings;
 		sPath = wg.wgScriptPath;
       in {
@@ -389,7 +389,7 @@ in {
 				SCRIPT_FILENAME = "$document_root$fastcgi_script_name";
 			};
 			extraConfig = ''
-				fastcgi_pass 127.0.0.1:9000;
+				fastcgi_pass unix:${pool.socket};
 			'';
 		  };
 		  locations."${sPath}/images" = {
@@ -423,7 +423,7 @@ in {
 		  	extraConfig = ''
 			location ~ \.php$ {
 				fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-				fastcgi_pass 127.0.0.1:9000;
+				fastcgi_pass unix:${pool.socket};
 			}
 			'';
 		  };
