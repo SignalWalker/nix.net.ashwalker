@@ -369,7 +369,7 @@ in {
 			ensureUsers = [
 				{
 					name = wiki.database.user;
-					ensurePermissions = { "${cfg.database.name}.*" = "ALL PRIVILEGES"; };
+					ensurePermissions = { "${wiki.database.name}.*" = "ALL PRIVILEGES"; };
 				}
 			];
 		};
