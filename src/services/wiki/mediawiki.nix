@@ -292,7 +292,7 @@ in {
 	  CacheDirectoryMode = 0600;
 	  StateDirectory = [wiki.stateDirName];
 	  StateDirectoryMode = 0700;
-	  LogsDirectory = [wiki.logsDir];
+	  LogsDirectory = [wiki.logsDirName];
 	  LogsDirectoryMode = 0600;
 	};
   in lib.mkIf wiki.enableSignal (lib.mkMerge [
