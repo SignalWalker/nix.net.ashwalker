@@ -35,7 +35,7 @@ in {
       name = "SignalWiki";
       passwordFile = config.age.secrets.wikiAdminPassword.path;
       database = {
-        type = "postgres";
+        type = "mysql";
         passwordFile = config.age.secrets.wikiDbPassword.path;
       };
       reverseProxy = {
