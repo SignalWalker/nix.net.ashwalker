@@ -379,53 +379,61 @@ in {
 	  services.mediawiki.phpfpm.listenGroup = config.services.nginx.group;
       services.nginx = let
         phpfpm = config.services.phpfpm.pools.mediawiki;
+		wg = wiki.settings;
+		sPath = wg.wgScriptPath;
       in {
         virtualHosts.${wiki.reverseProxy.hostName} = {
           root = "${wiki.package}/share/mediawiki";
-          locations."/" = {
-            tryFiles = "$uri $uri/ @rewrite";
-          };
-          locations."@rewrite" = {
-            extraConfig = ''
-              rewrite ^/(.*)$ /index.php?title=$1&$args;
-            '';
-          };
-          locations."^~ /maintenance/" = {
-            return = "403";
-          };
-          locations."/rest.php" = {
-            tryFiles = "$uri $uri/ /rest.php?$args";
-          };
-          locations."~ \\.php$" = {
-            fastcgiParams."SCRIPT_FILENAME" = "$request_filename";
-            extraConfig = ''
-              fastcgi_pass unix:${phpfpm.socket};
-            '';
-          };
-          locations."~* \\.(js|css|png|jpg|jpeg|gif|ico)$" = {
-            tryFiles = "$uri /index.php";
-            extraConfig = ''
-              expires max;
-              log_not_found off;
-            '';
-          };
-          locations."/_.gif" = {
-            extraConfig = ''
-              expires max;
-              empty_gif;
-            '';
-          };
-          locations."^~ /cache/" = {
-            extraConfig = ''
-              deny all;
-            '';
-          };
-          locations."/dumps" = {
-            root = "/var/lib/mediawiki/local";
-            extraConfig = ''
-              autoindex on;
-            '';
-          };
+		  locations."~ ^${sPath}/(index|load|api|thumb|opensearch_desc|rest|img_auth)\.php$" = {
+		  	fastcgiParams = {
+				SCRIPT_FILENAME = "$document_root$fastcgi_script_name";
+			};
+			extraConfig = ''
+				fastcgi_pass 127.0.0.1:9000;
+			'';
+		  };
+		  locations."${sPath}/images" = {
+		  	# separate location for uploads so php execution won't apply
+		  };
+		  locations."${sPath}/images/deleted".extraConfig = "deny all;";
+		  locations."~ ^${sPath}/resources/(assets|lib|src)" = {
+		  	tryFiles = "$uri 404";
+			extraConfig = ''
+			add_header Cache-Control "public";
+			expires 7d;
+			'';
+		  };
+		  locations."~ ^${sPath}/(skins|extensions)/.+\.(css|js|gif|jpg|jpeg|png|svg|wasm)$" = {
+		  	tryFiles = "$uri 404";
+			extraConfig = ''
+			add_header Cache-Control "public";
+			expires 7d;
+			'';
+		  };
+		  locations."/favicon.ico" = {
+			alias = "${sPath}/images/6/64/Favicon.ico";
+			extraConfig = ''
+			add_header Cache-Control "public";
+			expires 7d;
+			'';
+		  };
+		  locations."~ ^${sPath}/(COPYING|CREDITS)$".extraConfig = "default_type text/plain;";
+		  # for the installer/updater
+		  locations."${sPath}/mw-config/" = {
+		  	extraConfig = ''
+			location ~ \.php$ {
+				fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+				fastcgi_pass 127.0.0.1:9000;
+			}
+			'';
+		  };
+		  locations."${sPath}/rest.php/" = {
+		  	tryFiles = "$uri $uri/ ${sPath}/rest.php?$query_string";
+		  };
+		  locations."/wiki/".extraConfig = "rewrite ^/wiki/(?<pagename>.*)$ ${sPath}/index.php";
+		  locations."/robots.txt" = {};
+		  locations."= /".return = "301 /wiki/Main_Page";
+		  locations."/".return = "404";
         };
       };
     })
