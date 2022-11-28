@@ -374,19 +374,21 @@ in {
 			];
 		};
 		services.mediawiki = {
-			settings.wgDBserver = "/run/mysql";
+			database.port = lib.mkDefault 3306;
+			database.socket = "/run/mysqld/mysqld.sock";
+			settings.wgDBserver = "${wiki.database.host}:${wiki.database.socket}";
 		};
 		systemd.services.mediawiki-init.after = [ "mysql.service" ];
 	})
     (lib.mkIf (wiki.database.type == "postgres") {
       services.postgresql = {
+        ensureDatabases = [wiki.database.name];
         ensureUsers = [
           {
             name = wiki.database.user;
             ensurePermissions = {"DATABASE ${wiki.database.name}" = "ALL PRIVILEGES";};
           }
         ];
-        ensureDatabases = [wiki.database.name];
 		# authentication = let db = wiki.database; in ''
 		# host	${db.name}	${db.user}	samehost	password
 		# '';
