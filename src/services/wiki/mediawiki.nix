@@ -10,6 +10,7 @@ with builtins; let
 in {
   options.services.mediawiki = with lib; {
     enableSignal = mkEnableOption "improved configuration";
+	enableUploads = mkEnableOption "media uploads";
     scriptsDir = mkOption {
       type = types.str;
       readOnly = true;
@@ -39,6 +40,10 @@ in {
       type = types.str;
       default = "mediawiki";
     };
+	uploadsDirName = mkOption {
+	  type = types.str;
+	  default = "uploads";
+	};
     stateDirName = mkOption {
       type = types.str;
       default = "mediawiki";
@@ -136,7 +141,7 @@ in {
               };
               wgEnableUploads = mkOption {
                 type = types.bool;
-                default = wiki.uploadsDir != null;
+                default = wiki.enableUploads;
                 readOnly = true;
               };
               wgUploadDirectory = mkOption {
@@ -144,6 +149,11 @@ in {
                 default = wiki.uploadsDir;
                 readOnly = true;
               };
+			  wgUploadPath = mkOption {
+			  	type = types.str;
+				default = "${config.wgScriptPath}/${wiki.uploadsDirName}";
+				readOnly = true;
+			  };
               wgUseImageMagick = mkOption {
                 type = types.bool;
                 default = true;
@@ -287,6 +297,7 @@ in {
 		  Vector = "${skinsDir}/Vector";
 		  MinervaNeue = "${skinsDir}/MinervaNeue";
 		};
+		uploadsDir = lib.mkDefault "${wiki.stateDir}/${wiki.uploadsDirName}";
       };
       users.users.${wiki.user} = {
         inherit (wiki) group;
@@ -321,25 +332,6 @@ in {
 		  	echo "Secret key not found. Generating a new one..."
             tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
           fi
-
-		  echo "Checking for existence of MediaWiki database ('${db.name}')..."
-
-          if ! ( echo 'exit( wfGetDB( DB_MASTER )->tableExists( '${db.name}' ) ? 1 : 0 );' | ${php} ${scripts}/eval.php --conf ${settings} ); then
-		  	echo "Database not detected. Running MediaWiki installation script..."
-            ${php} ${scripts}/install.php \
-			  --confpath /tmp \
-			  --scriptpath / \
-			  --dbserver ${db.host}${std.optionalString (db.socket != null) ":${db.socket}"} \
-			  --dbport ${toString db.port} \
-			  --dbname ${db.name} \
-			  ${std.optionalString (db.tablePrefix != null) "--dbprefix ${db.tablePrefix}"} \
-			  --dbuser ${db.user} \
-			  ${std.optionalString (db.passwordFile != null) "--dbpassfile ${db.passwordFile}"} \
-			  --passfile ${wiki.passwordFile} \
-			  --dbtype ${db.type} \
-			  ${wiki.name} \
-			  admin
-		  fi
         '';
         serviceConfig = {
           Type = "oneshot";
@@ -392,10 +384,10 @@ in {
 				fastcgi_pass unix:${pool.socket};
 			'';
 		  };
-		  locations."${sPath}/images" = {
+		  locations."${sPath}/${wiki.uploadsDirName}" = {
 		  	# separate location for uploads so php execution won't apply
 		  };
-		  locations."${sPath}/images/deleted".extraConfig = "deny all;";
+		  locations."${sPath}/${wiki.uploadsDirName}/deleted".extraConfig = "deny all;";
 		  locations."~ ^${sPath}/resources/(assets|lib|src)" = {
 		  	tryFiles = "$uri 404";
 			extraConfig = ''
