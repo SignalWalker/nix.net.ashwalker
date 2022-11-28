@@ -286,7 +286,16 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf wiki.enableSignal (lib.mkMerge [
+  config = let
+  	systemdDirCfg = {
+	  CacheDirectory = [wiki.cacheDirName];
+	  CacheDirectoryMode = 0600;
+	  StateDirectory = [wiki.stateDirName];
+	  StateDirectoryMode = 0700;
+	  LogsDirectory = [wiki.logsDir];
+	  LogsDirectoryMode = 0600;
+	};
+  in lib.mkIf wiki.enableSignal (lib.mkMerge [
     {
       environment.systemPackages = [wiki.scripts];
       services.mediawiki = {
@@ -333,6 +342,7 @@ in {
 			"listen.group" = wiki.phpfpm.listenGroup;
 		};
       };
+	  systemd.services."phpfpm-mediawiki".serviceConfig = systemdDirCfg;
       systemd.services.mediawiki-init = let
         db = wiki.database;
       in {
@@ -348,19 +358,13 @@ in {
             tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
           fi
         '';
-        serviceConfig = {
+        serviceConfig = systemdDirCfg // {
           Type = "oneshot";
           User = wiki.user;
           Group = wiki.group;
           PrivateTmp = true;
           ProtectHome = true;
           ProtectSystem = "full";
-          CacheDirectory = [wiki.cacheDirName];
-          CacheDirectoryMode = 0600;
-          StateDirectory = [wiki.stateDirName];
-          StateDirectoryMode = 0700;
-		  LogsDirectory = [wiki.logsDir];
-		  LogsDirectoryMode = 0600;
         };
       };
     }
