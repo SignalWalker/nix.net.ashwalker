@@ -52,6 +52,10 @@ in {
       type = types.str;
       default = "mediawiki";
     };
+	logsDirName = mkOption {
+	  type = types.str;
+	  default = "mediawiki";
+	};
     stateDir = mkOption {
       type = types.str;
       readOnly = true;
@@ -62,6 +66,11 @@ in {
       readOnly = true;
       default = "/var/cache/${wiki.cacheDirName}";
     };
+	logsDir = mkOption {
+	  type = types.str;
+	  readOnly = true;
+	  default = "/var/log/${wiki.logsDirName}";
+	};
     secretKey = mkOption {
       type = types.str;
       readOnly = true;
@@ -182,6 +191,10 @@ in {
                 type = types.str;
                 default = "${pkgs.diffutils}/bin/diff3";
               };
+			  wgDebugLogFile = mkOption {
+			  	type = types.str;
+				default = "${wiki.logsDir}/debug-${config.wgDBname}.log";
+			  };
               __toString = mkOption {
                 type = types.anything;
                 default = self: let
@@ -342,9 +355,11 @@ in {
           ProtectHome = true;
           ProtectSystem = "full";
           CacheDirectory = [wiki.cacheDirName];
-          CacheDirectoryMode = 0700;
+          CacheDirectoryMode = 0600;
           StateDirectory = [wiki.stateDirName];
           StateDirectoryMode = 0700;
+		  LogsDirectory = [wiki.logsDir];
+		  LogsDirectoryMode = 0600;
         };
       };
     }
