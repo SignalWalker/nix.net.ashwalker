@@ -303,6 +303,16 @@ in {
         type = types.str;
       };
     };
+    database = {
+      adminUser = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      adminPasswordFile = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+    };
   };
   disabledModules = [];
   imports = [];
