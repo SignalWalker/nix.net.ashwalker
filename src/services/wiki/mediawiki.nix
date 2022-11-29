@@ -185,7 +185,7 @@ in {
               };
               wgUploadDirectory = mkOption {
                 type = types.str;
-                default = wiki.uploadsDir;
+                default = "${wiki.uploadsDir}/${wiki.uploadsDirName}";
                 readOnly = true;
               };
               wgUploadPath = mkOption {
@@ -521,13 +521,13 @@ in {
               expires 7d;
             '';
           };
-          locations."= /favicon.ico" = {
-            alias = "${sPath}/${wiki.uploadsDirName}/6/64/favicon.ico";
-            extraConfig = ''
-              add_header Cache-Control "public";
-              expires 7d;
-            '';
-          };
+          # locations."= /favicon.ico" = {
+          #   alias = "${sPath}/${wiki.uploadsDirName}/6/64/favicon.ico";
+          #   extraConfig = ''
+          #     add_header Cache-Control "public";
+          #     expires 7d;
+          #   '';
+          # };
           locations."~ ^${sPath}/(COPYING|CREDITS)$".extraConfig = "default_type text/plain;";
           # for the installer/updater
           locations."${sPath}/mw-config/" = {
