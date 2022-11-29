@@ -25,10 +25,10 @@ in {
           preferLocalBuild = true;
         } ''
           mkdir -p $out/bin
-          for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php install.php sql.php; do
+          for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php install.php sql.php eval.php; do
             makeWrapper ${pkgs.php}/bin/php $out/bin/mediawiki-$(basename $i .php) \
-          	--set MEDIAWIKI_CONFIG ${wiki.settingsFile} \
-          	--add-flags ${wiki.scriptsDir}/$i
+              --set MEDIAWIKI_CONFIG ${wiki.settingsFile} \
+              --add-flags ${wiki.scriptsDir}/$i
           done
         '';
     };
@@ -133,6 +133,11 @@ in {
               wgDBserver = mkOption {
                 type = types.str;
                 readOnly = true;
+                default = "${wiki.database.host}:${
+                  if wiki.database.socket != null
+                  then wiki.database.socket
+                  else toString wiki.database.port
+                }";
               };
               wgDBport = mkOption {
                 type = types.port;
@@ -299,9 +304,9 @@ in {
           host = lib.mkDefault "127.0.0.1";
         };
         extraSettingsPre = ''
-                if ( !defined( 'MEDIAWIKI' ) ) {
-                	exit;
-                }
+          if ( !defined( 'MEDIAWIKI' ) ) {
+            exit;
+          }
 
           $wgSecretKey = file_get_contents("${wiki.secretKey}");
           ${std.optionalString (wiki.database.passwordFile != null) "$wgDBpassword = file_get_contents(\"${wiki.database.passwordFile}\");"}
@@ -383,13 +388,9 @@ in {
         ];
       };
       services.mediawiki = {
+        database.host = lib.mkDefault "127.0.0.1";
         database.port = lib.mkDefault 3306;
         database.socket = null;
-        settings.wgDBserver = "${wiki.database.host}:${
-          if wiki.database.socket != null
-          then wiki.database.socket
-          else toString wiki.database.port
-        }";
         settings.wgDBprefix = lib.mkIf (wiki.database.tablePrefix != null) wiki.database.tablePrefix;
         settings.wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=BINARY";
       };
@@ -409,9 +410,9 @@ in {
         # '';
       };
       services.mediawiki = {
+        database.host = lib.mkDefault "127.0.0.1";
         database.port = config.services.postgresql.port;
-        settings.wgDBserver = "/run/postgresql";
-        settings.wgDBport = wiki.database.port;
+        database.socket = "/run/postgresql";
       };
       systemd.services.mediawiki-init.after = ["postgresql.service"];
     })
