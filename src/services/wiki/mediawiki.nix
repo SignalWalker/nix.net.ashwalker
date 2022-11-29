@@ -287,7 +287,7 @@ in {
           wiki.extraSettingsPost
         ]
         ++ (std.mapAttrsToList (k: v: "wfLoadSkin('${k}', '${v}/skin.json');") wiki.skins)
-        ++ (std.mapAttrsToList (k: v: "wfLoadExtensions('${k}'${
+        ++ (std.mapAttrsToList (k: v: "wfLoadExtension('${k}'${
             if v == null
             then ""
             else ", '${v}'"

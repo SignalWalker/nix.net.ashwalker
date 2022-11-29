@@ -12,7 +12,7 @@ with builtins; let
 in {
   options = with lib; {
     signal.services.wiki = {
-      enable = (mkEnableOption "wiki") // {default = false;};
+      enable = (mkEnableOption "wiki") // {default = true;};
     };
   };
   disabledModules = [];
@@ -66,15 +66,16 @@ in {
         # wgEnableEmail = false;
         # wgPingback = true;
       };
-      extraSettingsPre = ''
+      extraSettingsPre = let
+        nsPublic = toString 3000;
+        nsPublicTalk = toString 3001;
+      in ''
         $wgGroupPermissions['*']['createaccount'] = false;
         $wgGroupPermissions['*']['edit'] = false;
         $wgGroupPermissions['*']['read'] = false;
 
-        define("NS_PUBLIC", 3000);
-        define("NS_PUBLIC_TALK", 3001);
-        $wgExtraNamespaces[NS_PUBLIC] = "Public";
-        $wgExtraNamespaces[NS_PUBLIC_TALK] = "Public_Talk";
+        $wgExtraNamespaces[${nsPublic}] = "Public";
+        $wgExtraNamespaces[${nsPublicTalk}] = "Public_Talk";
         $wgWhitelistRead = ["Main Page", "Category:Public", "User:Ash"];
         $wgWhitelistReadRegexp = [ "/Public:/", "/Prompt [0-9]+/" ];
 
