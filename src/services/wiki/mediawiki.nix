@@ -136,7 +136,6 @@ in {
               };
 			  wgDBport = mkOption {
 			  	type = types.port;
-				readOnly = true;
 			  };
               wgDBname = mkOption {
                 type = types.str;
