@@ -51,10 +51,10 @@ in {
         wgDefaultSkin = "timeless";
         wgAllowDisplayTitle = true;
         wgRestrictDisplayTitle = false;
-        wgRightsPage = "";
-        wgRightsUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
-        wgRightsText = "Creative Commons Attribution-NonCommercial-ShareAlike";
-        wgRightsIcon = "${wiki.settings.wgResourceBasePath}/resources/assets/licenses/cc-by-nc-sa.png";
+        # wgRightsPage = "";
+        # wgRightsUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
+        # wgRightsText = "Creative Commons Attribution-NonCommercial-ShareAlike";
+        # wgRightsIcon = "${wiki.settings.wgResourceBasePath}/resources/assets/licenses/cc-by-nc-sa.png";
         # wgLogos = let
         #   up = wiki.uploadsDirName;
         # in {
@@ -63,8 +63,8 @@ in {
         #   "1.5x" = "/${up}/pond_x1_5.png";
         #   "2x" = "/${up}/pond_x2.png";
         # };
-        wgEnableEmail = false;
-        wgPingback = true;
+        # wgEnableEmail = false;
+        # wgPingback = true;
       };
       extraSettingsPre = ''
         $wgGroupPermissions['*']['createaccount'] = false;
