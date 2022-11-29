@@ -28,7 +28,9 @@ in {
           preferLocalBuild = true;
         } ''
           mkdir -p $out/bin
-          for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php install.php sql.php eval.php shell.php; do
+          for i in changePassword.php createAndPromote.php userOptions.php \
+            edit.php nukePage.php update.php install.php sql.php eval.php \
+            shell.php importDump.php dumpBackup.php; do
             makeWrapper ${php}/bin/php $out/bin/mediawiki-$(basename $i .php) \
               --set MEDIAWIKI_CONFIG ${wiki.settingsFile} \
               --add-flags ${wiki.scriptsDir}/$i
