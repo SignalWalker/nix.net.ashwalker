@@ -295,13 +295,12 @@ in {
 			host = lib.mkDefault "127.0.0.1";
 		};
         extraSettingsPre = ''
-          if ( !defined( 'MEDIAWIKI' ) ) {
-          	exit;
-          }
-        '';
-        extraSettingsPost = ''
-          $wgSecretKey = file_get_contents('${wiki.secretKey}');
-		  ${std.optionalString (wiki.database.passwordFile != null) "$wgDBpassword = file_get_contents('${wiki.database.passwordFile}');"}
+        if ( !defined( 'MEDIAWIKI' ) ) {
+        	exit;
+        }
+
+		$wgSecretKey = file_get_contents("${wiki.secretKey}");
+		${std.optionalString (wiki.database.passwordFile != null) "$wgDBpassword = file_get_contents(\"${wiki.database.passwordFile}\");"}
         '';
 		skins = let
 			skinsDir = "${wiki.package}/share/mediawiki/skins";
@@ -383,6 +382,7 @@ in {
 			database.port = lib.mkDefault 3306;
 			database.socket = "/run/mysqld/mysqld.sock";
 			settings.wgDBserver = "${wiki.database.host}${if wiki.database.socket != null then ":${wiki.database.socket}" else ""}";
+			settings.wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=BINARY";
 		};
 		systemd.services.mediawiki-init.after = [ "mysql.service" ];
 	})
