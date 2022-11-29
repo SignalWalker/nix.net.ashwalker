@@ -25,7 +25,7 @@ in {
           preferLocalBuild = true;
         } ''
           mkdir -p $out/bin
-          for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php install.php sql.php eval.php; do
+          for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php install.php sql.php shell.php; do
             makeWrapper ${pkgs.php}/bin/php $out/bin/mediawiki-$(basename $i .php) \
               --set MEDIAWIKI_CONFIG ${wiki.settingsFile} \
               --add-flags ${wiki.scriptsDir}/$i
@@ -154,6 +154,16 @@ in {
                 default = wiki.database.user;
                 readOnly = true;
               };
+              wgDBadminpassword = mkOption {
+                type = types.nullOr types.str;
+                default = wiki.database.adminPasswordFile;
+                readOnly = true;
+              };
+              wgDBadminuser = mkOption {
+                type = types.nullOr types.str;
+                default = wiki.database.adminUser;
+                readOnly = true;
+              };
               wgEnableUploads = mkOption {
                 type = types.bool;
                 default = wiki.enableUploads;
@@ -231,6 +241,7 @@ in {
                       if val
                       then "true"
                       else "false";
+                    "null" = val: "null";
                     __default = val: toString val;
                   };
                   typeMap = {
