@@ -136,6 +136,8 @@ in {
               };
 			  wgDBport = mkOption {
 			  	type = types.port;
+				readOnly = true;
+				default = wiki.database.port;
 			  };
               wgDBname = mkOption {
                 type = types.str;
