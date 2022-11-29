@@ -7,6 +7,7 @@
 with builtins; let
   std = pkgs.lib;
   wiki = config.services.mediawiki;
+  pool = config.services.phpfpm.pools.${wiki.phpfpm.pool};
 in {
   options.services.mediawiki = with lib; {
     enableSignal = mkEnableOption "improved configuration";
@@ -19,14 +20,16 @@ in {
     scripts = mkOption {
       type = types.package;
       readOnly = true;
-      default =
+      default = let
+        php = pool.phpPackage;
+      in
         pkgs.runCommand "mediawiki-scripts" {
           nativeBuildInputs = [pkgs.makeWrapper];
           preferLocalBuild = true;
         } ''
           mkdir -p $out/bin
-          for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php install.php sql.php shell.php; do
-            makeWrapper ${pkgs.php}/bin/php $out/bin/mediawiki-$(basename $i .php) \
+          for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php install.php sql.php eval.php shell.php; do
+            makeWrapper ${php}/bin/php $out/bin/mediawiki-$(basename $i .php) \
               --set MEDIAWIKI_CONFIG ${wiki.settingsFile} \
               --add-flags ${wiki.scriptsDir}/$i
           done
@@ -285,6 +288,11 @@ in {
       readOnly = true;
     };
     phpfpm = {
+      pool = mkOption {
+        type = types.str;
+        default = "mediawiki";
+        readOnly = true;
+      };
       listenOwner = mkOption {
         type = types.str;
         default = config.services.mediawiki.user;
@@ -318,10 +326,7 @@ in {
   imports = [];
   config = lib.mkIf wiki.enableSignal (lib.mkMerge [
     {
-      environment.systemPackages = [
-        wiki.scripts
-        config.services.phpfpm.phpPackage.packages.psysh
-      ];
+      environment.systemPackages = [wiki.scripts];
       services.mediawiki = {
         enable = lib.mkForce false;
         database = {
@@ -348,10 +353,16 @@ in {
       users.users.${wiki.user} = {
         inherit (wiki) group;
         isSystemUser = true;
+        packages = [
+          pool.phpPackage.packages.psysh
+        ];
       };
       users.groups.${wiki.group} = {};
-      services.phpfpm.pools.mediawiki = {
+      services.phpfpm.pools.${wiki.phpfpm.pool} = {
         inherit (wiki) user group;
+        # phpPackage = pkgs.php.buildEnv {
+        #   extensions = ({enabled, all}: enabled ++ [ all.psysh ]);
+        # };
         phpEnv.MEDIAWIKI_CONFIG = toString wiki.settingsFile;
         settings = {
           "pm" = "dynamic";
@@ -376,14 +387,14 @@ in {
         wantedBy = ["multi-user.target"];
         before = ["phpfpm-mediawiki.service"];
         script = let
-          php = "${pkgs.php}/bin/php";
+          php = "${pool.phpPackage}/bin/php";
           scripts = wiki.scriptsDir;
           settings = wiki.settingsFile;
         in ''
-               if ! test -e "${wiki.secretKey}"; then
-          echo "Secret key not found. Generating a new one..."
-                 tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
-               fi
+          if ! test -e "${wiki.secretKey}"; then
+            echo "Secret key not found. Generating a new one..."
+            tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
+          fi
         '';
         serviceConfig = {
           Type = "oneshot";
@@ -444,7 +455,6 @@ in {
       services.mediawiki.phpfpm.listenOwner = config.services.nginx.group;
       services.mediawiki.phpfpm.listenGroup = config.services.nginx.group;
       services.nginx = let
-        pool = config.services.phpfpm.pools.mediawiki;
         wg = wiki.settings;
         sPath = wg.wgScriptPath;
       in {
