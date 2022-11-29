@@ -379,7 +379,7 @@ in {
 		};
 		services.mediawiki = {
 			database.port = lib.mkDefault 3306;
-			database.socket = "/run/mysqld/mysqld.sock";
+			database.socket = null;
 			settings.wgDBserver = "${wiki.database.host}:${if wiki.database.socket != null then wiki.database.socket else toString wiki.database.port}";
 			settings.wgDBprefix = lib.mkIf (wiki.database.tablePrefix != null) wiki.database.tablePrefix;
 			settings.wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=BINARY";
