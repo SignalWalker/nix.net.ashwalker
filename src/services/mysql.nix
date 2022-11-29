@@ -21,7 +21,7 @@ in {
 			settings = {
 				mariadb = {
 					general_log = true;
-					general_log_file = "/var/log/mysql/mariadb.log";
+					# general_log_file = "/var/log/mysql/mariadb.log";
 				};
 			};
 		};
