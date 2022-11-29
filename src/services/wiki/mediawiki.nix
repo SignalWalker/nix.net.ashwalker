@@ -319,11 +319,27 @@ in {
     };
     reverseProxy = {
       type = mkOption {
-        type = types.enum [null "nginx" "httpd"];
+        type = types.enum ["nginx" "httpd"];
         default = null;
       };
       hostName = mkOption {
         type = types.str;
+      };
+      user = mkOption {
+        type = types.str;
+        default =
+          if wiki.reverseProxy.type == "nginx"
+          then config.services.nginx.user
+          else throw "unimplemented";
+        readOnly = true;
+      };
+      group = mkOption {
+        type = types.str;
+        default =
+          if wiki.reverseProxy.type == "nginx"
+          then config.services.nginx.group
+          else throw "unimplemented";
+        readOnly = true;
       };
     };
     database = {
@@ -364,7 +380,7 @@ in {
           Vector = "${skinsDir}/Vector";
           MinervaNeue = "${skinsDir}/MinervaNeue";
         };
-        uploadsDir = lib.mkDefault "${wiki.stateDir}/${wiki.uploadsDirName}";
+        uploadsDir = lib.mkDefault "/var/lib/${wiki.stateDirName}_${wiki.uploadsDirName}";
       };
       users.users.${wiki.user} = {
         inherit (wiki) group;
@@ -389,11 +405,16 @@ in {
           "listen.group" = wiki.phpfpm.listenGroup;
         };
       };
-      systemd.tmpfiles.rules = [
-        "d '${wiki.stateDir}' 0750 ${wiki.user} ${wiki.group} - -"
-        "d '${wiki.cacheDir}' 0750 ${wiki.user} ${wiki.group} - -"
-        "d '${wiki.logsDir}'  0750 ${wiki.user} ${wiki.group} - -"
-      ];
+      systemd.tmpfiles.rules =
+        [
+          "d '${wiki.stateDir}' 0750 ${wiki.user} ${wiki.group} - -"
+          "d '${wiki.cacheDir}' 0750 ${wiki.user} ${wiki.group} - -"
+          "d '${wiki.logsDir}'  0750 ${wiki.user} ${wiki.group} - -"
+        ]
+        ++ (optionals wiki.enableUploads [
+          "d '${wiki.uploadsDir}' 0750 ${wiki.user} ${wiki.reverseProxy.group} - -"
+          "Z '${wiki.uploadsDir}' 0750 ${wiki.user} ${wiki.reverseProxy.group} - -"
+        ]);
       systemd.services.mediawiki-init = let
         db = wiki.database;
       in {
@@ -483,6 +504,7 @@ in {
           };
           locations."${sPath}/${wiki.uploadsDirName}" = {
             # separate location for uploads so php execution won't apply
+            root = wiki.uploadsDir;
           };
           locations."${sPath}/${wiki.uploadsDirName}/deleted".extraConfig = "deny all;";
           locations."~ ^${sPath}/resources/(assets|lib|src)" = {
@@ -500,7 +522,7 @@ in {
             '';
           };
           locations."= /favicon.ico" = {
-            alias = "${sPath}/${wiki.uploadsDirName}/6/64/Favicon.ico";
+            alias = "${sPath}/${wiki.uploadsDirName}/6/64/favicon.ico";
             extraConfig = ''
               add_header Cache-Control "public";
               expires 7d;
