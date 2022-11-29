@@ -411,7 +411,7 @@ in {
           "d '${wiki.cacheDir}' 0750 ${wiki.user} ${wiki.group} - -"
           "d '${wiki.logsDir}'  0750 ${wiki.user} ${wiki.group} - -"
         ]
-        ++ (optionals wiki.enableUploads [
+        ++ (std.optionals wiki.enableUploads [
           "d '${wiki.uploadsDir}' 0750 ${wiki.user} ${wiki.reverseProxy.group} - -"
           "Z '${wiki.uploadsDir}' 0750 ${wiki.user} ${wiki.reverseProxy.group} - -"
         ]);
