@@ -79,6 +79,11 @@ in {
       readOnly = true;
       default = "${wiki.stateDir}/secret.key";
     };
+    secretsFile = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "The runtime path to a file which, if specified, will be evaluated by LocalSettings.php.";
+    };
     extraSettingsPre = mkOption {
       type = types.lines;
       default = "";
@@ -337,8 +342,9 @@ in {
             exit;
           }
 
+          ${std.optionalString (wiki.secretsFile != null) "require '${wiki.secretsFile}';"}
+
           $wgSecretKey = file_get_contents("${wiki.secretKey}");
-          ${std.optionalString (wiki.database.passwordFile != null) "$wgDBpassword = file_get_contents(\"${wiki.database.passwordFile}\");"}
         '';
         skins = let
           skinsDir = "${wiki.package}/share/mediawiki/skins";
@@ -353,9 +359,6 @@ in {
       users.users.${wiki.user} = {
         inherit (wiki) group;
         isSystemUser = true;
-        packages = [
-          pool.phpPackage.packages.psysh
-        ];
       };
       users.groups.${wiki.group} = {};
       services.phpfpm.pools.${wiki.phpfpm.pool} = {

@@ -25,8 +25,8 @@ in {
       owner = wiki.user;
       group = wiki.group;
     };
-    age.secrets.wikiDbPassword = {
-      file = ./wiki/wikiDbPassword.age;
+    age.secrets.wikiSecrets = {
+      file = ./wiki/wikiSecrets.age;
       owner = wiki.user;
       group = wiki.group;
     };
@@ -34,9 +34,9 @@ in {
       enableSignal = true;
       name = "SignalWiki";
       passwordFile = config.age.secrets.wikiAdminPassword.path;
+      secretsFile = config.age.secrets.wikiSecrets;
       database = {
         type = "mysql";
-        passwordFile = config.age.secrets.wikiDbPassword.path;
       };
       reverseProxy = {
         type = "nginx";

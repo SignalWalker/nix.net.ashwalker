@@ -4,5 +4,5 @@ let
   keys = [srv-host ash];
 in {
   "wikiAdminPassword.age".publicKeys = keys;
-  "wikiDbPassword.age".publicKeys = keys;
+  "wikiSecrets.age".publicKeys = keys;
 }
