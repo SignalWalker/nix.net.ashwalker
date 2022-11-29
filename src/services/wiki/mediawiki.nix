@@ -136,7 +136,6 @@ in {
               };
 			  wgDBport = mkOption {
 			  	type = types.port;
-				default = wiki.database.port;
 				readOnly = true;
 			  };
               wgDBname = mkOption {
@@ -381,7 +380,8 @@ in {
 		services.mediawiki = {
 			database.port = lib.mkDefault 3306;
 			database.socket = "/run/mysqld/mysqld.sock";
-			settings.wgDBserver = "${wiki.database.host}${if wiki.database.socket != null then ":${wiki.database.socket}" else ""}";
+			settings.wgDBserver = "${wiki.database.host}:${if wiki.database.socket != null then wiki.database.socket else toString wiki.database.port}";
+			settings.wgDBprefix = lib.mkIf (wiki.database.tablePrefix != null) wiki.database.tablePrefix;
 			settings.wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=BINARY";
 		};
 		systemd.services.mediawiki-init.after = [ "mysql.service" ];
@@ -402,6 +402,7 @@ in {
       services.mediawiki = {
         database.port = config.services.postgresql.port;
 		settings.wgDBserver = "/run/postgresql";
+		settings.wgDBport = wiki.database.port;
       };
 	  systemd.services.mediawiki-init.after = ["postgresql.service"];
     })
