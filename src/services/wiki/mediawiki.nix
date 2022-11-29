@@ -122,6 +122,10 @@ in {
                 default = "";
                 description = "Base path relative to the FQDN of the MediaWiki installation. Other paths are defined relative to this.";
               };
+              wgResourceBasePath = mkOption {
+                type = types.str;
+                default = config.wgScriptPath;
+              };
               wgScript = mkOption {
                 type = types.str;
                 default = "${config.wgScriptPath}/index.php";

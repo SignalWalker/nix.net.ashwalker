@@ -35,6 +35,7 @@ in {
       name = "SignalWiki";
       passwordFile = config.age.secrets.wikiAdminPassword.path;
       secretsFile = config.age.secrets.wikiSecrets.path;
+      enableUploads = true;
       database = {
         type = "mysql";
       };
@@ -47,6 +48,40 @@ in {
         wgServer = "//${wiki.reverseProxy.hostName}";
         wgCanonicalServer = "https:${wiki.settings.wgServer}";
         wgCapitalLinks = false;
+        wgDefaultSkin = "timeless";
+        wgAllowDisplayTitle = true;
+        wgRestrictDisplayTitle = false;
+        wgRightsPage = "";
+        wgRightsUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
+        wgRightsText = "Creative Commons Attribution-NonCommercial-ShareAlike";
+        wgRightsIcon = "${wiki.settings.wgResourceBasePath}/resources/assets/licenses/cc-by-nc-sa.png";
+        wgLogos = let
+          up = wiki.uploadsDirName;
+        in {
+          "icon" = "/${up}/pond_icon.png";
+          "1x" = "/${up}/pond_x1.png";
+          "1.5x" = "/${up}/pond_x1_5.png";
+          "2x" = "/${up}/pond_x2.png";
+        };
+        wgEnableEmail = false;
+        wgPingback = true;
+      };
+      extraSettingsPre = ''
+        $wgGroupPermissions['*']['createaccount'] = false;
+        $wgGroupPermissions['*']['edit'] = false;
+        $wgGroupPermissions['*']['read'] = false;
+
+        define("NS_PUBLIC", 3000);
+        define("NS_PUBLIC_TALK", 3001);
+        $wgExtraNamespaces[NS_PUBLIC] = "Public";
+        $wgExtraNamespaces[NS_PUBLIC_TALK] = "Public_Talk";
+        $wgWhitelistRead = ["Main Page", "Category:Public", "User:Ash"];
+        $wgWhitelistReadRegexp = [ "/Public:/", "/Prompt [0-9]+/" ];
+
+        $wgPFEnableStringFunctions = TRUE;
+      '';
+      extensions = {
+        ParserFunctions = null;
       };
     };
     services.nginx.virtualHosts.${wiki.reverseProxy.hostName} = {
