@@ -34,7 +34,7 @@ in {
       enableSignal = true;
       name = "SignalWiki";
       passwordFile = config.age.secrets.wikiAdminPassword.path;
-      secretsFile = config.age.secrets.wikiSecrets;
+      secretsFile = config.age.secrets.wikiSecrets.path;
       database = {
         type = "mysql";
       };
