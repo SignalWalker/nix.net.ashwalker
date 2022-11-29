@@ -320,7 +320,7 @@ in {
     {
       environment.systemPackages = [
         wiki.scripts
-        services.phpfpm.package.packages.psysh
+        config.services.phpfpm.package.packages.psysh
       ];
       services.mediawiki = {
         enable = lib.mkForce false;
