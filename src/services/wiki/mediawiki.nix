@@ -318,7 +318,10 @@ in {
   imports = [];
   config = lib.mkIf wiki.enableSignal (lib.mkMerge [
     {
-      environment.systemPackages = [wiki.scripts];
+      environment.systemPackages = [
+        wiki.scripts
+        services.phpfpm.package.packages.psysh
+      ];
       services.mediawiki = {
         enable = lib.mkForce false;
         database = {
