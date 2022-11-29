@@ -73,10 +73,10 @@ in {
         $wgWhitelistReadRegexp = [ "/Public:/", "/Prompt [0-9]+/" ];
 
         $wgLogos = [
-          'icon' = "/${upDir}/pond_icon.png",
-          '1x' = "/${upDir}/pond_x1.png",
-          '1.5x' = "/${upDir}/pond_x1_5.png",
-          '2x' = "/${upDir}/pond_x2.png"
+          'icon' => "/${upDir}/pond_icon.png",
+          '1x' => "/${upDir}/pond_x1.png",
+          '1.5x' => "/${upDir}/pond_x1_5.png",
+          '2x' => "/${upDir}/pond_x2.png"
         ];
 
         $wgPFEnableStringFunctions = TRUE;
