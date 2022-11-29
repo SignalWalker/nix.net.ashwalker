@@ -44,21 +44,21 @@ in {
       };
       settings = {
         wgArticlePath = "/wiki/$1";
-		wgServer = "//${wiki.reverseProxy.hostName}";
-		wgCanonicalServer = "https:${wiki.settings.wgServer}";
-		wgCapitalLinks = false;
+        wgServer = "//${wiki.reverseProxy.hostName}";
+        wgCanonicalServer = "https:${wiki.settings.wgServer}";
+        wgCapitalLinks = false;
       };
     };
     services.nginx.virtualHosts.${wiki.reverseProxy.hostName} = {
       enableACME = true;
       forceSSL = true;
-	  locations."= /favicon.ico" = lib.mkForce {
-	  	proxyPass = "https://ashwalker.net/favicon.ico";
-	  	extraConfig = ''
-		add_header Cache-Control "public";
-		expires 7d;
-		'';
-	  };
+      locations."= /favicon.ico" = lib.mkForce {
+        proxyPass = "https://ashwalker.net/favicon.ico";
+        extraConfig = ''
+          add_header Cache-Control "public";
+          expires 7d;
+        '';
+      };
     };
   };
   meta = {};

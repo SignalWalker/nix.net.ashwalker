@@ -10,7 +10,7 @@ with builtins; let
 in {
   options.services.mediawiki = with lib; {
     enableSignal = mkEnableOption "improved configuration";
-	enableUploads = mkEnableOption "media uploads";
+    enableUploads = mkEnableOption "media uploads";
     scriptsDir = mkOption {
       type = types.str;
       readOnly = true;
@@ -40,10 +40,10 @@ in {
       type = types.str;
       default = "mediawiki";
     };
-	uploadsDirName = mkOption {
-	  type = types.str;
-	  default = "uploads";
-	};
+    uploadsDirName = mkOption {
+      type = types.str;
+      default = "uploads";
+    };
     stateDirName = mkOption {
       type = types.str;
       default = "mediawiki";
@@ -52,10 +52,10 @@ in {
       type = types.str;
       default = "mediawiki";
     };
-	logsDirName = mkOption {
-	  type = types.str;
-	  default = "mediawiki";
-	};
+    logsDirName = mkOption {
+      type = types.str;
+      default = "mediawiki";
+    };
     stateDir = mkOption {
       type = types.str;
       readOnly = true;
@@ -66,11 +66,11 @@ in {
       readOnly = true;
       default = "/var/cache/${wiki.cacheDirName}";
     };
-	logsDir = mkOption {
-	  type = types.str;
-	  readOnly = true;
-	  default = "/var/log/${wiki.logsDirName}";
-	};
+    logsDir = mkOption {
+      type = types.str;
+      readOnly = true;
+      default = "/var/log/${wiki.logsDirName}";
+    };
     secretKey = mkOption {
       type = types.str;
       readOnly = true;
@@ -134,11 +134,11 @@ in {
                 type = types.str;
                 readOnly = true;
               };
-			  wgDBport = mkOption {
-			  	type = types.port;
-				readOnly = true;
-				default = wiki.database.port;
-			  };
+              wgDBport = mkOption {
+                type = types.port;
+                readOnly = true;
+                default = wiki.database.port;
+              };
               wgDBname = mkOption {
                 type = types.str;
                 default = wiki.database.name;
@@ -159,11 +159,11 @@ in {
                 default = wiki.uploadsDir;
                 readOnly = true;
               };
-			  wgUploadPath = mkOption {
-			  	type = types.str;
-				default = "${config.wgScriptPath}/${wiki.uploadsDirName}";
-				readOnly = true;
-			  };
+              wgUploadPath = mkOption {
+                type = types.str;
+                default = "${config.wgScriptPath}/${wiki.uploadsDirName}";
+                readOnly = true;
+              };
               wgUseImageMagick = mkOption {
                 type = types.bool;
                 default = true;
@@ -192,10 +192,10 @@ in {
                 type = types.str;
                 default = "${pkgs.diffutils}/bin/diff3";
               };
-			  wgDebugLogFile = mkOption {
-			  	type = types.str;
-				default = "${wiki.logsDir}/debug-${config.wgDBname}.log";
-			  };
+              wgDebugLogFile = mkOption {
+                type = types.str;
+                default = "${wiki.logsDir}/debug-${config.wgDBname}.log";
+              };
               __toString = mkOption {
                 type = types.anything;
                 default = self: let
@@ -222,7 +222,10 @@ in {
                   subMap = {
                     "string" = val: "\"${val}\"";
                     "path" = val: "\"${val}\"";
-					"bool" = val: if val then "true" else "false";
+                    "bool" = val:
+                      if val
+                      then "true"
+                      else "false";
                     __default = val: toString val;
                   };
                   typeMap = {
@@ -248,14 +251,15 @@ in {
     };
     settingsFile = mkOption {
       type = types.path;
-      default = pkgs.writeText "LocalSettings.php" (concatStringsSep "\n" ([
-        "<?php"
-        wiki.extraSettingsPre
-        (toString wiki.settings)
-        wiki.extraSettingsPost
-	  ]
-	  ++ (std.mapAttrsToList (k: v: "wfLoadSkin('${k}', '${v}/skin.json');") wiki.skins)
-      ++ (std.mapAttrsToList (k: v: "wfLoadExtensions('${k}'${
+      default = pkgs.writeText "LocalSettings.php" (concatStringsSep "\n" (
+        [
+          "<?php"
+          wiki.extraSettingsPre
+          (toString wiki.settings)
+          wiki.extraSettingsPost
+        ]
+        ++ (std.mapAttrsToList (k: v: "wfLoadSkin('${k}', '${v}/skin.json');") wiki.skins)
+        ++ (std.mapAttrsToList (k: v: "wfLoadExtensions('${k}'${
             if v == null
             then ""
             else ", '${v}'"
@@ -291,26 +295,26 @@ in {
       environment.systemPackages = [wiki.scripts];
       services.mediawiki = {
         enable = lib.mkForce false;
-		database = {
-			host = lib.mkDefault "127.0.0.1";
-		};
+        database = {
+          host = lib.mkDefault "127.0.0.1";
+        };
         extraSettingsPre = ''
-        if ( !defined( 'MEDIAWIKI' ) ) {
-        	exit;
-        }
+                if ( !defined( 'MEDIAWIKI' ) ) {
+                	exit;
+                }
 
-		$wgSecretKey = file_get_contents("${wiki.secretKey}");
-		${std.optionalString (wiki.database.passwordFile != null) "$wgDBpassword = file_get_contents(\"${wiki.database.passwordFile}\");"}
+          $wgSecretKey = file_get_contents("${wiki.secretKey}");
+          ${std.optionalString (wiki.database.passwordFile != null) "$wgDBpassword = file_get_contents(\"${wiki.database.passwordFile}\");"}
         '';
-		skins = let
-			skinsDir = "${wiki.package}/share/mediawiki/skins";
-		in {
-		  MonoBook = "${skinsDir}/MonoBook";
-		  Timeless = "${skinsDir}/Timeless";
-		  Vector = "${skinsDir}/Vector";
-		  MinervaNeue = "${skinsDir}/MinervaNeue";
-		};
-		uploadsDir = lib.mkDefault "${wiki.stateDir}/${wiki.uploadsDirName}";
+        skins = let
+          skinsDir = "${wiki.package}/share/mediawiki/skins";
+        in {
+          MonoBook = "${skinsDir}/MonoBook";
+          Timeless = "${skinsDir}/Timeless";
+          Vector = "${skinsDir}/Vector";
+          MinervaNeue = "${skinsDir}/MinervaNeue";
+        };
+        uploadsDir = lib.mkDefault "${wiki.stateDir}/${wiki.uploadsDirName}";
       };
       users.users.${wiki.user} = {
         inherit (wiki) group;
@@ -320,37 +324,37 @@ in {
       services.phpfpm.pools.mediawiki = {
         inherit (wiki) user group;
         phpEnv.MEDIAWIKI_CONFIG = toString wiki.settingsFile;
-		settings = {
-			"pm" = "dynamic";
-        	"pm.max_children" = 32;
-        	"pm.start_servers" = 2;
-        	"pm.min_spare_servers" = 2;
-        	"pm.max_spare_servers" = 4;
-        	"pm.max_requests" = 500;
-			"catch_workers_output" = "yes";
-			"listen.owner" = wiki.phpfpm.listenOwner;
-			"listen.group" = wiki.phpfpm.listenGroup;
-		};
+        settings = {
+          "pm" = "dynamic";
+          "pm.max_children" = 32;
+          "pm.start_servers" = 2;
+          "pm.min_spare_servers" = 2;
+          "pm.max_spare_servers" = 4;
+          "pm.max_requests" = 500;
+          "catch_workers_output" = "yes";
+          "listen.owner" = wiki.phpfpm.listenOwner;
+          "listen.group" = wiki.phpfpm.listenGroup;
+        };
       };
-	  systemd.tmpfiles.rules = [
-	  	"d '${wiki.stateDir}' 0750 ${wiki.user} ${wiki.group} - -"
-	  	"d '${wiki.cacheDir}' 0750 ${wiki.user} ${wiki.group} - -"
-	  	"d '${wiki.logsDir}'  0750 ${wiki.user} ${wiki.group} - -"
-	  ];
+      systemd.tmpfiles.rules = [
+        "d '${wiki.stateDir}' 0750 ${wiki.user} ${wiki.group} - -"
+        "d '${wiki.cacheDir}' 0750 ${wiki.user} ${wiki.group} - -"
+        "d '${wiki.logsDir}'  0750 ${wiki.user} ${wiki.group} - -"
+      ];
       systemd.services.mediawiki-init = let
         db = wiki.database;
       in {
         wantedBy = ["multi-user.target"];
         before = ["phpfpm-mediawiki.service"];
         script = let
-			php = "${pkgs.php}/bin/php";
-			scripts = wiki.scriptsDir;
-			settings = wiki.settingsFile;
-		in ''
-          if ! test -e "${wiki.secretKey}"; then
-		  	echo "Secret key not found. Generating a new one..."
-            tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
-          fi
+          php = "${pkgs.php}/bin/php";
+          scripts = wiki.scriptsDir;
+          settings = wiki.settingsFile;
+        in ''
+               if ! test -e "${wiki.secretKey}"; then
+          echo "Secret key not found. Generating a new one..."
+                 tr -dc A-Za-z0-9 </dev/urandom 2>/dev/null | head -c 64 > ${wiki.secretKey}
+               fi
         '';
         serviceConfig = {
           Type = "oneshot";
@@ -359,34 +363,38 @@ in {
           PrivateTmp = true;
           ProtectHome = true;
           ProtectSystem = "full";
-		  CacheDirectory = [wiki.cacheDirName];
-		  CacheDirectoryMode = 0700;
-		  StateDirectory = [wiki.stateDirName];
-		  StateDirectoryMode = 0700;
-		  LogsDirectory = [wiki.logsDirName];
-		  LogsDirectoryMode = 0700;
+          CacheDirectory = [wiki.cacheDirName];
+          CacheDirectoryMode = 0700;
+          StateDirectory = [wiki.stateDirName];
+          StateDirectoryMode = 0700;
+          LogsDirectory = [wiki.logsDirName];
+          LogsDirectoryMode = 0700;
         };
       };
     }
-	(lib.mkIf (wiki.database.type == "mysql") {
-		services.mysql = {
-			ensureDatabases = [ wiki.database.name ];
-			ensureUsers = [
-				{
-					name = wiki.database.user;
-					ensurePermissions = { "${wiki.database.name}.*" = "ALL PRIVILEGES"; };
-				}
-			];
-		};
-		services.mediawiki = {
-			database.port = lib.mkDefault 3306;
-			database.socket = null;
-			settings.wgDBserver = "${wiki.database.host}:${if wiki.database.socket != null then wiki.database.socket else toString wiki.database.port}";
-			settings.wgDBprefix = lib.mkIf (wiki.database.tablePrefix != null) wiki.database.tablePrefix;
-			settings.wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=BINARY";
-		};
-		systemd.services.mediawiki-init.after = [ "mysql.service" ];
-	})
+    (lib.mkIf (wiki.database.type == "mysql") {
+      services.mysql = {
+        ensureDatabases = [wiki.database.name];
+        ensureUsers = [
+          {
+            name = wiki.database.user;
+            ensurePermissions = {"${wiki.database.name}.*" = "ALL PRIVILEGES";};
+          }
+        ];
+      };
+      services.mediawiki = {
+        database.port = lib.mkDefault 3306;
+        database.socket = null;
+        settings.wgDBserver = "${wiki.database.host}:${
+          if wiki.database.socket != null
+          then wiki.database.socket
+          else toString wiki.database.port
+        }";
+        settings.wgDBprefix = lib.mkIf (wiki.database.tablePrefix != null) wiki.database.tablePrefix;
+        settings.wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=BINARY";
+      };
+      systemd.services.mediawiki-init.after = ["mysql.service"];
+    })
     (lib.mkIf (wiki.database.type == "postgres") {
       services.postgresql = {
         ensureDatabases = [wiki.database.name];
@@ -396,77 +404,77 @@ in {
             ensurePermissions = {"DATABASE ${wiki.database.name}" = "ALL PRIVILEGES";};
           }
         ];
-		# authentication = let db = wiki.database; in ''
-		# host	${db.name}	${db.user}	samehost	password
-		# '';
+        # authentication = let db = wiki.database; in ''
+        # host	${db.name}	${db.user}	samehost	password
+        # '';
       };
       services.mediawiki = {
         database.port = config.services.postgresql.port;
-		settings.wgDBserver = "/run/postgresql";
-		settings.wgDBport = wiki.database.port;
+        settings.wgDBserver = "/run/postgresql";
+        settings.wgDBport = wiki.database.port;
       };
-	  systemd.services.mediawiki-init.after = ["postgresql.service"];
+      systemd.services.mediawiki-init.after = ["postgresql.service"];
     })
     (lib.mkIf (wiki.reverseProxy.type == "nginx") {
-	  services.mediawiki.phpfpm.listenOwner = config.services.nginx.group;
-	  services.mediawiki.phpfpm.listenGroup = config.services.nginx.group;
+      services.mediawiki.phpfpm.listenOwner = config.services.nginx.group;
+      services.mediawiki.phpfpm.listenGroup = config.services.nginx.group;
       services.nginx = let
         pool = config.services.phpfpm.pools.mediawiki;
-		wg = wiki.settings;
-		sPath = wg.wgScriptPath;
+        wg = wiki.settings;
+        sPath = wg.wgScriptPath;
       in {
         virtualHosts.${wiki.reverseProxy.hostName} = {
           root = "${wiki.package}/share/mediawiki";
-		  locations."~ ^${sPath}/(index|load|api|thumb|opensearch_desc|rest|img_auth)\.php$" = {
-		  	fastcgiParams = {
-				SCRIPT_FILENAME = "$document_root$fastcgi_script_name";
-			};
-			extraConfig = ''
-				fastcgi_pass unix:${pool.socket};
-			'';
-		  };
-		  locations."${sPath}/${wiki.uploadsDirName}" = {
-		  	# separate location for uploads so php execution won't apply
-		  };
-		  locations."${sPath}/${wiki.uploadsDirName}/deleted".extraConfig = "deny all;";
-		  locations."~ ^${sPath}/resources/(assets|lib|src)" = {
-		  	tryFiles = "$uri 404";
-			extraConfig = ''
-			add_header Cache-Control "public";
-			expires 7d;
-			'';
-		  };
-		  locations."~ ^${sPath}/(skins|extensions)/.+\.(css|js|gif|jpg|jpeg|png|svg|wasm)$" = {
-		  	tryFiles = "$uri 404";
-			extraConfig = ''
-			add_header Cache-Control "public";
-			expires 7d;
-			'';
-		  };
-		  locations."= /favicon.ico" = {
-			alias = "${sPath}/${wiki.uploadsDirName}/6/64/Favicon.ico";
-			extraConfig = ''
-			add_header Cache-Control "public";
-			expires 7d;
-			'';
-		  };
-		  locations."~ ^${sPath}/(COPYING|CREDITS)$".extraConfig = "default_type text/plain;";
-		  # for the installer/updater
-		  locations."${sPath}/mw-config/" = {
-		  	extraConfig = ''
-			location ~ \.php$ {
-				fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-				fastcgi_pass unix:${pool.socket};
-			}
-			'';
-		  };
-		  locations."${sPath}/rest.php/" = {
-		  	tryFiles = "$uri $uri/ ${sPath}/rest.php?$query_string";
-		  };
-		  locations."/wiki/".extraConfig = "rewrite ^/wiki/(?<pagename>.*)$ ${sPath}/index.php;";
-		  locations."/robots.txt" = {};
-		  locations."= /".return = "301 /wiki/Main_Page";
-		  locations."/".return = "404";
+          locations."~ ^${sPath}/(index|load|api|thumb|opensearch_desc|rest|img_auth)\.php$" = {
+            fastcgiParams = {
+              SCRIPT_FILENAME = "$document_root$fastcgi_script_name";
+            };
+            extraConfig = ''
+              fastcgi_pass unix:${pool.socket};
+            '';
+          };
+          locations."${sPath}/${wiki.uploadsDirName}" = {
+            # separate location for uploads so php execution won't apply
+          };
+          locations."${sPath}/${wiki.uploadsDirName}/deleted".extraConfig = "deny all;";
+          locations."~ ^${sPath}/resources/(assets|lib|src)" = {
+            tryFiles = "$uri 404";
+            extraConfig = ''
+              add_header Cache-Control "public";
+              expires 7d;
+            '';
+          };
+          locations."~ ^${sPath}/(skins|extensions)/.+\.(css|js|gif|jpg|jpeg|png|svg|wasm)$" = {
+            tryFiles = "$uri 404";
+            extraConfig = ''
+              add_header Cache-Control "public";
+              expires 7d;
+            '';
+          };
+          locations."= /favicon.ico" = {
+            alias = "${sPath}/${wiki.uploadsDirName}/6/64/Favicon.ico";
+            extraConfig = ''
+              add_header Cache-Control "public";
+              expires 7d;
+            '';
+          };
+          locations."~ ^${sPath}/(COPYING|CREDITS)$".extraConfig = "default_type text/plain;";
+          # for the installer/updater
+          locations."${sPath}/mw-config/" = {
+            extraConfig = ''
+              location ~ \.php$ {
+              	fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+              	fastcgi_pass unix:${pool.socket};
+              }
+            '';
+          };
+          locations."${sPath}/rest.php/" = {
+            tryFiles = "$uri $uri/ ${sPath}/rest.php?$query_string";
+          };
+          locations."/wiki/".extraConfig = "rewrite ^/wiki/(?<pagename>.*)$ ${sPath}/index.php;";
+          locations."/robots.txt" = {};
+          locations."= /".return = "301 /wiki/Main_Page";
+          locations."/".return = "404";
         };
       };
     })
