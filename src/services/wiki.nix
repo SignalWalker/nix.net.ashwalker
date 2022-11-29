@@ -55,20 +55,13 @@ in {
         # wgRightsUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
         # wgRightsText = "Creative Commons Attribution-NonCommercial-ShareAlike";
         # wgRightsIcon = "${wiki.settings.wgResourceBasePath}/resources/assets/licenses/cc-by-nc-sa.png";
-        wgLogos = let
-          up = wiki.uploadsDirName;
-        in {
-          "icon" = "/${up}/pond_icon.png";
-          "1x" = "/${up}/pond_x1.png";
-          "1.5x" = "/${up}/pond_x1_5.png";
-          "2x" = "/${up}/pond_x2.png";
-        };
         # wgEnableEmail = false;
         # wgPingback = true;
       };
       extraSettingsPre = let
         nsPublic = toString 3000;
         nsPublicTalk = toString 3001;
+        upDir = wiki.uploadsDirName;
       in ''
         $wgGroupPermissions['*']['createaccount'] = false;
         $wgGroupPermissions['*']['edit'] = false;
@@ -78,6 +71,13 @@ in {
         $wgExtraNamespaces[${nsPublicTalk}] = "Public_Talk";
         $wgWhitelistRead = ["Main Page", "Category:Public", "User:Ash"];
         $wgWhitelistReadRegexp = [ "/Public:/", "/Prompt [0-9]+/" ];
+
+        $wgLogos = [
+          'icon' = "/${upDir}/pond_icon.png",
+          '1x' = "/${upDir}/pond_x1.png",
+          '1.5x' = "/${upDir}/pond_x1_5.png",
+          '2x' = "/${upDir}/pond_x2.png"
+        ];
 
         $wgPFEnableStringFunctions = TRUE;
       '';
