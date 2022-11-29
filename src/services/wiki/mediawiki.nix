@@ -25,7 +25,7 @@ in {
           preferLocalBuild = true;
         } ''
           mkdir -p $out/bin
-          for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php install.php; do
+          for i in changePassword.php createAndPromote.php userOptions.php edit.php nukePage.php update.php install.php sql.php; do
             makeWrapper ${pkgs.php}/bin/php $out/bin/mediawiki-$(basename $i .php) \
           	--set MEDIAWIKI_CONFIG ${wiki.settingsFile} \
           	--add-flags ${wiki.scriptsDir}/$i
@@ -381,7 +381,7 @@ in {
 		};
 		services.mediawiki = {
 			database.port = lib.mkDefault 3306;
-			# database.socket = "/run/mysqld/mysqld.sock";
+			database.socket = "/run/mysqld/mysqld.sock";
 			settings.wgDBserver = "${wiki.database.host}${if wiki.database.socket != null then ":${wiki.database.socket}" else ""}";
 		};
 		systemd.services.mediawiki-init.after = [ "mysql.service" ];
