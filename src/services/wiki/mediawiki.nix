@@ -225,6 +225,10 @@ in {
                 type = types.str;
                 default = "${wiki.logsDir}/debug-${config.wgDBname}.log";
               };
+              wgLogos = mkOption {
+                type = types.attrsOf types.str;
+                default = {};
+              };
               __toString = mkOption {
                 type = types.anything;
                 default = self: let
