@@ -35,7 +35,7 @@ in {
       name = "SignalWiki";
       passwordFile = config.age.secrets.wikiAdminPassword.path;
       secretsFile = config.age.secrets.wikiSecrets.path;
-      enableUploads = true;
+      # enableUploads = true;
       database = {
         type = "mysql";
       };
@@ -55,14 +55,14 @@ in {
         wgRightsUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
         wgRightsText = "Creative Commons Attribution-NonCommercial-ShareAlike";
         wgRightsIcon = "${wiki.settings.wgResourceBasePath}/resources/assets/licenses/cc-by-nc-sa.png";
-        wgLogos = let
-          up = wiki.uploadsDirName;
-        in {
-          "icon" = "/${up}/pond_icon.png";
-          "1x" = "/${up}/pond_x1.png";
-          "1.5x" = "/${up}/pond_x1_5.png";
-          "2x" = "/${up}/pond_x2.png";
-        };
+        # wgLogos = let
+        #   up = wiki.uploadsDirName;
+        # in {
+        #   "icon" = "/${up}/pond_icon.png";
+        #   "1x" = "/${up}/pond_x1.png";
+        #   "1.5x" = "/${up}/pond_x1_5.png";
+        #   "2x" = "/${up}/pond_x2.png";
+        # };
         wgEnableEmail = false;
         wgPingback = true;
       };
