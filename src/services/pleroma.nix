@@ -23,9 +23,15 @@ in {
         type = types.nullOr types.path;
         default = null;
       };
-      favicon = mkOption {
-        type = types.path;
-        default = config.data.web.icons.ico;
+      favicon = {
+        ico = mkOption {
+          type = types.path;
+          default = config.data.web.icons.ico;
+        };
+        png = mkOption {
+          type = types.path;
+          default = config.data.web.icons.x64lb;
+        };
       };
       logo = mkOption {
         type = types.path;
@@ -120,7 +126,8 @@ in {
 
     systemd.tmpfiles.rules =
       [
-        "L+ '${pleroma.staticDir}/favicon.ico' - - - - ${pleroma.favicon}"
+        "L+ '${pleroma.staticDir}/favicon.ico' - - - - ${pleroma.favicon.ico}"
+        "L+ '${pleroma.staticDir}/favicon.png' - - - - ${pleroma.favicon.png}"
         "L+ '${pleroma.staticDir}/static/logo.png' - - - - ${pleroma.logo}"
       ]
       ++ (std.optionals (pleroma.emojiDir != null) [
