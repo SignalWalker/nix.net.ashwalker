@@ -7,13 +7,7 @@
 with builtins; let
   std = pkgs.lib;
 in {
-  options.ashwalker = with lib; {
-    favicon = mkOption {
-      type = types.path;
-      default = config.services."ashwalker-net".favicon;
-      readOnly = true;
-    };
-  };
+  options = with lib; {};
   disabledModules = [];
   imports = lib.signal.fs.path.listFilePaths ./src;
   config = {};
