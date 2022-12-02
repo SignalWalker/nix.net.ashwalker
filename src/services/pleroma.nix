@@ -20,8 +20,8 @@ in {
         default = "${pleroma.stateDir}/static";
       };
       emojiDir = mkOption {
-        type = types.path;
-        default = ./pleroma/emoji;
+        type = types.nullOr types.path;
+        default = null;
       };
       favicon = mkOption {
         type = types.path;
@@ -118,11 +118,14 @@ in {
       ];
     };
 
-    systemd.tmpfiles.rules = [
-      "L+ '${pleroma.staticDir}/favicon.ico' - - - - '${pleroma.favicon}'"
-      "L+ '${pleroma.staticDir}/static/logo.png' - - - - '${pleroma.logo}'"
-      "L+ '${pleroma.staticDir}/emoji' - - - - '${pleroma.emojiDir}'"
-    ];
+    systemd.tmpfiles.rules =
+      [
+        "L+ '${pleroma.staticDir}/favicon.ico' - - - - '${pleroma.favicon}'"
+        "L+ '${pleroma.staticDir}/static/logo.png' - - - - '${pleroma.logo}'"
+      ]
+      ++ (std.optionals (pleroma.emojiDir != null) [
+        "L+ '${pleroma.staticDir}/emoji' - - - - '${pleroma.emojiDir}'"
+      ]);
 
     services.nginx = {
       upstreams."phoenix" = {
