@@ -86,7 +86,7 @@ in {
     services.nginx.virtualHosts.${wiki.reverseProxy.hostName} = {
       enableACME = true;
       forceSSL = true;
-      locations."/static" = {
+      locations."/static/" = {
         alias = config.data.web.directory;
       };
       locations."= /favicon.ico" = {

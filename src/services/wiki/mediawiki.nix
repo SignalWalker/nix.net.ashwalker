@@ -185,7 +185,7 @@ in {
               };
               wgUploadDirectory = mkOption {
                 type = types.str;
-                default = "${wiki.uploadsDir}/${wiki.uploadsDirName}";
+                default = wiki.uploadsDir;
                 readOnly = true;
               };
               wgUploadPath = mkOption {
@@ -502,7 +502,7 @@ in {
               fastcgi_pass unix:${pool.socket};
             '';
           };
-          locations."${sPath}/${wiki.uploadsDirName}" = {
+          locations."${sPath}/${wiki.uploadsDirName}/" = {
             # separate location for uploads so php execution won't apply
             alias = wiki.uploadsDir;
           };
