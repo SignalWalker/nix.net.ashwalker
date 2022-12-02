@@ -120,11 +120,11 @@ in {
 
     systemd.tmpfiles.rules =
       [
-        "L+ '${pleroma.staticDir}/favicon.ico' - - - - '${pleroma.favicon}'"
-        "L+ '${pleroma.staticDir}/static/logo.png' - - - - '${pleroma.logo}'"
+        "L+ '${pleroma.staticDir}/favicon.ico' - - - - ${pleroma.favicon}"
+        "L+ '${pleroma.staticDir}/static/logo.png' - - - - ${pleroma.logo}"
       ]
       ++ (std.optionals (pleroma.emojiDir != null) [
-        "L+ '${pleroma.staticDir}/emoji' - - - - '${pleroma.emojiDir}'"
+        "L+ '${pleroma.staticDir}/emoji' - - - - ${pleroma.emojiDir}"
       ]);
 
     services.nginx = {
