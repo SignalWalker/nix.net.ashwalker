@@ -7,9 +7,31 @@
 with builtins; let
   std = pkgs.lib;
   vhost = "social.${config.networking.fqdn}";
+  pleroma = config.services.pleroma;
 in {
-  options.signal.services.pleroma = with lib; {
-    enable = (mkEnableOption "pleroma") // {default = true;};
+  options = with lib; {
+    signal.services.pleroma = {
+      enable = (mkEnableOption "pleroma") // {default = true;};
+    };
+    services.pleroma = {
+      staticDir = mkOption {
+        type = types.str;
+        readOnly = true;
+        default = "${pleroma.stateDir}/static";
+      };
+      emojiDir = mkOption {
+        type = types.path;
+        default = ./pleroma/emoji;
+      };
+      favicon = mkOption {
+        type = types.path;
+        default = config.data.web.icons.ico;
+      };
+      logo = mkOption {
+        type = types.path;
+        default = config.data.web.icons.x128lb;
+      };
+    };
   };
   disabledModules = [];
   imports = [];
@@ -42,45 +64,46 @@ in {
           "import Config"
 
           ''
-                 config :pleroma, Pleroma.Web.Endpoint,
-            url: [host: "${vhost}", scheme: "https", port: 443],
-            http: [ip: {127, 0, 0, 1}, port: 4000]
+            config :pleroma, Pleroma.Web.Endpoint,
+              url: [host: "${vhost}", scheme: "https", port: 443],
+              http: [ip: {127, 0, 0, 1}, port: 4000]
           ''
 
           ''
-                       config :pleroma, :instance,
-                  name: "Signal Garden",
-                  email: "admin@${vhost}",
-                  notify_email: "daemon@${vhost}",
-            description: "Ash Walker's personal Pleroma instance",
-                  registrations_open: false,
-                  invites_enabled: true,
-                  federating: true,
-                  federation_incoming_replies_max_depth: nil,
-                  allow_relay: true,
-                  public: true,
-                  safe_dm_mentions: true,
-                  external_user_synchronization: true,
-                  cleanup_attachments: true
+            config :pleroma, :instance,
+              name: "Signal Garden",
+              email: "admin@${vhost}",
+              notify_email: "daemon@${vhost}",
+              description: "Ash Walker's personal Pleroma instance",
+              registrations_open: false,
+              invites_enabled: true,
+              federating: true,
+              federation_incoming_replies_max_depth: nil,
+              allow_relay: true,
+              public: true,
+              safe_dm_mentions: true,
+              external_user_synchronization: true,
+              cleanup_attachments: true,
+              static_dir: "${pleroma.staticDir}"
           ''
 
           ''
             config :pleroma, :media_proxy,
-            	enabled: false,
-            	redirect_on_failure: true
+              enabled: false,
+              redirect_on_failure: true
           ''
 
           ''
             config :pleroma, Pleroma.Repo,
-            	adapter: Ecto.Adapters.Postgres,
-            	username: "${config.services.pleroma.user}",
-            	database: "pleroma",
-            	hostname: "localhost"
+              adapter: Ecto.Adapters.Postgres,
+              username: "${config.services.pleroma.user}",
+              database: "pleroma",
+              hostname: "localhost"
           ''
 
           ''
             config :web_push_encryption, :vapid_details,
-            	subject: "mailto:admin@${vhost}"
+              subject: "mailto:admin@${vhost}"
           ''
 
           "config :pleroma, :database, rum_enabled: false"
@@ -94,6 +117,13 @@ in {
         ])
       ];
     };
+
+    systemd.tmpfiles.rules = [
+      "L+ '${pleroma.staticDir}/favicon.ico' - - - - '${pleroma.favicon}'"
+      "L+ '${pleroma.staticDir}/static/logo.png' - - - - '${pleroma.logo}'"
+      "L+ '${pleroma.staticDir}/emoji' - - - - '${pleroma.emojiDir}'"
+    ];
+
     services.nginx = {
       upstreams."phoenix" = {
         extraConfig = ''
@@ -105,14 +135,14 @@ in {
         enableACME = true;
         forceSSL = true;
         extraConfig = ''
-                client_max_body_size 16m;
-                ignore_invalid_headers off;
+          client_max_body_size 16m;
+          ignore_invalid_headers off;
 
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
-                proxy_set_header Host $host;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
           access_log /var/log/nginx/pleroma-access.log combined;
         '';
@@ -120,7 +150,7 @@ in {
           recommendedProxySettings = false;
           proxyPass = "http://phoenix";
           extraConfig = ''
-             	etag on;
+            etag on;
             gzip on;
 
             add_header 'Access-Control-Allow-Origin' '*' always;

@@ -504,7 +504,7 @@ in {
           };
           locations."${sPath}/${wiki.uploadsDirName}" = {
             # separate location for uploads so php execution won't apply
-            root = wiki.uploadsDir;
+            alias = wiki.uploadsDir;
           };
           locations."${sPath}/${wiki.uploadsDirName}/deleted".extraConfig = "deny all;";
           locations."~ ^${sPath}/resources/(assets|lib|src)" = {
@@ -521,13 +521,6 @@ in {
               expires 7d;
             '';
           };
-          # locations."= /favicon.ico" = {
-          #   alias = "${sPath}/${wiki.uploadsDirName}/6/64/favicon.ico";
-          #   extraConfig = ''
-          #     add_header Cache-Control "public";
-          #     expires 7d;
-          #   '';
-          # };
           locations."~ ^${sPath}/(COPYING|CREDITS)$".extraConfig = "default_type text/plain;";
           # for the installer/updater
           locations."${sPath}/mw-config/" = {

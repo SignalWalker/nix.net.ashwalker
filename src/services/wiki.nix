@@ -61,7 +61,7 @@ in {
       extraSettingsPre = let
         nsPublic = toString 3000;
         nsPublicTalk = toString 3001;
-        upDir = wiki.uploadsDirName;
+        icons = "/static/icons";
       in ''
         $wgGroupPermissions['*']['createaccount'] = false;
         $wgGroupPermissions['*']['edit'] = false;
@@ -73,10 +73,8 @@ in {
         $wgWhitelistReadRegexp = [ "/Public:/", "/Prompt [0-9]+/" ];
 
         $wgLogos = [
-          'icon' => "/${upDir}/pond_icon.png",
-          '1x' => "/${upDir}/pond_x1.png",
-          '1.5x' => "/${upDir}/pond_x1_5.png",
-          '2x' => "/${upDir}/pond_x2.png"
+          'icon' => "${icons}/pond.128.lb.png",
+          '1x' => "${icons}/pond.128.lb.png"
         ];
 
         $wgPFEnableStringFunctions = TRUE;
@@ -88,8 +86,11 @@ in {
     services.nginx.virtualHosts.${wiki.reverseProxy.hostName} = {
       enableACME = true;
       forceSSL = true;
-      locations."= /favicon.ico" = lib.mkForce {
-        proxyPass = "https://ashwalker.net/favicon.ico";
+      locations."/static" = {
+        alias = config.data.web.directory;
+      };
+      locations."= /favicon.ico" = {
+        alias = config.data.web.icons.ico;
         extraConfig = ''
           add_header Cache-Control "public";
           expires 7d;
