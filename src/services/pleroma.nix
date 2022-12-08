@@ -64,7 +64,7 @@ in {
     };
     services.pleroma = {
       enable = true;
-      package = pkgs.pleroma.override { inherit (pleroma) src; }; # option defined in flake.nix
+      package = pkgs.pleroma.override {inherit (pleroma) src;}; # option defined in flake.nix
       secretConfigFile = config.age.secrets.pleroma.path;
       configs = [
         (concatStringsSep "\n" [

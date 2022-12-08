@@ -102,7 +102,7 @@
           };
         };
       };
-      packages = std.genAttrs [ "x86_64-linux" "aarch64-linux" ] (system: let
+      packages = std.genAttrs ["x86_64-linux" "aarch64-linux"] (system: let
         gen = inputs.nixos-generators;
         args = sys.configuration.genArgsFromFlake {
           flake' = self';
