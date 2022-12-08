@@ -31,6 +31,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # testing
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # secrets
     agenix = {
       url = "github:ryantm/agenix";
@@ -48,6 +54,12 @@
       url = "github:mmai/funkwhale-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # activitypub
+    pleroma = {
+      url = "git+https://git.pleroma.social/pleroma/pleroma/";
+      flake = false;
+    };
   };
   outputs = inputs @ {
     self,
@@ -58,6 +70,11 @@
       std = nixpkgs.lib;
       hlib = inputs.homelib.lib;
       signal = hlib.signal;
+      sys = hlib.sys;
+      self' = signal.flake.resolve {
+        flake = self;
+        name = "sys.ashwalker-net";
+      };
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
       signalModules.default = {
@@ -73,11 +90,30 @@
         };
         outputs = dependencies: {
           nixosModules = {lib, ...}: {
-            options = with lib; {};
+            options = with lib; {
+              services.pleroma.src = mkOption {
+                type = types.path;
+                default = dependencies.pleroma;
+                readOnly = true;
+              };
+            };
             imports = [./nixos-module.nix];
             config = {};
           };
         };
       };
+      packages = std.genAttrs [ "x86_64-linux" "aarch64-linux" ] (system: let
+        gen = inputs.nixos-generators;
+        args = sys.configuration.genArgsFromFlake {
+          flake' = self';
+          signalModuleName = "default";
+          crossSystem = system;
+        };
+      in {
+        raw = gen.nixosGenerate {
+          inherit (args) system lib modules pkgs;
+          format = "raw-efi";
+        };
+      });
     };
 }

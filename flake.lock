@@ -191,11 +191,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1669825171,
-        "narHash": "sha256-HxlZHSiRGXnWAFbIJMeujqBe2KgACYx5XDRY0EA9P+4=",
+        "lastModified": 1670058827,
+        "narHash": "sha256-T+yyncPpZWeIkFrG/Cgj21iopULY3BZGWIhcT5ZmCgM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "478610aa37c8339eacabfa03f07dacf5574edd47",
+        "rev": "eb3598cf44aa10f2a16fe38488a102c0f474d766",
         "type": "github"
       },
       "original": {
@@ -268,11 +268,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1669909095,
-        "narHash": "sha256-wW3oRA1//1lLTOpok3c8NuvcAsMuqoe/XrVaiE0AbLA=",
+        "lastModified": 1670115158,
+        "narHash": "sha256-EvrDkgmN2MtHrxmRa9UxZiHcDVzx5dxzZMj/VS/tJUs=",
         "owner": "signalwalker",
         "repo": "nix.home.lib",
-        "rev": "ece671bfe44715f3f46f2df6f771cf488c94435c",
+        "rev": "d4970978ddfbd3020d7e1010c92c67d69079b747",
         "type": "github"
       },
       "original": {
@@ -296,9 +296,45 @@
         "type": "github"
       }
     },
+    "nixlib_2": {
+      "locked": {
+        "lastModified": 1636849918,
+        "narHash": "sha256-nzUK6dPcTmNVrgTAC1EOybSMsrcx+QrVPyqRdyKLkjA=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "28a5b0557f14124608db68d3ee1f77e9329e9dd5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
     "nixos-generators": {
       "inputs": {
         "nixlib": "nixlib",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1669065280,
+        "narHash": "sha256-3+pq1oJWjGDLfd8G/vR3IIFZ+EQ/aglukA0bTiMlf3o=",
+        "owner": "nix-community",
+        "repo": "nixos-generators",
+        "rev": "50aeec40f2072d2ab267c8ec8a345573704ec110",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixos-generators",
+        "type": "github"
+      }
+    },
+    "nixos-generators_2": {
+      "inputs": {
+        "nixlib": "nixlib_2",
         "nixpkgs": [
           "sysbase",
           "nixpkgs"
@@ -320,11 +356,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1669927173,
-        "narHash": "sha256-Z7rSKzC5OuWv5Q7RRNQPZb0jVJRJk0BJB6/fGZzaAIU=",
+        "lastModified": 1670058159,
+        "narHash": "sha256-ERiP2JWanLuGV1PDyHTbcigFCfIi9oco5LFdMJHjREE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9063accddd2e68dcc71032459a58399e977374c9",
+        "rev": "49b8ad618e64d9fe9ab686817bfebe047860dcae",
         "type": "github"
       },
       "original": {
@@ -332,6 +368,22 @@
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
+      }
+    },
+    "pleroma": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1669602678,
+        "narHash": "sha256-8l86wMNgd4YjPKpTBqj4Glk7ZV03uiRZRwO+mUMn2nA=",
+        "ref": "refs/heads/develop",
+        "rev": "20790c1dd30fcaf1db29de1e2b425da8d8a81131",
+        "revCount": 14638,
+        "type": "git",
+        "url": "https://git.pleroma.social/pleroma/pleroma/"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.pleroma.social/pleroma/pleroma/"
       }
     },
     "root": {
@@ -343,7 +395,9 @@
         "home-manager": "home-manager",
         "homebase": "homebase",
         "homelib": "homelib",
+        "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs",
+        "pleroma": "pleroma",
         "sysbase": "sysbase"
       }
     },
@@ -393,7 +447,7 @@
         "homelib": [
           "homelib"
         ],
-        "nixos-generators": "nixos-generators",
+        "nixos-generators": "nixos-generators_2",
         "nixpkgs": [
           "nixpkgs"
         ]
