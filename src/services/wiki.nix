@@ -84,8 +84,8 @@ in {
       };
     };
     services.nginx.virtualHosts.${wiki.reverseProxy.hostName} = {
-      enableACME = true;
-      forceSSL = true;
+      enableACME = config.networking.domain != "local";
+      forceSSL = config.networking.domain != "local";
       locations."/static/" = {
         alias = config.data.web.directory;
       };

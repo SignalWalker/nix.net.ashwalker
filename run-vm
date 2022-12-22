@@ -1,0 +1,15 @@
+#! /usr/bin/env zsh
+
+set -e
+
+nix run --recreate-lock-file \
+	--override-input homelib ~/projects/nix/home/lib \
+	--override-input homebase ~/projects/nix/home/base \
+	--override-input homedev ~/projects/nix/home/dev \
+	--override-input homedesk ~/projects/nix/home/desktop \
+	--override-input homemedia ~/projects/nix/home/media \
+	--override-input sysbase ~/projects/nix/sys/base \
+	--impure -L --show-trace \
+	./.#vm -- \
+	-device virtio-net,netdev=network0 \
+	-netdev tap,id=network0,ifname=tap0

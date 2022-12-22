@@ -32,8 +32,8 @@ in {
       passwordFile = config.age.secrets.rssUserPassword.path;
     };
     services.nginx.virtualHosts."${vhost}" = {
-      enableACME = true;
-      forceSSL = true;
+      enableACME = config.networking.domain != "local";
+      forceSSL = config.networking.domain != "local";
     };
   };
   meta = {};

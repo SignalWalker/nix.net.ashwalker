@@ -30,8 +30,8 @@ in {
       };
     };
     services.nginx.virtualHosts.${hostName} = {
-      enableACME = true;
-      forceSSL = true;
+      enableACME = config.networking.domain != "local";
+      forceSSL = config.networking.domain != "local";
     };
     services.postgresql = {
       ensureDatabases = [nc.config.dbname];

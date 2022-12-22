@@ -55,11 +55,11 @@ in {
       ];
     };
     age.secrets.pleroma = {
-      file = ./pleroma/pleroma.age;
+      file = ./activitypub/pleroma/pleroma.age;
       owner = config.services.pleroma.user;
     };
     age.secrets.pleromaDbPassword = {
-      file = ./pleroma/pleromaDbPassword.age;
+      file = ./activitypub/pleroma/pleromaDbPassword.age;
       owner = config.services.pleroma.user;
     };
     services.pleroma = {
@@ -143,8 +143,8 @@ in {
       };
       virtualHosts."${vhost}" = {
         http2 = true;
-        enableACME = true;
-        forceSSL = true;
+        enableACME = config.networking.domain != "local";
+        forceSSL = config.networking.domain != "local";
         extraConfig = ''
           client_max_body_size 16m;
           ignore_invalid_headers off;

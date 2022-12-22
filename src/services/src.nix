@@ -77,7 +77,7 @@ in {
     services.nginx.virtualHosts =
       foldl'
       (acc: srvc: std.recursiveUpdate acc {"meta.${domain}".useACMEHost = domain;})
-      {"${domain}".enableACME = true;}
+      {"${domain}".enableACME = config.networking.domain != "local";}
       srht.services;
   };
   meta = {};

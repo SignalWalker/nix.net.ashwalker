@@ -75,6 +75,13 @@
         flake = self;
         name = "sys.ashwalker-net";
       };
+      systems = ["x86_64-linux" "aarch64-linux"];
+      argsFor = std.genAttrs systems (system:
+        sys.configuration.genArgsFromFlake {
+          flake' = self';
+          signalModuleName = "default";
+          crossSystem = system;
+        });
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
       signalModules.default = {
@@ -102,18 +109,42 @@
           };
         };
       };
-      packages = std.genAttrs ["x86_64-linux" "aarch64-linux"] (system: let
+      packages = std.genAttrs systems (system: let
         gen = inputs.nixos-generators;
-        args = sys.configuration.genArgsFromFlake {
-          flake' = self';
-          signalModuleName = "default";
-          crossSystem = system;
-        };
+        args = argsFor.${system};
+        modules =
+          args.modules
+          ++ [
+            ({...}: {
+              networking.hostName = "ashwalker";
+              networking.domain = "local";
+            })
+          ];
       in {
         raw = gen.nixosGenerate {
-          inherit (args) system lib modules pkgs;
+          inherit (args) system lib pkgs;
+          inherit modules;
           format = "raw-efi";
         };
+        qcow = gen.nixosGenerate {
+          inherit (args) system lib pkgs;
+          inherit modules;
+          format = "qcow";
+        };
+        vm = gen.nixosGenerate {
+          inherit (args) system lib pkgs;
+          inherit modules;
+          format = "vm";
+        };
+      });
+      apps = std.genAttrs systems (system: let
+        hostName = "ashwalker";
+      in {
+        "${hostName}-vm" = {
+          type = "app";
+          program = "${self.packages.${system}.vm}/bin/run-${hostName}-vm";
+        };
+        default = self.apps.${system}.vm;
       });
     };
 }

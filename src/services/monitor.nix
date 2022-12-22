@@ -11,10 +11,9 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    services.tailscale = {
+    services.prometheus = {
       enable = true;
     };
-    networking.firewall.checkReversePath = "loose";
   };
   meta = {};
 }
