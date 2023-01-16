@@ -24,6 +24,7 @@ in {
   config = {
     data.web = {
       icons = {
+        svg = ./data/icons/pond.svg;
         ico = ./data/icons/pond.ico;
         x32 = ./data/icons/pond.32.png;
         x32lb = ./data/icons/pond.32.lb.png;

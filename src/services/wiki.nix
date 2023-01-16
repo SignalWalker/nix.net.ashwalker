@@ -61,7 +61,6 @@ in {
       extraSettingsPre = let
         nsPublic = toString 3000;
         nsPublicTalk = toString 3001;
-        icons = "/static/icons";
       in ''
         $wgGroupPermissions['*']['createaccount'] = false;
         $wgGroupPermissions['*']['edit'] = false;
@@ -73,8 +72,8 @@ in {
         $wgWhitelistReadRegexp = [ "/Public:/", "/Prompt [0-9]+/" ];
 
         $wgLogos = [
-          'icon' => "${icons}/pond.128.lb.png",
-          '1x' => "${icons}/pond.128.lb.png"
+          'icon' => "/favicon.svg",
+          '1x' => "/favicon.svg"
         ];
 
         $wgPFEnableStringFunctions = TRUE;
@@ -89,8 +88,8 @@ in {
       locations."/static/" = {
         alias = config.data.web.directory;
       };
-      locations."= /favicon.ico" = {
-        alias = config.data.web.icons.ico;
+      locations."= /favicon.svg" = {
+        alias = config.data.web.icons.svg;
         extraConfig = ''
           add_header Cache-Control "public";
           expires 7d;
