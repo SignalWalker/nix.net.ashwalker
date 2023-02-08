@@ -7,19 +7,21 @@
 with builtins; let
   std = pkgs.lib;
   hostName = "cloud.${config.networking.fqdn}";
-  cfg = config.signal.services.cloud;
+  cloud = config.signal.services.cloud;
   nc = config.services.nextcloud;
 in {
   options.signal.services.cloud = with lib; {
-    enable = mkEnableOption "cloud";
+    enable = (mkEnableOption "cloud") // {default = true;};
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cloud.enable {
     services.nextcloud = {
       enable = true;
       inherit hostName;
-      https = true;
+      https = config.networking.domain != "local";
+      package = pkgs.nextcloud25;
+      autoUpdateApps.enable = true;
       config = {
         dbtype = "pgsql";
         dbuser = "nextcloud";
@@ -27,6 +29,10 @@ in {
         dbname = "nextcloud";
         adminpassFile = config.age.secrets.cloudAdminPassword.path;
         adminuser = "admin";
+        overwriteProtocol =
+          if nc.https
+          then "https"
+          else null;
       };
     };
     services.nginx.virtualHosts.${hostName} = {
