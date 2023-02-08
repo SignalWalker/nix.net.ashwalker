@@ -60,6 +60,10 @@
       url = "git+https://git.pleroma.social/pleroma/pleroma/";
       flake = false;
     };
+    akkoma = {
+      url = "git+https://akkoma.dev/AkkomaGang/akkoma";
+      flake = false;
+    };
   };
   outputs = inputs @ {
     self,

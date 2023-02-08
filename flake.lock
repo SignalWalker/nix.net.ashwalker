@@ -20,6 +20,22 @@
         "type": "github"
       }
     },
+    "akkoma": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1673809378,
+        "narHash": "sha256-S4hlBsa1Vl99pzZhhu/21N0oow3Y5wBfTYQeX3a2D3c=",
+        "ref": "refs/heads/develop",
+        "rev": "153539a246db7377d6af6bc8b5a7a4b4b9a3cdcd",
+        "revCount": 15026,
+        "type": "git",
+        "url": "https://akkoma.dev/AkkomaGang/akkoma"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://akkoma.dev/AkkomaGang/akkoma"
+      }
+    },
     "alejandra": {
       "inputs": {
         "fenix": "fenix",
@@ -389,6 +405,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "akkoma": "akkoma",
         "alejandra": "alejandra",
         "ashwalker-net": "ashwalker-net",
         "funkwhale": "funkwhale",
@@ -453,11 +470,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1673886787,
-        "narHash": "sha256-7yQ15nTHSWtRWs/uyvnbK9UktUTtERujTOE8P1zBq8c=",
+        "lastModified": 1673887342,
+        "narHash": "sha256-t5ZeVHaoBpniayKHrKk99jVvRl5hGKAFgeSuwrG+bqs=",
         "owner": "signalwalker",
         "repo": "nix.sys.base",
-        "rev": "bf6ec6bdd02d098adbcc3ec22160d9a00c691490",
+        "rev": "6e8ed794e8ffd42b03a374eefeceb934f878d530",
         "type": "github"
       },
       "original": {
