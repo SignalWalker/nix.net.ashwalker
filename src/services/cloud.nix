@@ -16,6 +16,11 @@ in {
   disabledModules = [];
   imports = [];
   config = lib.mkIf cloud.enable {
+    age.secrets.cloudAdminPassword = {
+      file = ./cloud/cloudAdminPassword.age;
+      owner = "nextcloud";
+      group = "nextcloud";
+    };
     services.nextcloud = {
       enable = true;
       inherit hostName;
