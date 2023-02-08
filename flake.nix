@@ -102,6 +102,7 @@
             sysbase.nixosModules = ["default"];
             ashwalker-net.nixosModules = ["default"];
             agenix.nixosModules = ["age"];
+            simple-nixos-mailserver.nixosModules = ["mailserver"];
           };
         };
         outputs = dependencies: {
