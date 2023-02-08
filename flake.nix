@@ -64,6 +64,11 @@
       url = "git+https://akkoma.dev/AkkomaGang/akkoma";
       flake = false;
     };
+    # mail
+    simple-nixos-mailserver = {
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     self,
