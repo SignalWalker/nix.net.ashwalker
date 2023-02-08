@@ -48,7 +48,7 @@ in {
       ensureDatabases = [nc.config.dbname];
       ensureUsers = [
         {
-          name = nv.config.dbuser;
+          name = nc.config.dbuser;
           ensurePermissions."DATABASE ${nc.config.dbname}" = "ALL PRIVILEGES";
         }
       ];
