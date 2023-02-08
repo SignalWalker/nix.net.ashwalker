@@ -11,7 +11,7 @@ with builtins; let
   nc = config.services.nextcloud;
 in {
   options.signal.services.cloud = with lib; {
-    enable = (mkEnableOption "cloud") // {default = true;};
+    enable = (mkEnableOption "cloud") // {default = false;};
   };
   disabledModules = [];
   imports = [];
