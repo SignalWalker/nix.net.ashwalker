@@ -42,7 +42,7 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf config.signal.services.akkoma.enable {
+  config = lib.mkIf config.signal.services.activitypub.enable {
     environment.systemPackages = with pkgs; [exiftool];
     age.secrets.activitypubDbPassword = {
       file = ./activitypub/secrets/activitypubDbPassword.age;
