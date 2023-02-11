@@ -24,11 +24,11 @@
     "akkoma": {
       "flake": false,
       "locked": {
-        "lastModified": 1675544421,
-        "narHash": "sha256-Ar/33RkajzU24a5Fcm5nn32MTG5jB/GyAwl65gakIMU=",
+        "lastModified": 1676114373,
+        "narHash": "sha256-azddvApD/L1h0AAAzON5QeYOSC+tpJHfbZ74JinaxKI=",
         "ref": "refs/heads/develop",
-        "rev": "b71db2f82d91a6ae1406658374f15d948d8ad7e3",
-        "revCount": 15036,
+        "rev": "f92484fd01681a4506320f3eb008e33c6c35f31a",
+        "revCount": 15040,
         "type": "git",
         "url": "https://akkoma.dev/AkkomaGang/akkoma"
       },
@@ -278,11 +278,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1675888750,
-        "narHash": "sha256-w3T9UiRN6SaKMYI62+Ic3ka1Tyr9zaBcclhh3e4RCUk=",
+        "lastModified": 1675935446,
+        "narHash": "sha256-WajulTn7QdwC7QuXRBavrANuIXE5z+08EdxdRw1qsNs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "1232d0e13305f462a5a7c29584f50eb232cc4ba0",
+        "rev": "2dce7f1a55e785a22d61668516df62899278c9e4",
         "type": "github"
       },
       "original": {
@@ -444,11 +444,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1675698036,
-        "narHash": "sha256-BgsQkQewdlQi8gapJN4phpxkI/FCE/2sORBaFcYbp/A=",
+        "lastModified": 1675940568,
+        "narHash": "sha256-epG6pOT9V0kS+FUqd7R6/CWkgnZx2DMT5Veqo+y6G3c=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1046c7b92e908a1202c0f1ba3fc21d19e1cf1b62",
+        "rev": "6ccc4a59c3f1b56d039d93da52696633e641bc71",
         "type": "github"
       },
       "original": {
@@ -473,22 +473,6 @@
         "type": "indirect"
       }
     },
-    "pleroma": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1672937402,
-        "narHash": "sha256-Oi1xNPANKBV5SvZleohEirFg4c/eeBgiTw/3hN/smZk=",
-        "ref": "refs/heads/develop",
-        "rev": "2a244b391d8c1d9d8e960532758110928cb5ef7c",
-        "revCount": 14796,
-        "type": "git",
-        "url": "https://git.pleroma.social/pleroma/pleroma/"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://git.pleroma.social/pleroma/pleroma/"
-      }
-    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -501,7 +485,6 @@
         "homelib": "homelib",
         "nixos-generators": "nixos-generators",
         "nixpkgs": "nixpkgs",
-        "pleroma": "pleroma",
         "simple-nixos-mailserver": "simple-nixos-mailserver",
         "sysbase": "sysbase"
       }
