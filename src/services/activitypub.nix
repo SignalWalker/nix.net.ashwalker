@@ -15,11 +15,6 @@ in {
       enable = (mkEnableOption "activitypub") // {default = true;};
     };
     services.akkoma = {
-      uploadDir = mkOption {
-        type = types.str;
-        readOnly = true;
-        default = "${akkoma.stateDir}/uploads";
-      };
       favicon = {
         ico = mkOption {
           type = types.path;
@@ -97,7 +92,6 @@ in {
             safe_dm_mentions = true;
             external_user_synchronization = true;
             cleanup_attachments = true;
-            upload_dir = "${akkoma.stateDir}/uploads";
           };
           ":media_proxy" = {
             enabled = false;
