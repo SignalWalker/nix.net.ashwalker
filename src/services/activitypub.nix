@@ -102,6 +102,7 @@ in {
             username = akkoma.user;
             database = "akkoma";
             hostname = "localhost";
+            password = {_secret = secrets.activitypubDbPassword.path;};
           };
           "Pleroma.Web.Endpoint" = {
             secret_key_base = {_secret = secrets.akkomaEndpointKey.path;};
