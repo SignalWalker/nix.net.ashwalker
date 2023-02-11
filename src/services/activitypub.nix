@@ -71,6 +71,15 @@ in {
       file = ./activitypub/secrets/jokenKey.age;
       owner = akkoma.user;
     };
+    services.postgresql = {
+      ensureDatabases = ["akkoma"];
+      ensureUsers = [
+        {
+          name = akkoma.user;
+          ensurePermissions."DATABASE akkoma" = "ALL PRIVILEGES";
+        }
+      ];
+    };
     services.akkoma = {
       enable = true;
       package = pkgs.akkoma.override {inherit (akkoma) src;}; # option defined in flake.nix
