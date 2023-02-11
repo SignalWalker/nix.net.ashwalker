@@ -7,21 +7,18 @@
 with builtins; let
   std = pkgs.lib;
   vhost = "social.${config.networking.fqdn}";
-  pleroma = config.services.pleroma;
+  akkoma = config.services.akkoma;
+  secrets = config.age.secrets;
 in {
   options = with lib; {
-    signal.services.pleroma = {
-      enable = (mkEnableOption "pleroma") // {default = true;};
+    signal.services.activitypub = {
+      enable = (mkEnableOption "activitypub") // {default = true;};
     };
-    services.pleroma = {
-      staticDir = mkOption {
+    services.akkoma = {
+      uploadDir = mkOption {
         type = types.str;
         readOnly = true;
-        default = "${pleroma.stateDir}/static";
-      };
-      emojiDir = mkOption {
-        type = types.nullOr types.path;
-        default = null;
+        default = "${akkoma.stateDir}/uploads";
       };
       favicon = {
         ico = mkOption {
@@ -32,6 +29,10 @@ in {
           type = types.path;
           default = config.data.web.icons.x64lb;
         };
+        svg = mkOption {
+          type = types.path;
+          default = config.data.web.icons.svg;
+        };
       };
       logo = mkOption {
         type = types.path;
@@ -41,99 +42,105 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf config.signal.services.pleroma.enable {
+  config = lib.mkIf config.signal.services.akkoma.enable {
     environment.systemPackages = with pkgs; [exiftool];
-    services.postgresql = {
-      ensureDatabases = ["pleroma"];
-      ensureUsers = [
-        {
-          name = config.services.pleroma.user;
-          ensurePermissions = {
-            "DATABASE \"pleroma\"" = "ALL PRIVILEGES";
-          };
-        }
-      ];
+    age.secrets.activitypubDbPassword = {
+      file = ./activitypub/secrets/activitypubDbPassword.age;
+      owner = akkoma.user;
     };
-    age.secrets.pleroma = {
-      file = ./activitypub/pleroma/pleroma.age;
-      owner = config.services.pleroma.user;
+    age.secrets.akkomaEndpointKey = {
+      file = ./activitypub/secrets/endpointKey.age;
+      owner = akkoma.user;
     };
-    age.secrets.pleromaDbPassword = {
-      file = ./activitypub/pleroma/pleromaDbPassword.age;
-      owner = config.services.pleroma.user;
+    age.secrets.akkomaEndpointSalt = {
+      file = ./activitypub/secrets/endpointSalt.age;
+      owner = akkoma.user;
     };
-    services.pleroma = {
+    age.secrets.akkomaLiveViewSalt = {
+      file = ./activitypub/secrets/liveViewSalt.age;
+      owner = akkoma.user;
+    };
+    age.secrets.akkomaRepoKey = {
+      file = ./activitypub/secrets/repoKey.age;
+      owner = akkoma.user;
+    };
+    age.secrets.akkomaPushPublicKey = {
+      file = ./activitypub/secrets/pushPublicKey.age;
+      owner = akkoma.user;
+    };
+    age.secrets.akkomaPushPrivateKey = {
+      file = ./activitypub/secrets/pushPrivateKey.age;
+      owner = akkoma.user;
+    };
+    age.secrets.akkomaJokenKey = {
+      file = ./activitypub/secrets/jokenKey.age;
+      owner = akkoma.user;
+    };
+    services.akkoma = {
       enable = true;
-      package = pkgs.pleroma.override {inherit (pleroma) src;}; # option defined in flake.nix
-      secretConfigFile = config.age.secrets.pleroma.path;
-      configs = [
-        (concatStringsSep "\n" [
-          "import Config"
-
-          ''
-            config :pleroma, Pleroma.Web.Endpoint,
-              url: [host: "${vhost}", scheme: "https", port: 443],
-              http: [ip: {127, 0, 0, 1}, port: 4000]
-          ''
-
-          ''
-            config :pleroma, :instance,
-              name: "Signal Garden",
-              email: "admin@${vhost}",
-              notify_email: "daemon@${vhost}",
-              description: "Ash Walker's personal Pleroma instance",
-              registrations_open: false,
-              invites_enabled: true,
-              federating: true,
-              federation_incoming_replies_max_depth: nil,
-              allow_relay: true,
-              public: true,
-              safe_dm_mentions: true,
-              external_user_synchronization: true,
-              cleanup_attachments: true,
-              static_dir: "${pleroma.staticDir}"
-          ''
-
-          ''
-            config :pleroma, :media_proxy,
-              enabled: false,
-              redirect_on_failure: true
-          ''
-
-          ''
-            config :pleroma, Pleroma.Repo,
-              adapter: Ecto.Adapters.Postgres,
-              username: "${config.services.pleroma.user}",
-              database: "pleroma",
-              hostname: "localhost"
-          ''
-
-          ''
-            config :web_push_encryption, :vapid_details,
-              subject: "mailto:admin@${vhost}"
-          ''
-
-          "config :pleroma, :database, rum_enabled: false"
-
-          "config :pleroma, :instance, static_dir: \"${config.services.pleroma.stateDir}/static\""
-          "config :pleroma, Pleroma.Uploaders.Local, uploads: \"${config.services.pleroma.stateDir}/uploads\""
-
-          "config :pleroma, configurable_from_database: true"
-
-          # config :pleroma, Pleroma.Upload, filters: [Pleroma.Upload.Filter.Exiftool]
-        ])
-      ];
+      package = pkgs.akkoma.override {inherit (akkoma) src;}; # option defined in flake.nix
+      initDb = {
+        enable = false;
+      };
+      config = {
+        ":pleroma" = {
+          ":instance" = {
+            name = "Signal Garden";
+            email = "admin@${vhost}";
+            notify_email = "daemon@${vhost}";
+            description = "Ash Walker's personal Akkoma instance";
+            registrations_open = false;
+            invites_enabled = true;
+            federating = true;
+            federation_incoming_replies_max_depth = null;
+            allow_relay = true;
+            safe_dm_mentions = true;
+            external_user_synchronization = true;
+            cleanup_attachments = true;
+            upload_dir = "${akkoma.stateDir}/uploads";
+          };
+          ":media_proxy" = {
+            enabled = false;
+            redirect_on_failure = true;
+          };
+          "Pleroma.Repo" = {
+            adapter = "Ecto.Adapters.Postgres";
+            username = akkoma.user;
+            database = "akkoma";
+            hostname = "localhost";
+          };
+          "Pleroma.Web.Endpoint" = {
+            secret_key_base = {_secret = secrets.akkomaEndpointKey.path;};
+            signing_salt = {_secret = secrets.akkomaEndpointSalt.path;};
+            live_view.signing_salt = {_secret = secrets.akkomaLiveViewSalt.path;};
+            url = {
+              host = vhost;
+              scheme = "https";
+              port = 443;
+            };
+            http = {
+              ip = "{127, 0, 0, 1}";
+              port = 4000;
+            };
+          };
+        };
+        ":web_push_encryption" = {
+          ":vapid_details" = {
+            private_key = {_secret = secrets.akkomaPushPrivateKey.path;};
+            public_key = {_secret = secrets.akkomaPushPublicKey.path;};
+          };
+        };
+        ":joken" = {
+          ":default_signer" = {_secret = secrets.akkomaJokenKey.path;};
+        };
+      };
+      extraStatic = {
+        "favicon.ico" = akkoma.favicon.ico;
+        "favicon.png" = akkoma.favicon.png;
+        "favicon.svg" = akkoma.favicon.svg;
+      };
+      nginx = null; # doing this manually
     };
-
-    systemd.tmpfiles.rules =
-      [
-        "L+ '${pleroma.staticDir}/favicon.ico' - - - - ${pleroma.favicon.ico}"
-        "L+ '${pleroma.staticDir}/favicon.png' - - - - ${pleroma.favicon.png}"
-        "L+ '${pleroma.staticDir}/static/logo.png' - - - - ${pleroma.logo}"
-      ]
-      ++ (std.optionals (pleroma.emojiDir != null) [
-        "L+ '${pleroma.staticDir}/emoji' - - - - ${pleroma.emojiDir}"
-      ]);
 
     services.nginx = {
       upstreams."phoenix" = {
@@ -155,7 +162,7 @@ in {
           proxy_set_header Host $host;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-          access_log /var/log/nginx/pleroma-access.log combined;
+          access_log /var/log/nginx/akkoma-access.log combined;
         '';
         locations."/" = {
           recommendedProxySettings = false;
@@ -178,15 +185,6 @@ in {
             add_header Referrer-Policy same-origin;
             add_header X-Download-Options noopen;
           '';
-
-          # proxy_cache					pleroma_media_cache;
-          # proxy_cache_key				$host$uri$is_args$args$slice_range;
-          # proxy_set_header			Range $slice_range;
-          # proxy_cache_valid			200 206 301 304 1h;
-          # proxy_cache_lock			on;
-          # proxy_ignore_client_abort	on;
-          # proxy_buffering				on;
-          # chunked_transfer_encoding	on;
         };
       };
     };

@@ -56,10 +56,6 @@
     };
 
     # activitypub
-    pleroma = {
-      url = "git+https://git.pleroma.social/pleroma/pleroma/";
-      flake = false;
-    };
     akkoma = {
       url = "git+https://akkoma.dev/AkkomaGang/akkoma";
       flake = false;
@@ -108,9 +104,9 @@
         outputs = dependencies: {
           nixosModules = {lib, ...}: {
             options = with lib; {
-              services.pleroma.src = mkOption {
+              services.akkoma.src = mkOption {
                 type = types.path;
-                default = dependencies.pleroma;
+                default = dependencies.akkoma;
                 readOnly = true;
               };
             };
