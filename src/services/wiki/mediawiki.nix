@@ -296,7 +296,7 @@ in {
         ++ (std.mapAttrsToList (k: v: "wfLoadExtension('${k}'${
             if v == null
             then ""
-            else ", '${v}'"
+            else ", '${v}/extension.json'"
           });")
           wiki.extensions)
       ));
