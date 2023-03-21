@@ -65,6 +65,12 @@
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # wiki
+    mediawiki-css = {
+      url = "git+https://gerrit.wikimedia.org:29418/mediawiki/extensions/CSS";
+      flake = false;
+    };
   };
   outputs = inputs @ {
     self,
@@ -111,7 +117,11 @@
               };
             };
             imports = [./nixos-module.nix];
-            config = {};
+            config = {
+              services.mediawiki.extensions = {
+                CSS = dependencies.mediawiki-css;
+              };
+            };
           };
         };
       };
