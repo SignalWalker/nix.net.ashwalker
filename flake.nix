@@ -68,7 +68,7 @@
 
     # wiki
     mediawiki-css = {
-      url = "git+https://gerrit.wikimedia.org:29418/mediawiki/extensions/CSS";
+      url = "github:wikimedia/mediawiki-extensions-CSS";
       flake = false;
     };
   };
