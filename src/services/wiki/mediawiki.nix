@@ -229,6 +229,10 @@ in {
                 type = types.attrsOf types.str;
                 default = {};
               };
+              wgRawHtml = mkOption {
+                type = types.bool;
+                default = false;
+              };
               __toString = mkOption {
                 type = types.anything;
                 default = self: let
@@ -381,6 +385,7 @@ in {
           MinervaNeue = "${skinsDir}/MinervaNeue";
         };
         uploadsDir = lib.mkDefault "/var/lib/${wiki.stateDirName}_${wiki.uploadsDirName}";
+        settings.wgRawHtml = true;
       };
       users.users.${wiki.user} = {
         inherit (wiki) group;
