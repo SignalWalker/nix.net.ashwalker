@@ -9,6 +9,7 @@ with builtins; let
   vhost = "social.${config.networking.fqdn}";
   akkoma = config.services.akkoma;
   secrets = config.age.secrets;
+  psql = config.services.postgresql;
 in {
   options = with lib; {
     signal.services.activitypub = {
@@ -108,10 +109,12 @@ in {
           };
           "Pleroma.Repo" = {
             adapter = "Ecto.Adapters.Postgres";
-            username = akkoma.user;
+            # username = akkoma.user;
             database = "akkoma";
-            hostname = "localhost";
-            password = {_secret = secrets.activitypubDbPassword.path;};
+            # hostname = "localhost";
+            # password = {_secret = secrets.activitypubDbPassword.path;};
+            socket_dir = "/run/postgresql";
+            port = psql.port;
           };
           "Pleroma.Web.Endpoint" = {
             secret_key_base = {_secret = secrets.akkomaEndpointKey.path;};
