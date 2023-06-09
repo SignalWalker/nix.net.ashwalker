@@ -141,11 +141,11 @@ in {
           ":default_signer" = {_secret = secrets.akkomaJokenKey.path;};
         };
       };
-      # extraStatic = {
-      #   "favicon.ico" = akkoma.favicon.ico;
-      #   "favicon.png" = akkoma.favicon.png;
-      #   "favicon.svg" = akkoma.favicon.svg;
-      # };
+      extraStatic = {
+        "favicon.ico" = akkoma.favicon.ico;
+        "favicon.png" = akkoma.favicon.png;
+        "favicon.svg" = akkoma.favicon.svg;
+      };
       nginx = null; # doing this manually
     };
 
