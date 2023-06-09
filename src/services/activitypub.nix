@@ -141,10 +141,19 @@ in {
           ":default_signer" = {_secret = secrets.akkomaJokenKey.path;};
         };
       };
-      extraStatic = {
-        "favicon.ico" = akkoma.favicon.ico;
-        "favicon.png" = akkoma.favicon.png;
-        "favicon.svg" = akkoma.favicon.svg;
+      extraStatic = let
+        mkFile = src: name:
+          pkgs.stdenvNoCC.mkDerivation {
+            inherit name src;
+            dontUnpack = true;
+            installPhase = ''
+              cp $src $out
+            '';
+          };
+      in {
+        "favicon.ico" = mkFile akkoma.favicon.ico "favicon.ico";
+        "favicon.png" = mkFile akkoma.favicon.png "favicon.png";
+        "favicon.svg" = mkFile akkoma.favicon.svg "favicon.svg";
       };
       nginx = null; # doing this manually
     };
