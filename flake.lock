@@ -361,11 +361,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1686423980,
-        "narHash": "sha256-dvN8RbssCOmu++UoidoaHjS3VsQggYCjbokoexqjHNw=",
+        "lastModified": 1686424072,
+        "narHash": "sha256-LFODA1TCcefZkuZkINpt9cGTwrrEG+HKxP9JVQNxzyA=",
         "owner": "signalwalker",
         "repo": "nix.srv.funkwhale",
-        "rev": "fe25d6040cb0da70d1a6d9784ddcb4649ec85319",
+        "rev": "eea6da8027eddbee62dd8c6fd85c97e8b9b05898",
         "type": "github"
       },
       "original": {
