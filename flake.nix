@@ -71,6 +71,11 @@
       url = "github:wikimedia/mediawiki-extensions-CSS";
       flake = false;
     };
+    # matrix
+    conduit = {
+      url = "gitlab:famedly/conduit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     self,
@@ -108,7 +113,11 @@
           };
         };
         outputs = dependencies: {
-          nixosModules = {lib, ...}: {
+          nixosModules = {
+            lib,
+            pkgs,
+            ...
+          }: {
             options = with lib; {
               services.akkoma.src = mkOption {
                 type = types.path;
@@ -121,6 +130,7 @@
               services.mediawiki.extensions = {
                 CSS = dependencies.mediawiki-css;
               };
+              services.matrix-conduit.package = dependencies.conduit.packages.${pkgs.system}.default;
             };
           };
         };
