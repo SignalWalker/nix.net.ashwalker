@@ -9,7 +9,7 @@ with builtins; let
 in {
   options = with lib; {};
   disabledModules = [];
-  imports = [];
+  imports = lib.signal.fs.path.listFilePaths ./system;
   config = {};
   meta = {};
 }
