@@ -361,16 +361,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1660676854,
-        "narHash": "sha256-rEYCqRxIHBNtbFkGCllq7n3YSGuf7A+VzeUpsH0b3Ac=",
-        "owner": "mmai",
-        "repo": "funkwhale-flake",
-        "rev": "bda0049875ed662fa52c6beaa8f54d048ee448c7",
+        "lastModified": 1686423719,
+        "narHash": "sha256-N6nSO7+wyoyBSDSejckHSmJRSA341LP3iTRIduYcbLs=",
+        "owner": "signalwalker",
+        "repo": "nix.srv.funkwhale",
+        "rev": "92bb706badf36fbe39811ba7c750b32659b8de61",
         "type": "github"
       },
       "original": {
-        "owner": "mmai",
-        "repo": "funkwhale-flake",
+        "owner": "signalwalker",
+        "repo": "nix.srv.funkwhale",
         "type": "github"
       }
     },
