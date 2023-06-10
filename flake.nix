@@ -51,7 +51,7 @@
 
     # music
     funkwhale = {
-      url = "github:mmai/funkwhale-flake";
+      url = "github:signalwalker/nix.srv.funkwhale";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -110,10 +110,7 @@
             ashwalker-net.nixosModules = ["default"];
             agenix.nixosModules = ["age"];
             simple-nixos-mailserver.nixosModules = ["mailserver"];
-            funkwhale = {
-              nixosModules = ["default"];
-              nixosModule = [];
-            };
+            funkwhale.nixosModules = ["default"];
           };
         };
         outputs = dependencies: {
