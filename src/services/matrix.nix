@@ -45,6 +45,7 @@ in {
       enable = true;
       settings.global = {
         server_name = config.networking.fqdn;
+        allow_registration = true;
         # matrix_hostname = "matrix.${config.networking.fqdn}";
         # admin_email = "admin@matrix.${config.networking.fqdn}";
       };
