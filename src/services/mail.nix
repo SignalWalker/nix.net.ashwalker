@@ -19,6 +19,7 @@ in {
     mailserver = {
       enable = true;
       inherit fqdn;
+      sendingFqdn = config.networking.fqdn;
       certificateScheme = "acme-nginx";
       domains = [config.networking.fqdn];
       loginAccounts = {
@@ -31,6 +32,15 @@ in {
           ];
         };
       };
+    };
+    services.roundcube = {
+      enable = true;
+      hostName = "webmail.${config.networking.fqdn}";
+      extraConfig = ''
+        $config['smtp_server'] = "tls://${config.mailserver.fqdn}";
+        $config['smtp_user'] = "%u";
+        $config['smtp_pass'] = "%p";
+      '';
     };
   };
   meta = {};
