@@ -18,11 +18,12 @@ in {
           routeConfig = {
             Gateway = "172.31.1.1";
           };
+        }
+        {
           routeConfig = {
             Gateway = "fe80::1";
           };
         }
-        {routeConfig = {};}
       ];
     };
   };
