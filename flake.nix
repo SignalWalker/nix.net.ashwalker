@@ -76,6 +76,11 @@
       url = "gitlab:famedly/conduit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # funkwhale
+    funkwhale = {
+      url = "github:mmai/funkwhale-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     self,
