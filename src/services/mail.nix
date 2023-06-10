@@ -17,7 +17,7 @@ in {
     };
     # from `simple-nixos-mailserver`
     mailserver = {
-      enable = true;
+      enable = false;
       inherit fqdn;
       sendingFqdn = config.networking.fqdn;
       certificateScheme = "acme-nginx";
