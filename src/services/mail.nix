@@ -15,10 +15,11 @@ in {
     age.secrets.mailPasswordAsh = {
       file = ./mail/mailPasswordAsh.age;
     };
+    # from `simple-nixos-mailserver`
     mailserver = {
       enable = true;
       inherit fqdn;
-      certificateScheme = 3;
+      certificateScheme = "acme-nginx";
       domains = [config.networking.fqdn];
       loginAccounts = {
         "ash@${config.networking.fqdn}" = {
