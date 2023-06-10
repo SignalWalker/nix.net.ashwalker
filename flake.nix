@@ -110,7 +110,10 @@
             ashwalker-net.nixosModules = ["default"];
             agenix.nixosModules = ["age"];
             simple-nixos-mailserver.nixosModules = ["mailserver"];
-            funkwhale.nixosModules = ["default"];
+            funkwhale = {
+              nixosModules = ["default"];
+              nixosModule = [];
+            };
           };
         };
         outputs = dependencies: {
