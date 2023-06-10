@@ -23,7 +23,7 @@ in {
       api = {
         mediaRoot = "${funkwhale.dataDir}/media";
         staticRoot = "/etc/funkwhale/static";
-        musicPath = "${funkwhale.dataDir}/music";
+        # musicPath = "${funkwhale.dataDir}/music";
       };
     };
   };
