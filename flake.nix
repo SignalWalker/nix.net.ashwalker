@@ -130,7 +130,7 @@
               services.mediawiki.extensions = {
                 CSS = dependencies.mediawiki-css;
               };
-              services.matrix-conduit.package = dependencies.conduit.packages.${pkgs.system}.default;
+              # services.matrix-conduit.package = dependencies.conduit.packages.${pkgs.system}.default;
             };
           };
         };
