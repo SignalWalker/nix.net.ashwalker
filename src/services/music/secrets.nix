@@ -4,4 +4,5 @@ let
   keys = [srv-host ash];
 in {
   "musicAdminPassword.age".publicKeys = keys;
+  "djangoSecretKey.age".publicKeys = keys;
 }

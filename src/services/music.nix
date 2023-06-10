@@ -16,7 +16,7 @@ in {
   ];
   config = {
     services.funkwhale = {
-      enable = true;
+      enable = false;
       dataDir = "/var/lib/funkwhale";
       hostname = "music.${config.networking.fqdn}";
       defaultFromEmail = "daemon@${funkwhale.hostname}";
