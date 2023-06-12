@@ -15,6 +15,9 @@ in {
     age.secrets.mailPasswordAsh = {
       file = ./mail/mailPasswordAsh.age;
     };
+    age.secrets.mailPasswordDaemon = {
+      file = ./mail/mailPasswordDaemon.age;
+    };
     # from `simple-nixos-mailserver`
     mailserver = {
       enable = true;
@@ -31,16 +34,10 @@ in {
             "admin@${config.networking.fqdn}"
           ];
         };
+        "daemon@${config.networking.fqdn}" = {
+          hashedPasswordFile = config.age.secrets.mailPasswordDaemon.path;
+        };
       };
-    };
-    services.roundcube = {
-      enable = false;
-      hostName = "webmail.${config.networking.fqdn}";
-      extraConfig = ''
-        $config['smtp_host'] = "tls://${config.mailserver.fqdn}";
-        $config['smtp_user'] = "%u";
-        $config['smtp_pass'] = "%p";
-      '';
     };
   };
   meta = {};

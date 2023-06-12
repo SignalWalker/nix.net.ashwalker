@@ -91,8 +91,8 @@ in {
         ":pleroma" = {
           ":instance" = {
             name = "Signal Garden";
-            email = "admin@${vhost}";
-            notify_email = "daemon@${vhost}";
+            email = "admin@${config.networking.fqdn}";
+            notify_email = "daemon@${config.networking.fqdn}";
             description = "Ash Walker's personal Akkoma instance";
             registrations_open = false;
             invites_enabled = true;
@@ -132,6 +132,16 @@ in {
           };
           "Pleroma.Web.WebFinger" = {
             domain = config.networking.fqdn;
+          };
+          "Pleroma.Emails.Mailer" = {
+            enabled = true;
+            adapter = "Swoosh.Adapters.SMTP";
+            relay = "mail.ashwalker.net";
+            username = "daemon@${config.networking.fqdn}";
+            password = {_secret = secrets.mailPasswordDaemon.path;};
+            tls = ":always";
+            auth = ":always";
+            port = 587;
           };
         };
         ":web_push_encryption" = {

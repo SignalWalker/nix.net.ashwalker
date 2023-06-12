@@ -4,4 +4,5 @@ let
   keys = [srv-host ash];
 in {
   "mailPasswordAsh.age".publicKeys = keys;
+  "mailPasswordDaemon.age".publicKeys = keys;
 }
