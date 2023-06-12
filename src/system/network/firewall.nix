@@ -38,6 +38,7 @@ in {
         postfix = ''
           enabled = true
           mode = aggressive
+          bantime = 1h
         '';
         dovecot = ''
           enabled = true
