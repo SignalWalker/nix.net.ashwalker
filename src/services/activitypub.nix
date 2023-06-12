@@ -130,6 +130,9 @@ in {
               port = 4000;
             };
           };
+          "Pleroma.Web.WebFinger" = {
+            domain = config.networking.fqdn;
+          };
         };
         ":web_push_encryption" = {
           ":vapid_details" = {
@@ -163,6 +166,11 @@ in {
         extraConfig = ''
           server 127.0.0.1:4000 max_fails=5 fail_timeout=60s;
         '';
+      };
+      virtualHosts.${config.networking.fqdn} = {
+        locations."=/.well-known/host-meta" = {
+          return = "301 https://${vhost}$request_uri";
+        };
       };
       virtualHosts."${vhost}" = {
         http2 = true;

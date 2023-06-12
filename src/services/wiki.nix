@@ -88,7 +88,7 @@ in {
       locations."/static/" = {
         alias = config.data.web.directory;
       };
-      locations."= /favicon.svg" = {
+      locations."=/favicon.svg" = {
         alias = config.data.web.icons.svg;
         extraConfig = ''
           add_header Cache-Control "public";
