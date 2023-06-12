@@ -39,12 +39,14 @@ in {
           enabled = true
           mode = aggressive
           maxretry = 3
+          findtime = 6h
           bantime = 12h
         '';
         dovecot = ''
           enabled = true
           filter = dovecot[mode=aggressive]
           maxretry = 3
+          findtime = 6h
           bantime = 12h
         '';
         "nginx-botsearch" = ''
