@@ -18,7 +18,7 @@ in {
     };
     services.fail2ban = {
       enable = true;
-      maxretry = 12;
+      maxretry = 6;
       ignoreIP = [
         "127.0.0.0/8"
         # "10.0.0.0/8"
@@ -28,7 +28,7 @@ in {
         # ash-laptop tailscale address
         "100.68.182.67"
       ];
-      bantime = "10m";
+      bantime = "12m";
       bantime-increment = {
         enable = true;
         rndtime = "8m";
@@ -38,6 +38,7 @@ in {
         postfix = ''
           enabled = true
           mode = aggressive
+          maxretry = 3
           bantime = 12h
         '';
         dovecot = ''
