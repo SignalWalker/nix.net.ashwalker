@@ -16,8 +16,6 @@ in {
     };
     networking.firewall = {
     };
-    # set openssh loglevel higher so fail2ban works better
-    services.openssh.loglevel = "VERBOSE";
     services.fail2ban = {
       enable = true;
       maxretry = 12;
