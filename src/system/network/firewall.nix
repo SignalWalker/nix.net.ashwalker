@@ -34,8 +34,8 @@ in {
         rndtime = "8m";
         overalljails = true;
       };
-      banaction = "nftables-multiport[blocktype=DROP]";
-      banaction-allports = "nftables-allport[blocktype=DROP]";
+      banaction = "nftables[type=multiport,blocktype=drop]";
+      banaction-allports = "nftables[type=allports,blocktype=drop]";
       jails = {
         postfix = ''
           enabled = true
