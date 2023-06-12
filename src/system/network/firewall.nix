@@ -38,12 +38,13 @@ in {
         postfix = ''
           enabled = true
           mode = aggressive
-          bantime = 1h
+          bantime = 12h
         '';
         dovecot = ''
           enabled = true
           filter = dovecot[mode=aggressive]
           maxretry = 3
+          bantime = 12h
         '';
         "nginx-botsearch" = ''
           enabled = true
