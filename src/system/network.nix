@@ -9,7 +9,7 @@ with builtins; let
 in {
   options = with lib; {};
   disabledModules = [];
-  imports = [];
+  imports = lib.signal.fs.path.listFilePaths ./network;
   config = {
     systemd.network.networks."eth" = {
       networkConfig.Address = ["5.161.136.2/32" "2a01:4ff:f0:b30::1/64"];
