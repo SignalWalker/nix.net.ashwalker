@@ -34,7 +34,7 @@ in {
       };
     };
     services.roundcube = {
-      enable = true;
+      enable = false;
       hostName = "webmail.${config.networking.fqdn}";
       extraConfig = ''
         $config['smtp_host'] = "tls://${config.mailserver.fqdn}";

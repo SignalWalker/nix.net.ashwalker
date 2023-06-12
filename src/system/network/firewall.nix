@@ -27,10 +27,17 @@ in {
       #   "[::1]/128"
       # ];
       jails = {
+        postfix = ''
+          enabled = true
+          mode = aggressive
+        '';
         dovecot = ''
           enabled = true
           filter = dovecot[mode=aggressive]
           maxretry = 3
+        '';
+        "nginx-botsearch" = ''
+          enabled = true
         '';
       };
     };
