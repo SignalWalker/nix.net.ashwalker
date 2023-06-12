@@ -23,7 +23,18 @@ in {
       user = "rssbridge";
       group = "rssbridge";
       virtualHost = null;
-      whitelist = ["AO3" "Bandcamp" "BandcampDaily" "NyaaTorrents"];
+      whitelist = [
+        "AO3"
+        "Bandcamp"
+        "BandcampDaily"
+        "NyaaTorrents"
+        "GameBanana"
+        "GoogleScholar"
+        "Indeed"
+        "Itchio"
+        "Soundcloud"
+        "XenForo"
+      ];
     };
     users.users.${bridge.user} = {
       isSystemUser = true;
