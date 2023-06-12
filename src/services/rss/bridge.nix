@@ -31,7 +31,6 @@ in {
     };
     services.nginx.virtualHosts."rss-bridge.${config.networking.fqdn}" = {
       root = "${pkgs.rss-bridge}";
-      forceSSL = true;
       basicAuthFile = config.age.secrets.rssBridgePassword.path;
       locations."/" = {
         tryFiles = "$uri /index.php$is_args$args";
