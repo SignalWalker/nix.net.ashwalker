@@ -15,6 +15,8 @@ in {
   config = {
     age.secrets.rssBridgePassword = {
       file = ./rssBridgePassword.age;
+      owner = nginx.user;
+      group = nginx.group;
     };
     services.rss-bridge = {
       enable = true;
