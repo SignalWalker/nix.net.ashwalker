@@ -5,4 +5,5 @@ let
 in {
   "rssUserPassword.age".publicKeys = keys;
   "rssDbPassword.age".publicKeys = keys;
+  "rssBridgePassword.age".publicKeys = keys;
 }

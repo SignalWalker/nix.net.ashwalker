@@ -10,7 +10,9 @@ with builtins; let
 in {
   options = with lib; {};
   disabledModules = [];
-  imports = [];
+  imports = [
+    ./rss/bridge.nix
+  ];
   config = {
     age.secrets.rssUserPassword = {
       file = ./rss/rssUserPassword.age;
