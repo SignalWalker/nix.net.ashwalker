@@ -23,6 +23,11 @@ in {
       virtualHost = null;
       whitelist = ["AO3" "Bandcamp Bridge" "Github Repositories Search" "NyaaTorrents"];
     };
+    users.users.${bridge.user} = {
+      isSystemUser = true;
+      group = bridge.group;
+    };
+    users.groups.${bridge.group} = {};
     services.phpfpm.pools.${bridge.pool} = {
       settings = {
         "listen.owner" = nginx.user;
