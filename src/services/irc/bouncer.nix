@@ -10,7 +10,6 @@ with builtins; let
   proxy = bouncer.reverseProxy;
   ssl = bouncer.ssl;
   irc = config.services.irc;
-  signalLib = (import ../../../lib/lib.nix) {inherit config pkgs lib;};
 in {
   options = with lib; {
     services.irc.bouncer = {
@@ -23,7 +22,13 @@ in {
         type = types.str;
         default = "ircbouncer";
       };
-      directories = signalLib.mkDirectoriesOption {defaultName = "ircbouncer";};
+      directories = {
+        state = mkOption {
+          type = types.str;
+          readOnly = true;
+          default = "/var/lib/ircbouncer";
+        };
+      };
       port = {
         irc = mkOption {
           type = types.port;
