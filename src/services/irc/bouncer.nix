@@ -227,9 +227,17 @@ in {
             AllowWeb = true;
             IPv4 = true;
             IPv6 = true;
-            Port = bouncer.port.irc;
+            Port = bouncer.port.http;
             SSL = true;
             URIPrefix = "/";
+          };
+          irc = {
+            AllowIRC = true;
+            AllowWeb = false;
+            IPv4 = true;
+            IPv6 = true;
+            Port = bouncer.port.irc;
+            SSL = true;
           };
         };
       };
