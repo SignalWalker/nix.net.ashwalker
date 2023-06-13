@@ -106,6 +106,7 @@ in {
         mutable = false;
         useLegacyConfig = false;
         openFirewall = false;
+        package = pkgs.znc.override {withPython = true;};
         modulePackages = [
           (
             pkgs.stdenvNoCC.mkDerivation {
@@ -134,7 +135,7 @@ in {
           )
         ];
         config = {
-          # LoadModule = ["modpython"];
+          LoadModule = ["modpython"];
           SSLCertFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLDHParamFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
