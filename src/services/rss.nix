@@ -65,6 +65,7 @@ in {
         user = rss.user;
         name = rss.database.name;
         port = psql.port;
+        host = "localhost";
         passFile = config.age.secrets.rssDbPassword.path;
       };
       defaultUser = "ash";
