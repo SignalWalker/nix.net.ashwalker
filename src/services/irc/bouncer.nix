@@ -123,12 +123,13 @@ in {
           )
         ];
         config = {
+          LoadModule = ["imapauth mail.${config.networking.fqdn} +993 %@${config.networking.fqdn}"];
           SSLCertFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLDHParamFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
           User."ash" = {
             Admin = true;
-            LoadModule = ["loadpassfile ${config.age.secrets.ircBouncerPassword.path}"];
+            # LoadModule = ["loadpassfile ${config.age.secrets.ircBouncerPassword.path}"];
           };
         };
         extraFlags = [];
