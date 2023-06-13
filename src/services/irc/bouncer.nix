@@ -117,6 +117,7 @@ in {
         after = ["network-online.target"];
         serviceConfig = {
           Type = "oneshot";
+          RemainAfterExit = true;
           CacheDirectory = bouncer.directories.name;
           CacheDirectoryMode = 0750;
           ExecStart = pkgs.writeScript "znc-setup" ''
