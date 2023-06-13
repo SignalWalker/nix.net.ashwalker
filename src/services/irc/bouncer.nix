@@ -96,11 +96,13 @@ in {
       };
       users.groups.${bouncer.group} = {};
       services.znc = {
+        useLegacyConfig = false;
         inherit (bouncer) enable user group;
         dataDir = bouncer.directories.state;
         mutable = true;
         useLegacyConfig = false;
         openFirewall = false;
+        useSSL = false;
         config = {
           LoadModule = [];
           User."admin" = {
