@@ -72,6 +72,10 @@ in {
       defaultUser = "ash";
       passwordFile = config.age.secrets.rssUserPassword.path;
     };
+    services.nginx.virtualHosts.${rss.hostName} = {
+      # addSSL = true;
+      forceSSL = true;
+    };
   };
   meta = {};
 }
