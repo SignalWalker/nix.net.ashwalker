@@ -100,9 +100,9 @@ in {
         createHome = true;
       };
       users.groups.${bouncer.group} = {};
-      nixpkgs.config.packageOverrides = pkgs: {
-        znc = pkgs.znc.override {withPython = true;};
-      };
+      # nixpkgs.config.packageOverrides = pkgs: {
+      #   znc = pkgs.znc.override {withPython = true;};
+      # };
       services.znc = {
         inherit (bouncer) enable user group;
         dataDir = bouncer.directories.state;
@@ -111,33 +111,19 @@ in {
         openFirewall = false;
         modulePackages = [
           (
-            pkgs.stdenvNoCC.mkDerivation {
-              name = "loadpassfile.py";
-              src = pkgs.writeText "loadpassfile.py" ''
-                import znc
-
-                class loadpassfile(znc.Module):
-                  description = "Load user password from a file"
-                  module_types = [znc.CModInfo.UserModule]
-                  has_args = True
-
-                  def OnLoad(self, args, message):
-                    with open(args) as passfile:
-                      hash = passfile.readline()
-                      salt = passfile.readline()
-                      znc.GetUser().SetPass(hash, znc.CUser.HASH_SHA256, salt)
-                      return True
-                    return False
-              '';
+            pkgs.stdenv.mkDerivation {
+              pname = "loadpassfile";
+              src = ./loadpassfile.cpp;
               dontUnpack = true;
+              buildPhase = "${pkgs.znc}/bin/znc-buildmod $src";
               installPhase = ''
-                install -D $src $out/lib/znc/loadpassfile.py
+                install -D loadpassfile.so $out/lib/znc/loadpassfile.so
               '';
+              passthru.module_name = "loadpassfile";
             }
           )
         ];
         config = {
-          # LoadModule = ["modpython"];
           SSLCertFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLDHParamFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
