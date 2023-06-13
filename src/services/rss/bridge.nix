@@ -8,11 +8,21 @@ with builtins; let
   std = pkgs.lib;
   bridge = config.services.rss-bridge;
   nginx = config.services.nginx;
+  rss = config.signal.rss;
+  bridgeSignal = config.signal.rss.bridge;
 in {
-  options = with lib; {};
+  options = with lib; {
+    signal.rss.bridge = {
+      enable = (mkEnableOption "rss bridge") // {default = rss.enable;};
+      hostName = mkOption {
+        type = types.str;
+        default = "bridge.${rss.hostName}";
+      };
+    };
+  };
   disabledModules = [];
   imports = [];
-  config = {
+  config = lib.mkIf bridgeSignal.enable {
     age.secrets.rssBridgePassword = {
       file = ./rssBridgePassword.age;
       owner = nginx.user;
@@ -47,7 +57,7 @@ in {
         "listen.group" = nginx.group;
       };
     };
-    services.nginx.virtualHosts."rss-bridge.${config.networking.fqdn}" = {
+    services.nginx.virtualHosts.${bridgeSignal.hostName} = {
       root = "${pkgs.rss-bridge}";
       basicAuthFile = config.age.secrets.rssBridgePassword.path;
       locations."/" = {
