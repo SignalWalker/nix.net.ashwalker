@@ -98,7 +98,7 @@ in {
       services.znc = {
         inherit (bouncer) enable user group;
         dataDir = bouncer.directories.state;
-        mutable = true;
+        mutable = false;
         useLegacyConfig = false;
         openFirewall = false;
         config = {
@@ -198,7 +198,7 @@ in {
         LoadModule = ["webadmin" "adminlog"];
         TrustedProxy = ["127.0.0.1" "::1"];
         Listener = {
-          l = null;
+          l = lib.mkForce null;
           http = {
             AllowIRC = true;
             AllowWeb = true;
