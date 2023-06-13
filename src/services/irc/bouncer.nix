@@ -32,6 +32,11 @@ in {
           readOnly = true;
           default = "/var/lib/${bouncer.directories.name}";
         };
+        cache = mkOption {
+          type = types.str;
+          readOnly = true;
+          default = "/var/cache/${bouncer.directories.name}";
+        };
       };
       port = {
         irc = mkOption {
@@ -101,14 +106,35 @@ in {
           User."admin" = {
             Admin = true;
           };
-          SSLCertFile = ssl.certificate;
-          SSLDHParamFile = ssl.certificate;
-          SSLKeyFile = ssl.key;
+          SSLCertFile = "${directories.state}/ssl/fullchain.pem";
+          SSLDHParamFile = "${directories.state}/ssl/fullchain.pem";
+          SSLKeyFile = "${directories.state}/ssl/key.pem";
         };
         extraFlags = [];
       };
-      systemd.services."znc" = {
+      systemd.services."znc-setup" = {
+        requires = ["acme-finished-${proxy.hostName}.target"];
+        after = ["network-online.target"];
         serviceConfig = {
+          CacheDirectory = bouncer.directories.name;
+          CacheDirectoryMode = 0750;
+          ExecStart = pkgs.writeScript "znc-setup" ''
+            #! /usr/bin/env sh
+            ssldir="$CACHE_DIRECTORY/ssl"
+            mkdir --mode=0750 $ssldir
+            cp ${ssl.certificate} $ssldir/chain.pem
+            cp ${ssl.trustedCertificate} $ssldir/fullchain.pem
+            cp ${ssl.key} $ssldir/key.pem
+            chown -R ${bouncer.user}:${bouncer.group} $CACHE_DIRECTORY/ssl
+          '';
+        };
+      };
+      systemd.services."znc" = {
+        requires = ["znc-setup"];
+        after = ["znc-setup"];
+        serviceConfig = {
+          CacheDirectory = bouncer.directories.name;
+          CacheDirectoryMode = 0750;
           StateDirectory = bouncer.directories.name;
           StateDirectoryMode = 0750;
         };
@@ -185,16 +211,9 @@ in {
           };
         };
       };
-      systemd.services."znc" = {
-        wants = ["acme-finished-${proxy.hostName}.target"];
-        serviceConfig = {
-          BindReadOnlyPaths = [
-            ssl.certificate
-            ssl.key
-            ssl.trustedCertificate
-          ];
-        };
-      };
+      services.fail2ban.jails."znc-adminlog" = ''
+        enabled = true
+      '';
     })
   ]);
   meta = {};

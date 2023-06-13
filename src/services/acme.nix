@@ -11,7 +11,12 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    security.acme.acceptTerms = true;
+    security.acme = {
+      defaults = {
+        email = "admin@${config.networking.fqdn}";
+      };
+      acceptTerms = true;
+    };
   };
   meta = {};
 }
