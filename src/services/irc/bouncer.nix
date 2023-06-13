@@ -129,6 +129,7 @@ in {
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
           User."ash" = {
             Admin = true;
+            Pass = "md5#::#::#";
             # LoadModule = ["loadpassfile ${config.age.secrets.ircBouncerPassword.path}"];
           };
         };
