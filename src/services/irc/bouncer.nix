@@ -65,7 +65,7 @@ in {
       reverseProxy = {
         type = mkOption {
           type = types.nullOr (types.enum ["nginx"]);
-          default = null;
+          default = "nginx";
         };
         hostName = mkOption {
           type = types.str;
