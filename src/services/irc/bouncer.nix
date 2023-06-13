@@ -198,25 +198,25 @@ in {
             '';
           };
         };
-        virtualHosts."${proxy.hostName}_irc" = {
-          serverName = proxy.hostName;
-          useACMEHost = "${proxy.hostName}";
-          listen = [
-            {
-              addr = "0.0.0.0";
-              port = bouncer.port.irc;
-              ssl = true;
-            }
-            {
-              addr = "[::]";
-              port = bouncer.port.irc;
-              ssl = true;
-            }
-          ];
-          locations."/" = {
-            proxyPass = "backend_znc_irc";
-          };
-        };
+        # virtualHosts."${proxy.hostName}_irc" = {
+        #   serverName = proxy.hostName;
+        #   useACMEHost = "${proxy.hostName}";
+        #   listen = [
+        #     {
+        #       addr = "0.0.0.0";
+        #       port = bouncer.port.irc;
+        #       ssl = true;
+        #     }
+        #     {
+        #       addr = "[::]";
+        #       port = bouncer.port.irc;
+        #       ssl = true;
+        #     }
+        #   ];
+        #   locations."/" = {
+        #     proxyPass = "backend_znc_irc";
+        #   };
+        # };
       };
       services.znc.config = {
         LoadModule = ["webadmin" "adminlog"];
