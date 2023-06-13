@@ -103,9 +103,6 @@ in {
         openFirewall = false;
         config = {
           LoadModule = [];
-          User."admin" = {
-            Admin = true;
-          };
           SSLCertFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLDHParamFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
