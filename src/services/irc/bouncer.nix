@@ -87,6 +87,11 @@ in {
   imports = [];
   config = lib.mkIf bouncer.enable (lib.mkMerge [
     {
+      age.secrets.ircBouncerPassword = {
+        file = ./ircBouncerPassword.age;
+        owner = bouncer.user;
+        group = bouncer.group;
+      };
       users.users.${bouncer.user} = {
         inherit (bouncer) group;
         description = "IRC bouncer daemon";
@@ -101,14 +106,32 @@ in {
         mutable = false;
         useLegacyConfig = false;
         openFirewall = false;
+        modulePackages = [
+          (pkgs.writeText "loadpassfile.py" ''
+            import znc
+
+            class loadpassfile(znc.Module):
+              description = "Load user password from a file"
+              module_types = [znc.CModInfo.UserModule]
+              has_args = True
+
+              def OnLoad(self, args, message):
+                with open(args) as passfile:
+                  hash = passfile.readline()
+                  salt = passfile.readline()
+                  znc.GetUser().SetPass(hash, znc.CUser.HASH_SHA256, salt)
+                  return True
+                return False
+          '')
+        ];
         config = {
-          LoadModule = [];
+          LoadModule = ["modpython"];
           SSLCertFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLDHParamFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
-          User."admin" = {
+          User."ash" = {
             Admin = true;
-            Pass = "md5#::#::#";
+            LoadModule = ["loadpassfile ${config.age.secrets.ircBouncerPassword.path}"];
           };
         };
         extraFlags = [];
@@ -121,6 +144,11 @@ in {
           RemainAfterExit = true;
           CacheDirectory = bouncer.directories.name;
           CacheDirectoryMode = 0750;
+          # LoadCredential = [
+          #   "chain.pem:${ssl.certificate}"
+          #   "fullchain.pem:${ssl.trustedCertificate}"
+          #   "key.pem:${ssl.key}"
+          # ];
           ExecStart = pkgs.writeScript "znc-setup" ''
             #! ${pkgs.runtimeShell}
             ssldir="$CACHE_DIRECTORY/ssl"

@@ -14,7 +14,9 @@ in {
     };
   };
   disabledModules = [];
-  imports = lib.signal.fs.path.listFilePaths ./irc;
+  imports = [
+    ./irc/bouncer.nix
+  ];
   config = lib.mkIf irc.enable {};
   meta = {};
 }
