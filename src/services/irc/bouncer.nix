@@ -10,7 +10,7 @@ with builtins; let
   proxy = bouncer.reverseProxy;
   ssl = bouncer.ssl;
   irc = config.services.irc;
-  signalLib = (import ../../lib.nix) {inherit config pkgs lib;};
+  signalLib = (import ../../../lib/lib.nix) {inherit config pkgs lib;};
 in {
   options = with lib; {
     services.irc.bouncer = {
