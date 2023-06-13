@@ -116,6 +116,7 @@ in {
         requires = ["acme-finished-${proxy.hostName}.target"];
         after = ["network-online.target"];
         serviceConfig = {
+          Type = "oneshot";
           CacheDirectory = bouncer.directories.name;
           CacheDirectoryMode = 0750;
           ExecStart = pkgs.writeScript "znc-setup" ''
