@@ -177,45 +177,45 @@ in {
         allowedUDPPorts = [80 443 6667];
       };
       services.nginx = {
-        upstreams."backend_znc" = {
+        upstreams."backend_znc_irc" = {
           servers = {
             "[::1]:${toString bouncer.port.irc}" = {};
           };
         };
-        virtualHosts.${proxy.hostName} = {
+        upstreams."backend_znc_http" = {
+          servers = {
+            "[::1]:${toString bouncer.port.http}" = {};
+          };
+        };
+        virtualHosts."${proxy.hostName}_http" = {
+          serverName = proxy.hostName;
           enableACME = true;
           forceSSL = true;
-          listen = [
-            # IRC
-            {
-              addr = "0.0.0.0";
-              ssl = true;
-              port = 6667;
-            }
-            {
-              addr = "[::]";
-              ssl = true;
-              port = 6667;
-            }
-            # HTTP
-            {
-              addr = "0.0.0.0";
-              ssl = true;
-              port = 443;
-            }
-            {
-              addr = "[::]";
-              ssl = true;
-              port = 443;
-            }
-          ];
-          # proxyPass = "[::1]:${toString bouncer.port}";
           locations."/" = {
-            proxyPass = "http://backend_znc$request_uri";
+            proxyPass = "https://backend_znc$request_uri";
             extraConfig = ''
               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             '';
           };
+        };
+        virtualHosts."${proxy.hostName}_irc" = {
+          serverName = proxy.hostName;
+          useACMEHost = "${proxy.hostName}_http";
+          listen = [
+            {
+              addr = "0.0.0.0";
+              port = bouncer.port.irc;
+              ssl = true;
+            }
+            {
+              addr = "[::]";
+              port = bouncer.port.irc;
+              ssl = true;
+            }
+          ];
+          extraConfig = ''
+            proxy_pass backend_znc_irc;
+          '';
         };
       };
       services.znc.config = {
