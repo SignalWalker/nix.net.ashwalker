@@ -213,9 +213,9 @@ in {
               ssl = true;
             }
           ];
-          extraConfig = ''
-            proxy_pass backend_znc_irc;
-          '';
+          locations."/" = {
+            proxyPass = "backend_znc_irc";
+          };
         };
       };
       services.znc.config = {
