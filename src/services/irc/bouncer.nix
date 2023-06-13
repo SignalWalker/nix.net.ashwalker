@@ -127,6 +127,7 @@ in {
           SSLCertFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLDHParamFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
+          SSLProtocols = "+SSLv3";
           User."ash" = {
             Admin = true;
             Pass = "md5#::#::#";
