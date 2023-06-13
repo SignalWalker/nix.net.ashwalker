@@ -40,7 +40,7 @@ in {
         };
       };
       ssl = let
-        acmeDir = config.security.acme.certs.${ssl.certName}.directory;
+        acmeDir = config.security.acme.certs."${ssl.certName}".directory;
       in {
         certName = mkOption {
           type = types.str;
