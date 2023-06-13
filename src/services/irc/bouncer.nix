@@ -106,6 +106,10 @@ in {
           SSLCertFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLDHParamFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
+          User."admin" = {
+            Admin = true;
+            Pass = "md5#::#::#";
+          };
         };
         extraFlags = [];
       };
