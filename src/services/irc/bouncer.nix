@@ -112,7 +112,7 @@ in {
         modulePackages = [
           (
             pkgs.stdenv.mkDerivation {
-              pname = "loadpassfile";
+              name = "loadpassfile";
               src = ./loadpassfile.cpp;
               dontUnpack = true;
               buildPhase = "${pkgs.znc}/bin/znc-buildmod $src";
