@@ -73,7 +73,7 @@ in {
       passwordFile = config.age.secrets.rssUserPassword.path;
     };
     services.nginx.virtualHosts.${rss.hostName} = {
-      # addSSL = true;
+      addSSL = true;
       forceSSL = true;
     };
   };
