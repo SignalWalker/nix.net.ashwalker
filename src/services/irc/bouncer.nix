@@ -150,7 +150,7 @@ in {
       services.nginx = {
         upstreams."backend_znc" = {
           servers = {
-            "localhost:${toString bouncer.port.http}" = {};
+            "localhost:${toString bouncer.port.irc}" = {};
           };
         };
         virtualHosts.${proxy.hostName} = {
@@ -182,7 +182,7 @@ in {
           ];
           # proxyPass = "[::1]:${toString bouncer.port}";
           locations."/" = {
-            proxyPass = "https://backend_znc_http$request_uri";
+            proxyPass = "https://backend_znc$request_uri";
             extraConfig = ''
               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             '';
