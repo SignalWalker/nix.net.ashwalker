@@ -39,11 +39,11 @@ in {
   config = lib.mkIf rss.enable {
     age.secrets.rssUserPassword = {
       file = ./rss/rssUserPassword.age;
-      owner = "freshrss";
+      owner = rss.user;
     };
     age.secrets.rssDbPassword = {
       file = ./rss/rssDbPassword.age;
-      owner = "freshrss";
+      owner = rss.user;
     };
     services.postgresql = {
       ensureDatabases = [rss.database.name];
