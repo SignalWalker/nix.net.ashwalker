@@ -130,8 +130,8 @@ in {
         };
       };
       systemd.services."znc" = {
-        requires = ["znc-setup"];
-        after = ["znc-setup"];
+        requires = ["znc-setup.service"];
+        after = ["znc-setup.service"];
         serviceConfig = {
           CacheDirectory = bouncer.directories.name;
           CacheDirectoryMode = 0750;
