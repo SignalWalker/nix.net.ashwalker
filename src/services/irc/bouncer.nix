@@ -23,10 +23,14 @@ in {
         default = "ircbouncer";
       };
       directories = {
+        name = mkOption {
+          type = types.str;
+          default = "ircbouncer";
+        };
         state = mkOption {
           type = types.str;
           readOnly = true;
-          default = "/var/lib/ircbouncer";
+          default = "/var/lib/${bouncer.directories.name}";
         };
       };
       port = {
