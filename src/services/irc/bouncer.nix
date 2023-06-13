@@ -137,7 +137,7 @@ in {
           )
         ];
         config = {
-          LoadModule = ["modpython"];
+          # LoadModule = ["modpython"];
           SSLCertFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLDHParamFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
