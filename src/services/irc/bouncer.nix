@@ -9,10 +9,11 @@ with builtins; let
   bouncer = config.services.irc.bouncer;
   proxy = bouncer.reverseProxy;
   ssl = bouncer.ssl;
+  irc = config.services.irc;
 in {
   options = with lib; {
     services.irc.bouncer = {
-      enable = mkEnableOption "IRC bouncer";
+      enable = (mkEnableOption "IRC bouncer") // {default = true;};
       user = mkOption {
         type = types.str;
         default = "ircbouncer";
@@ -22,9 +23,15 @@ in {
         default = "ircbouncer";
       };
       directories = lib.signal.mkDirectoriesOption {defaultName = "ircbouncer";};
-      port = mkOption {
-        type = types.port;
-        default = 6667;
+      port = {
+        irc = mkOption {
+          type = types.port;
+          default = 56667;
+        };
+        http = mkOption {
+          type = types.port;
+          default = 56443;
+        };
       };
       ssl = let
         acmeDir = config.security.acme.certs.${ssl.certName}.directory;
@@ -97,40 +104,57 @@ in {
         };
       };
     }
-    (lib.mkIf (bouncer.reverseProxy.type == "nginx") (let
-      port = {
-        http = 7001;
-        irc = 7000;
-      };
-    in {
+    (lib.mkIf (bouncer.reverseProxy.type == "nginx") {
       services.nginx.virtualHosts.${proxy.hostName} = {
         enableACME = true;
         forceSSL = true;
-        locations."/" = {
-          proxyPass = "https://[::1]:${toString port.http}$uri";
-          extraConfig = ''
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          '';
-        };
       };
-      services.nginx.virtualHosts."${proxy.hostName}_irc" = {
-        serverName = proxy.hostName;
-        useACMEHost = proxy.hostName;
-        listen = [
-          {
-            addr = "0.0.0.0";
-            ssl = true;
-            inherit (bouncer) port;
-          }
-          {
-            addr = "[::]";
-            ssl = true;
-            inherit (bouncer) port;
-          }
-        ];
-        extraConfig = ''
-          proxy_pass [::1]:${toString port.irc};
-        '';
+      services.nginx = {
+        upstreams."backend_znc_irc" = {
+          servers = {
+            "[::1]:${toString bouncer.port.irc}" = {};
+          };
+        };
+        upstreams."backend_znc_http" = {
+          servers = {
+            "[::1]:${toString bouncer.port.http}" = {};
+          };
+        };
+        virtualHosts.${proxy.hostName} = {
+          enableACME = true;
+          forceSSL = true;
+          listen = [
+            # IRC
+            {
+              addr = "0.0.0.0";
+              ssl = true;
+              port = 6667;
+            }
+            {
+              addr = "[::]";
+              ssl = true;
+              port = 6667;
+            }
+            # HTTP
+            {
+              addr = "0.0.0.0";
+              ssl = true;
+              port = 443;
+            }
+            {
+              addr = "[::]";
+              ssl = true;
+              port = 443;
+            }
+          ];
+          # proxyPass = "[::1]:${toString bouncer.port}";
+          locations."/" = {
+            proxyPass = "https://backend_znc_http$request_uri";
+            extraConfig = ''
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            '';
+          };
+        };
       };
       services.znc.config = {
         LoadModule = ["webadmin" "adminlog"];
@@ -141,7 +165,7 @@ in {
             AllowWeb = true;
             Host = "[::1]";
             IPv6 = true;
-            Port = port.http;
+            Port = bouncer.port.http;
             SSL = true;
             URIPrefix = "/";
           }
@@ -150,7 +174,7 @@ in {
             AllowWeb = false;
             Host = "[::1]";
             IPv6 = true;
-            Port = port.irc;
+            Port = bouncer.port.irc;
             SSL = true;
           }
         ];
@@ -164,7 +188,7 @@ in {
           ];
         };
       };
-    }))
+    })
   ]);
   meta = {};
 }
