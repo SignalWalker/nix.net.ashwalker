@@ -186,6 +186,7 @@ in {
         };
       };
       systemd.services."znc" = {
+        wants = ["acme-finished-${proxy.hostName}.target"];
         serviceConfig = {
           BindReadOnlyPaths = [
             ssl.certificate
