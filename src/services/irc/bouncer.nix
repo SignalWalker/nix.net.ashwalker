@@ -13,7 +13,7 @@ with builtins; let
 in {
   options = with lib; {
     services.irc.bouncer = {
-      enable = (mkEnableOption "IRC bouncer") // {default = true;};
+      enable = (mkEnableOption "IRC bouncer") // {default = false;};
       user = mkOption {
         type = types.str;
         default = "ircbouncer";
