@@ -58,6 +58,8 @@ in {
       };
     };
     services.nginx.virtualHosts.${bridgeSignal.hostName} = {
+      enableACME = true;
+      forceSSL = true;
       root = "${pkgs.rss-bridge}";
       basicAuthFile = config.age.secrets.rssBridgePassword.path;
       locations."/" = {
