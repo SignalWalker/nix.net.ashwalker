@@ -100,9 +100,9 @@ in {
         createHome = true;
       };
       users.groups.${bouncer.group} = {};
-      # nixpkgs.config.packageOverrides = pkgs: {
-      #   znc = pkgs.znc.override {withPython = true;};
-      # };
+      nixpkgs.config.packageOverrides = pkgs: {
+        znc = pkgs.znc.override {withPython = true;};
+      };
       services.znc = {
         inherit (bouncer) enable user group;
         dataDir = bouncer.directories.state;
@@ -111,13 +111,12 @@ in {
         openFirewall = false;
         modulePackages = [
           (
-            pkgs.stdenv.mkDerivation {
+            pkgs.stdenvNoCC.mkDerivation {
               name = "loadpassfile";
-              src = ./loadpassfile.cpp;
+              src = ./loadpassfile.py;
               dontUnpack = true;
-              buildPhase = "${pkgs.znc}/bin/znc-buildmod $src";
               installPhase = ''
-                install -D loadpassfile.so $out/lib/znc/loadpassfile.so
+                install -D $src $out/lib/znc/loadpassfile.py
               '';
               passthru.module_name = "loadpassfile";
             }
