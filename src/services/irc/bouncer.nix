@@ -128,7 +128,7 @@ in {
           SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
           User."ash" = {
             Admin = true;
-            LoadModule = ["loadpassfile ${config.age.secrets.ircBouncerPassword.path}"];
+            LoadModule = ["loadpassfile.py ${config.age.secrets.ircBouncerPassword.path}"];
           };
         };
         extraFlags = [];
