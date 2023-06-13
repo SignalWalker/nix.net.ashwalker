@@ -50,6 +50,7 @@ in {
       ensureUsers = [
         {
           name = rss.user;
+          ensureClauses.login = true;
           ensurePermissions."DATABASE ${rss.database.name}" = "ALL PRIVILEGES";
         }
       ];
