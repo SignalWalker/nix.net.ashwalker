@@ -143,6 +143,10 @@ in {
       };
     }
     (lib.mkIf (bouncer.reverseProxy.type == "nginx") {
+      networking.firewall = {
+        allowedTCPPorts = [80 443 6667];
+        allowedUDPPorts = [80 443 6667];
+      };
       services.nginx = {
         upstreams."backend_znc_irc" = {
           servers = {
@@ -194,6 +198,7 @@ in {
         LoadModule = ["webadmin" "adminlog"];
         TrustedProxy = ["127.0.0.1" "::1"];
         Listener = {
+          l = null;
           http = {
             AllowIRC = true;
             AllowWeb = true;
