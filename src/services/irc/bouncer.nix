@@ -108,7 +108,7 @@ in {
         openFirewall = false;
         modulePackages = [
           (pkgs.stdenvNoCC.mkDerivation {
-            pname = "loadpassfile.py";
+            name = "loadpassfile.py";
             src = pkgs.writeText "loadpassfile.py" ''
               import znc
 
