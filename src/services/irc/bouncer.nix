@@ -200,7 +200,7 @@ in {
         };
         virtualHosts."${proxy.hostName}_irc" = {
           serverName = proxy.hostName;
-          useACMEHost = "${proxy.hostName}_http";
+          useACMEHost = "${proxy.hostName}";
           listen = [
             {
               addr = "0.0.0.0";
