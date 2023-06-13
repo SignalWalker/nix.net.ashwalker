@@ -105,10 +105,6 @@ in {
       };
     }
     (lib.mkIf (bouncer.reverseProxy.type == "nginx") {
-      services.nginx.virtualHosts.${proxy.hostName} = {
-        enableACME = true;
-        forceSSL = true;
-      };
       services.nginx = {
         upstreams."backend_znc_irc" = {
           servers = {
