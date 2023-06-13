@@ -100,13 +100,15 @@ in {
         createHome = true;
       };
       users.groups.${bouncer.group} = {};
+      nixpkgs.config.packageOverrides = pkgs: {
+        znc = pkgs.znc.override {withPython = true;};
+      };
       services.znc = {
         inherit (bouncer) enable user group;
         dataDir = bouncer.directories.state;
         mutable = false;
         useLegacyConfig = false;
         openFirewall = false;
-        package = pkgs.znc.override {withPython = true;};
         modulePackages = [
           (
             pkgs.stdenvNoCC.mkDerivation {
