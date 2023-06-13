@@ -106,9 +106,9 @@ in {
           User."admin" = {
             Admin = true;
           };
-          SSLCertFile = "${directories.state}/ssl/fullchain.pem";
-          SSLDHParamFile = "${directories.state}/ssl/fullchain.pem";
-          SSLKeyFile = "${directories.state}/ssl/key.pem";
+          SSLCertFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
+          SSLDHParamFile = "${bouncer.directories.cache}/ssl/fullchain.pem";
+          SSLKeyFile = "${bouncer.directories.cache}/ssl/key.pem";
         };
         extraFlags = [];
       };
