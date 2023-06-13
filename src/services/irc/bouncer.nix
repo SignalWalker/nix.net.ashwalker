@@ -161,8 +161,8 @@ in {
       services.znc.config = {
         LoadModule = ["webadmin" "adminlog"];
         TrustedProxy = ["127.0.0.1" "::1"];
-        Listener = [
-          {
+        Listener = {
+          http = {
             AllowIRC = true;
             AllowWeb = true;
             Host = "[::1]";
@@ -170,16 +170,16 @@ in {
             Port = bouncer.port.http;
             SSL = true;
             URIPrefix = "/";
-          }
-          {
+          };
+          irc = {
             AllowIRC = true;
             AllowWeb = false;
             Host = "[::1]";
             IPv6 = true;
             Port = bouncer.port.irc;
             SSL = true;
-          }
-        ];
+          };
+        };
       };
       systemd.services."znc" = {
         serviceConfig = {
