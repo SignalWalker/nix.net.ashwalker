@@ -119,7 +119,8 @@ in {
           Type = "oneshot";
           CacheDirectory = bouncer.directories.name;
           CacheDirectoryMode = 0750;
-          ExecStart = pkgs.writeScriptBin "znc-setup" ''
+          ExecStart = pkgs.writeScript "znc-setup" ''
+            #! ${pkgs.runtimeShell}
             ssldir="$CACHE_DIRECTORY/ssl"
             mkdir --mode=0750 $ssldir
             cp ${ssl.certificate} $ssldir/chain.pem
