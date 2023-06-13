@@ -11,9 +11,6 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    security.acme = {
-      defaults.email = "ash@ashwalker.net";
-    };
   };
   meta = {};
 }
