@@ -148,14 +148,9 @@ in {
         allowedUDPPorts = [80 443 6667];
       };
       services.nginx = {
-        upstreams."backend_znc_irc" = {
+        upstreams."backend_znc" = {
           servers = {
-            "[::1]:${toString bouncer.port.irc}" = {};
-          };
-        };
-        upstreams."backend_znc_http" = {
-          servers = {
-            "[::1]:${toString bouncer.port.http}" = {};
+            "localhost:${toString bouncer.port.http}" = {};
           };
         };
         virtualHosts.${proxy.hostName} = {
@@ -198,23 +193,14 @@ in {
         LoadModule = ["webadmin" "adminlog"];
         TrustedProxy = ["127.0.0.1" "::1"];
         Listener = {
-          l = lib.mkForce null;
-          http = {
+          l = {
             AllowIRC = true;
             AllowWeb = true;
-            Host = "[::1]";
-            IPv6 = true;
-            Port = bouncer.port.http;
-            SSL = true;
-            URIPrefix = "/";
-          };
-          irc = {
-            AllowIRC = true;
-            AllowWeb = false;
-            Host = "[::1]";
+            IPv4 = true;
             IPv6 = true;
             Port = bouncer.port.irc;
             SSL = true;
+            URIPrefix = "/";
           };
         };
       };
