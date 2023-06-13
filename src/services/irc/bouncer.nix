@@ -120,13 +120,13 @@ in {
           CacheDirectory = bouncer.directories.name;
           CacheDirectoryMode = 0750;
           ExecStart = pkgs.writeScript "znc-setup" ''
-            #! /usr/bin/env sh
+            #! /usr/bin/env bash
             ssldir="$CACHE_DIRECTORY/ssl"
             mkdir --mode=0750 $ssldir
             cp ${ssl.certificate} $ssldir/chain.pem
             cp ${ssl.trustedCertificate} $ssldir/fullchain.pem
             cp ${ssl.key} $ssldir/key.pem
-            chown -R ${bouncer.user}:${bouncer.group} $CACHE_DIRECTORY/ssl
+            chown -R ${bouncer.user}:${bouncer.group} $ssldir
           '';
         };
       };
