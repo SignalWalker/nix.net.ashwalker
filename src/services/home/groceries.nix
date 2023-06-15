@@ -12,7 +12,7 @@ in {
   imports = [];
   config = {
     services.grocy = {
-      enable = true;
+      enable = false;
       hostName = "groceries.home.${config.networking.fqdn}";
       nginx.enableSSL = true;
     };
