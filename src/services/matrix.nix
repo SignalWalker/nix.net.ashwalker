@@ -51,10 +51,11 @@ in {
       enable = true;
       settings.global = {
         server_name = matrix.serverName;
-        allow_registration = false;
+        allow_registration = true;
         database_backend = "rocksdb";
         # matrix_hostname = "matrix.${config.networking.fqdn}";
         # admin_email = "admin@matrix.${config.networking.fqdn}";
+        emergency_password = "conduit";
       };
     };
     networking.firewall.allowedTCPPorts = [80 443 8448];
