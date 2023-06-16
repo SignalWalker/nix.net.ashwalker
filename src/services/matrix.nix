@@ -7,14 +7,20 @@
 with builtins; let
   std = pkgs.lib;
   matrix = config.signal.services.matrix;
+  conduit = config.services.matrix-conduit;
 in {
   options = with lib; {
     signal.services.matrix = {
       enable = (mkEnableOption "matrix") // {default = true;};
+      serverName = mkOption {
+        type = types.str;
+        readOnly = true;
+        default = config.networking.fqdn;
+      };
       hostName = mkOption {
         type = types.str;
         readOnly = true;
-        default = "matrix.${config.networking.fqdn}";
+        default = "matrix.${matrix.serverName}";
       };
       wellKnownServer = mkOption {
         type = types.package;
@@ -39,13 +45,14 @@ in {
     };
   };
   disabledModules = [];
-  imports = [];
-  config = lib.mkIf config.signal.services.matrix.enable {
+  imports = lib.signal.fs.path.listFilePaths ./matrix;
+  config = lib.mkIf matrix.enable {
     services.matrix-conduit = {
       enable = true;
       settings.global = {
-        server_name = config.networking.fqdn;
+        server_name = matrix.serverName;
         allow_registration = false;
+        database_backend = "rocksdb";
         # matrix_hostname = "matrix.${config.networking.fqdn}";
         # admin_email = "admin@matrix.${config.networking.fqdn}";
       };
@@ -90,7 +97,7 @@ in {
           merge_slashes off;
         '';
       };
-      virtualHosts."${config.services.matrix-conduit.settings.global.server_name}" = {
+      virtualHosts."${conduit.settings.global.server_name}" = {
         locations."=/.well-known/matrix/server" = {
           alias = matrix.wellKnownServer;
           extraConfig = ''
@@ -107,7 +114,7 @@ in {
       };
       upstreams."backend_conduit" = {
         servers = {
-          "localhost:${toString config.services.matrix-conduit.settings.global.port}" = {};
+          "localhost:${toString conduit.settings.global.port}" = {};
         };
       };
     };
