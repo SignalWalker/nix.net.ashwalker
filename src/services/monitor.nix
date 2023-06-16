@@ -26,7 +26,7 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf false {
+  config = {
     age.secrets.grafanaDbPassword = {
       file = ./monitor/grafanaDbPassword.age;
       owner = grafana.user;
@@ -45,6 +45,15 @@ in {
     services.prometheus = {
       enable = true;
     };
+    services.postgresql = {
+      ensureDatabases = [grafana.settings.database.name];
+      ensureUsers = [
+        {
+          name = grafana.settings.database.user;
+          ensurePermissions."DATABASE ${grafana.settings.database.name}" = "ALL PRIVILEGES";
+        }
+      ];
+    };
     services.grafana = {
       enable = true;
       settings.server = {
@@ -57,8 +66,12 @@ in {
         reporting_enabled = false;
       };
       settings.security = {
+        admin_user = "Ash";
         admin_password = "$__file{${secrets.grafanaAdminPassword.path}}";
+        admin_email = "admin@${config.networking.fqdn}";
         secret_key = "$__file{${secrets.grafanaSecretKey.path}}";
+        cookie_secure = true;
+        strict_transport_security = true;
       };
       settings.database = {
         type = "postgres";

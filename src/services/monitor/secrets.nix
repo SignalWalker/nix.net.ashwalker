@@ -5,4 +5,5 @@ let
 in {
   "grafanaAdminPassword.age".publicKeys = keys;
   "grafanaDbPassword.age".publicKeys = keys;
+  "grafanaSecretKey.age".publicKeys = keys;
 }
