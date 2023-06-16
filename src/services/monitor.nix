@@ -98,9 +98,13 @@ in {
         user = grafana.user;
         password = "$__file{${secrets.grafanaDbPassword.path}}";
       };
-      provision.datasources.settings.datasources."prometheus" = {
-        url = "http://localhost:${toString prometheus.port}";
-      };
+      provision.datasources.settings.datasources = [
+        {
+          name = "prometheus";
+          type = "Prometheus";
+          url = "http://localhost:${toString prometheus.port}";
+        }
+      ];
     };
     services.nginx.virtualHosts.${grafana.settings.server.domain} = {
       enableACME = true;
