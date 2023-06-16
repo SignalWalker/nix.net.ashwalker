@@ -105,6 +105,12 @@ in {
           url = "http://localhost:${toString prometheus.port}";
         }
       ];
+      provision.datasources.settings.deleteDatasources = [
+        {
+          name = "prometheus";
+          orgId = 1;
+        }
+      ];
     };
     services.nginx.virtualHosts.${grafana.settings.server.domain} = {
       enableACME = true;
