@@ -51,7 +51,7 @@ in {
       enable = true;
       settings.global = {
         server_name = matrix.serverName;
-        allow_registration = true;
+        allow_registration = false;
         database_backend = "rocksdb";
         # matrix_hostname = "matrix.${config.networking.fqdn}";
         # admin_email = "admin@matrix.${config.networking.fqdn}";
@@ -85,6 +85,14 @@ in {
             ssl = true;
           }
         ];
+        # locations."/" = {
+        #   proxyPass = "http://backend_conduit$request_uri";
+        #   proxyWebsockets = true;
+        #   extraConfig = ''
+        #     proxy_set_header Host $host;
+        #     proxy_buffering off;
+        #   '';
+        # };
         locations."/_matrix/" = {
           proxyPass = "http://backend_conduit$request_uri";
           proxyWebsockets = true;
