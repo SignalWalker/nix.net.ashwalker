@@ -76,6 +76,11 @@
       url = "gitlab:famedly/conduit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # groceries
+    grocy-src = {
+      url = "github:grocy/grocy";
+      flake = false;
+    };
   };
   outputs = inputs @ {
     self,
@@ -126,6 +131,11 @@
               services.akkoma.src = mkOption {
                 type = types.path;
                 default = dependencies.akkoma;
+                readOnly = true;
+              };
+              services.grocy.src = mkOption {
+                type = types.path;
+                default = dependencies.grocy-src;
                 readOnly = true;
               };
             };
