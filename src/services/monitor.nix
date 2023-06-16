@@ -98,7 +98,7 @@ in {
         user = grafana.user;
         password = "$__file{${secrets.grafanaDbPassword.path}}";
       };
-      provision.datasources.settings.dataSources."prometheus" = {
+      provision.datasources.settings.datasources."prometheus" = {
         url = "http://localhost:${toString prometheus.port}";
       };
     };
