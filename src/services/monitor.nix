@@ -84,7 +84,7 @@ in {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
-        proxyPass = "http://localhost:${toString grafana.settings.server.port}";
+        proxyPass = "http://localhost:${toString grafana.settings.server.http_port}";
         proxyWebsockets = true;
       };
     };
