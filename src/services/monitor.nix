@@ -100,8 +100,8 @@ in {
       };
       provision.datasources.settings.datasources = [
         {
-          name = "prometheus";
-          type = "Prometheus";
+          name = "Prometheus";
+          type = "prometheus";
           url = "http://localhost:${toString prometheus.port}";
         }
       ];
