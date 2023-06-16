@@ -6,6 +6,7 @@
 }:
 with builtins; let
   std = pkgs.lib;
+  prometheus = config.services.prometheus;
   grafana = config.services.grafana;
   psql = config.services.postgresql;
   secrets = config.age.secrets;
@@ -44,6 +45,24 @@ in {
     };
     services.prometheus = {
       enable = true;
+      port = 52342;
+      exporters = {
+        node = {
+          enable = true;
+          enabledCollectors = ["systemd"];
+          port = 52343;
+        };
+      };
+      scrapeConfigs = [
+        {
+          job_name = "ashwalker.net";
+          static_configs = [
+            {
+              targets = ["127.0.0.1:${toString prometheus.exporters.node.port}"];
+            }
+          ];
+        }
+      ];
     };
     services.postgresql = {
       ensureDatabases = [grafana.settings.database.name];
@@ -78,6 +97,9 @@ in {
         host = "127.0.0.1:${toString psql.port}";
         user = grafana.user;
         password = "$__file{${secrets.grafanaDbPassword.path}}";
+      };
+      provision.datasources.settings.dataSources."prometheus" = {
+        url = "http://localhost:${toString prometheus.port}";
       };
     };
     services.nginx.virtualHosts.${grafana.settings.server.domain} = {
