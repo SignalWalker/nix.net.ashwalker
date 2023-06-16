@@ -31,6 +31,9 @@ in {
   disabledModules = [];
   imports = [];
   config = {
+    nixpkgs.config.packageOverrides = pkgs: {
+      grocy = grocy.package;
+    };
     users.users.${grocy.user} = {
       group = lib.mkForce grocy.group;
     };
