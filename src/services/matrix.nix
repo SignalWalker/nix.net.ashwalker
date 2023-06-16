@@ -51,7 +51,7 @@ in {
       enable = true;
       settings.global = {
         server_name = matrix.serverName;
-        allow_registration = true;
+        allow_registration = false;
         database_backend = "rocksdb";
         # matrix_hostname = "matrix.${config.networking.fqdn}";
         # admin_email = "admin@matrix.${config.networking.fqdn}";
