@@ -30,7 +30,7 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = lib.mkIf true {
+  config = lib.mkIf false {
     nixpkgs.config.allowBroken = true;
     nixpkgs.config.packageOverrides = pkgs: {
       grocy = grocy.package;
