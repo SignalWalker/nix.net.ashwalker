@@ -163,6 +163,8 @@
           inputs.ashwalker-net.nixosModules.default
 
           ./nixos-module.nix
+
+          ./hw/hermes.nix
         ];
         config = {
           networking.hostName = "ashwalker";
