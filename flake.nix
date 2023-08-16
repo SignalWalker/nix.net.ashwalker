@@ -3,15 +3,21 @@
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs/nixpkgs-unstable;
     alejandra = {
-      url = github:kamadorueda/alejandra;
+      url = "github:kamadorueda/alejandra";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sysbase = {
       url = github:signalwalker/nix.sys.base;
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.alejandra.follows = "alejandra";
-      inputs.homebase.follows = "homebase";
-      inputs.homelib.follows = "homelib";
     };
     homelib = {
       url = github:signalwalker/nix.home.lib;
@@ -25,16 +31,6 @@
       inputs.alejandra.follows = "alejandra";
       inputs.homelib.follows = "homelib";
       inputs.home-manager.follows = "home-manager";
-    };
-    home-manager = {
-      url = github:nix-community/home-manager;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # testing
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # secrets
@@ -128,63 +124,78 @@
             ...
           }: {
             options = with lib; {
-              services.akkoma.src = mkOption {
-                type = types.path;
-                default = dependencies.akkoma;
-                readOnly = true;
-              };
-              services.grocy.src = mkOption {
-                type = types.path;
-                default = dependencies.grocy-src;
-                readOnly = true;
-              };
             };
             imports = [./nixos-module.nix];
             config = {
-              services.mediawiki.extensions = {
-                CSS = dependencies.mediawiki-css;
-              };
-              # services.matrix-conduit.package = dependencies.conduit.packages.${pkgs.system}.default;
             };
           };
         };
       };
-      packages = std.genAttrs systems (system: let
-        gen = inputs.nixos-generators;
-        args = argsFor.${system};
-        modules =
-          args.modules
-          ++ [
-            ({...}: {
-              networking.hostName = "ashwalker";
-              networking.domain = "local";
-            })
+      homeConfigurations."ash" = {
+        config,
+        lib,
+        ...
+      }: {
+        imports = [inputs.homebase.homeManagerModules.default];
+        config = {};
+      };
+      nixosModules."hermes" = {
+        lib,
+        pkgs,
+        ...
+      }: {
+        options = {
+          services.akkoma.src = mkOption {
+            type = types.path;
+            default = inputs.akkoma;
+            readOnly = true;
+          };
+          services.grocy.src = mkOption {
+            type = types.path;
+            default = inputs.grocy-src;
+            readOnly = true;
+          };
+        };
+        imports = [
+          inputs.sysbase.nixosModules.default
+          inputs.agenix.nixosModules.age
+          inputs.simple-nixos-mailserver.nixosModules.mailserver
+          inputs.ashwalker-net.nixosModules.default
+
+          ./nixos-module.nix
+        ];
+        config = {
+          networking.hostName = "ashwalker";
+          networking.domain = "net";
+          home-manager.users = self.homeConfigurations;
+          nixpkgs.overlays = [
+            inputs.agenix.overlays.default
           ];
-      in {
-        raw = gen.nixosGenerate {
-          inherit (args) system lib pkgs;
-          inherit modules;
-          format = "raw-efi";
+
+          services.mediawiki.extensions = {
+            CSS = inputs.mediawiki-css;
+          };
+
+          services.matrix-conduit.package = inputs.conduit.packages.${pkgs.system}.default;
         };
-        qcow = gen.nixosGenerate {
-          inherit (args) system lib pkgs;
-          inherit modules;
-          format = "qcow";
+      };
+      nixosConfigurations."hermes" = std.nixosSystem {
+        system = null; # set in `config.nixpkgs.hostPlatform`
+        modules = [
+          self.nixosModules."hermes"
+        ];
+        lib = std.extend (final: prev: {
+          signal = inputs.homelib.lib;
+        });
+      };
+      deploy.nodes."hermes" = {
+        hostname = "ashwalker.net";
+        remoteBuild = false;
+        profiles.system = {
+          sshUser = "ash";
+          user = "root";
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."hermes";
         };
-        vm = gen.nixosGenerate {
-          inherit (args) system lib pkgs;
-          inherit modules;
-          format = "vm";
-        };
-      });
-      apps = std.genAttrs systems (system: let
-        hostName = "ashwalker";
-      in {
-        "${hostName}-vm" = {
-          type = "app";
-          program = "${self.packages.${system}.vm}/bin/run-${hostName}-vm";
-        };
-        default = self.apps.${system}.vm;
-      });
+      };
     };
 }
