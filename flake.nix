@@ -101,36 +101,6 @@
         });
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
-      signalModules.default = {
-        name = "sys.net.ashwalker";
-        dependencies = signal.flake.set.toDependencies {
-          flakes = inputs;
-          filter = [];
-          outputs = {
-            sysbase.nixosModules = ["default"];
-            ashwalker-net.nixosModules = ["default"];
-            agenix.nixosModules = ["age"];
-            simple-nixos-mailserver.nixosModules = ["mailserver"];
-            funkwhale = {
-              overlays = system: ["default" system];
-              nixosModules = ["default"];
-            };
-          };
-        };
-        outputs = dependencies: {
-          nixosModules = {
-            lib,
-            pkgs,
-            ...
-          }: {
-            options = with lib; {
-            };
-            imports = [./nixos-module.nix];
-            config = {
-            };
-          };
-        };
-      };
       homeConfigurations."ash" = {
         config,
         lib,
@@ -140,11 +110,12 @@
         config = {};
       };
       nixosModules."hermes" = {
+        config,
         lib,
         pkgs,
         ...
       }: {
-        options = {
+        options = with lib; {
           services.akkoma.src = mkOption {
             type = types.path;
             default = inputs.akkoma;
@@ -161,6 +132,7 @@
           inputs.agenix.nixosModules.age
           inputs.simple-nixos-mailserver.nixosModules.mailserver
           inputs.ashwalker-net.nixosModules.default
+          inputs.funkwhale.nixosModules.default
 
           ./nixos-module.nix
 
@@ -179,6 +151,15 @@
           };
 
           services.matrix-conduit.package = inputs.conduit.packages.${pkgs.system}.default;
+
+          signal.machines.terra.nix.build.enable = false;
+
+          signal.network.wireguard.networks."wg-signal" = {
+            privateKeyFile = "/var/lib/wireguard/wg-signal.sign";
+          };
+          systemd.tmpfiles.rules = [
+            "z ${config.signal.network.wireguard.networks.wg-signal.privateKeyFile} 0400 systemd-network systemd-network"
+          ];
         };
       };
       nixosConfigurations."hermes" = std.nixosSystem {
@@ -196,7 +177,7 @@
         profiles.system = {
           sshUser = "ash";
           user = "root";
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."hermes";
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."hermes";
         };
       };
     };

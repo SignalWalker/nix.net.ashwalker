@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  modulesPath,
   ...
 }:
 with builtins; let
@@ -60,6 +61,8 @@ in {
     ];
 
     hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+    nixpkgs.hostPlatform = "x86_64-linux";
   };
   meta = {};
 }

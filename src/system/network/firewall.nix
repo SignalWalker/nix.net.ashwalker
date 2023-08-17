@@ -27,6 +27,8 @@ in {
         "::1"
         # ash-laptop tailscale address
         "100.68.182.67"
+        # wg-signal
+        "172.24.86.0/24"
       ];
       bantime = "12m";
       bantime-increment = {
