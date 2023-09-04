@@ -12,7 +12,7 @@ with builtins; let
 in {
   options = with lib; {
     signal.services.wiki = {
-      enable = (mkEnableOption "wiki") // {default = true;};
+      enable = (mkEnableOption "wiki") // {default = false;};
     };
   };
   disabledModules = [];
