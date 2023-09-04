@@ -13,7 +13,7 @@ with builtins; let
 in {
   options = with lib; {
     signal.services.activitypub = {
-      enable = (mkEnableOption "activitypub") // {default = true;};
+      enable = (mkEnableOption "activitypub") // {default = false;};
     };
     services.akkoma = {
       favicon = {
