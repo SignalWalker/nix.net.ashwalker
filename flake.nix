@@ -157,6 +157,9 @@
           signal.network.wireguard.networks."wg-signal" = {
             privateKeyFile = "/var/lib/wireguard/wg-signal.sign";
           };
+
+          signal.machine.signalName = "hermes";
+
           systemd.tmpfiles.rules = [
             "z ${config.signal.network.wireguard.networks.wg-signal.privateKeyFile} 0400 systemd-network systemd-network"
           ];
@@ -172,7 +175,7 @@
         });
       };
       deploy.nodes."hermes" = {
-        hostname = "ashwalker.net";
+        hostname = "hermes.ashwalker.net";
         remoteBuild = false;
         profiles.system = {
           sshUser = "root";

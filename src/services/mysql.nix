@@ -12,7 +12,7 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    systemd.tmpfiles.rules = [
+    systemd.tmpfiles.rules = lib.mkIf mysql.enable [
       "d '/var/log/mysql' 0750 ${mysql.user} ${mysql.group} - -"
     ];
     services.mysql = {

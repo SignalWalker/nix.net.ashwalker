@@ -744,11 +744,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1693844980,
-        "narHash": "sha256-SCnGjcrBoV5y/E6+tQDSmwDSa36TfOwv1o292jC1bBM=",
+        "lastModified": 1693846272,
+        "narHash": "sha256-8NDDjqKLj/4wesnolbcv54J+QaXVHR0q55fwlWXRnes=",
         "owner": "signalwalker",
         "repo": "nix.sys.base",
-        "rev": "d231e3c90212d8ba9a0a3fbac6145a067f239278",
+        "rev": "935ecc7df87c55e379e938397ab992461bde4881",
         "type": "github"
       },
       "original": {
