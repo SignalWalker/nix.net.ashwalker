@@ -10,6 +10,10 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixinate = {
+      url = "github:matthewcroughan/nixinate";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -169,11 +173,21 @@
         system = null; # set in `config.nixpkgs.hostPlatform`
         modules = [
           self.nixosModules."hermes"
+          {
+            _module.args.nixinate = {
+              host = "fd24:fad3:8246::3";
+              sshUser = "root";
+              buildOn = "local";
+              substituteOnTarget = true;
+              hermetic = false;
+            };
+          }
         ];
         lib = std.extend (final: prev: {
           signal = inputs.homelib.lib;
         });
       };
+      apps = inputs.nixinate.nixinate.x86_64-linux self;
       deploy.nodes."hermes" = {
         hostname = "hermes.ashwalker.net";
         remoteBuild = false;
@@ -183,5 +197,6 @@
           path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."hermes";
         };
       };
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
     };
 }
