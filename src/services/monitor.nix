@@ -10,8 +10,12 @@ with builtins; let
   grafana = config.services.grafana;
   psql = config.services.postgresql;
   secrets = config.age.secrets;
+  monitor = config.signal.services.monitor;
 in {
   options = with lib; {
+    signal.services.monitor = {
+      enable = (mkEnableOption "monitoring") // {default = false;};
+    };
     services.grafana = {
       user = mkOption {
         type = types.str;
@@ -27,7 +31,7 @@ in {
   };
   disabledModules = [];
   imports = [];
-  config = {
+  config = lib.mkIf monitor.enable {
     age.secrets.grafanaDbPassword = {
       file = ./monitor/grafanaDbPassword.age;
       owner = grafana.user;
