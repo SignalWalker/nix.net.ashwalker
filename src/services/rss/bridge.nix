@@ -13,7 +13,7 @@ with builtins; let
 in {
   options = with lib; {
     signal.rss.bridge = {
-      enable = (mkEnableOption "rss bridge") // {default = rss.enable;};
+      enable = (mkEnableOption "rss bridge") // {default = false;};
       hostName = mkOption {
         type = types.str;
         default = "bridge.${rss.hostName}";
