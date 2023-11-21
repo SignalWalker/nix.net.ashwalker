@@ -30,13 +30,17 @@ in {
       mkdir -p /boot/efi
       mount /boot/efi
     '';
-    boot.loader.grub.extraInstallCommands = ''
-      ESP_MIRROR=$(mktemp -d)
-      cp -r /boot/efi/EFI $ESP_MIRROR
+    boot.loader.grub.extraInstallCommands = let
+      mktemp = "${pkgs.coreutils}/bin/mktemp";
+      cp = "${pkgs.coreutils}/bin/cp";
+      rm = "${pkgs.coreutils}/bin/rm";
+    in ''
+      ESP_MIRROR=$(${mktemp} -d)
+      ${cp} -r /boot/efi/EFI $ESP_MIRROR
       for i in /boot/efis/*; do
-       cp -r $ESP_MIRROR/EFI $i
+       ${cp} -r $ESP_MIRROR/EFI $i
       done
-      rm -rf $ESP_MIRROR
+      ${rm} -rf $ESP_MIRROR
     '';
     boot.loader.grub.devices = [
       "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_24508713"
