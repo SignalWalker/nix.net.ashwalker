@@ -77,10 +77,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # groceries
-    grocy-src = {
-      url = "github:grocy/grocy";
-      flake = false;
-    };
+    # grocy-src = {
+    #   url = "github:grocy/grocy";
+    #   flake = false;
+    # };
   };
   outputs = inputs @ {
     self,
@@ -125,11 +125,11 @@
             default = inputs.akkoma;
             readOnly = true;
           };
-          services.grocy.src = mkOption {
-            type = types.path;
-            default = inputs.grocy-src;
-            readOnly = true;
-          };
+          # services.grocy.src = mkOption {
+          #   type = types.path;
+          #   default = inputs.grocy-src;
+          #   readOnly = true;
+          # };
         };
         imports = [
           inputs.sysbase.nixosModules.default
