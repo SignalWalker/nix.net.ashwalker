@@ -27,7 +27,8 @@ in {
       database = {
         name = mkOption {
           type = types.str;
-          default = "freshrss";
+          readOnly = true;
+          default = rss.user;
         };
       };
     };
@@ -50,8 +51,8 @@ in {
       ensureUsers = [
         {
           name = rss.user;
+          ensureDBOwnership = true;
           ensureClauses.login = true;
-          ensurePermissions."DATABASE ${rss.database.name}" = "ALL PRIVILEGES";
         }
       ];
     };
