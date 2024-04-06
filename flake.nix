@@ -45,7 +45,7 @@
 
     # pkgs
     ashwalker-net = {
-      url = "git+https://git.home.ashwalker.net/ashwalker.net";
+      url = "git+https://git.home.ashwalker.net/Ash/ashwalker.net";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
