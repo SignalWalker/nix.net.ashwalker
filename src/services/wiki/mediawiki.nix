@@ -485,7 +485,7 @@ in {
       };
       services.mediawiki = {
         database.host = lib.mkDefault "127.0.0.1";
-        database.port = config.services.postgresql.port;
+        database.port = config.services.postgresql.settings.port;
         database.socket = "/run/postgresql";
       };
       systemd.services.mediawiki-init.after = ["postgresql.service"];

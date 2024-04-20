@@ -114,7 +114,7 @@ in {
             # hostname = "localhost";
             # password = {_secret = secrets.activitypubDbPassword.path;};
             socket_dir = "/run/postgresql";
-            port = psql.port;
+            port = psql.settings.port;
           };
           "Pleroma.Web.Endpoint" = {
             secret_key_base = {_secret = secrets.akkomaEndpointKey.path;};

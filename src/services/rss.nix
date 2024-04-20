@@ -66,7 +66,7 @@ in {
         type = "pgsql";
         user = rss.user;
         name = rss.database.name;
-        port = psql.port;
+        port = psql.settings.port;
         host = "localhost";
         passFile = config.age.secrets.rssDbPassword.path;
       };

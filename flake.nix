@@ -45,7 +45,7 @@
 
     # pkgs
     ashwalker-net = {
-      url = "git+https://git.home.ashwalker.net/Ash/ashwalker.net";
+      url = "git+https://git.ashwalker.net/Ash/ashwalker.net";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -105,6 +105,7 @@
         });
     in {
       formatter = std.mapAttrs (system: pkgs: pkgs.default) inputs.alejandra.packages;
+
       homeConfigurations."ash" = {
         config,
         lib,
@@ -113,6 +114,7 @@
         imports = [inputs.homebase.homeManagerModules.default];
         config = {};
       };
+
       nixosModules."hermes" = {
         config,
         lib,
@@ -156,7 +158,7 @@
 
           services.matrix-conduit.package = inputs.conduit.packages.${pkgs.system}.default;
 
-          signal.machines.terra.nix.build.enable = false;
+          signal.machines.terra.nix.build.enable = lib.mkForce false;
 
           signal.network.wireguard.networks."wg-signal" = {
             privateKeyFile = "/var/lib/wireguard/wg-signal.sign";
@@ -169,6 +171,7 @@
           ];
         };
       };
+
       nixosConfigurations."hermes" = std.nixosSystem {
         system = null; # set in `config.nixpkgs.hostPlatform`
         modules = [
@@ -187,16 +190,24 @@
           signal = inputs.homelib.lib;
         });
       };
-      apps = inputs.nixinate.nixinate.x86_64-linux self;
-      deploy.nodes."hermes" = {
-        hostname = "hermes.ashwalker.net";
-        remoteBuild = false;
-        profiles.system = {
-          sshUser = "root";
-          user = "root";
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."hermes";
+
+      deploy = {
+        nodes = {
+          "hermes" = {
+            hostname = "hermes.ashwalker.net";
+            # remoteBuild = false;
+            sshUser = "root";
+            profilesOrder = ["system"];
+            profiles = {
+              system = {
+                user = "root";
+                path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."hermes";
+              };
+            };
+          };
         };
       };
+
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
     };
 }

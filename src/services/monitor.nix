@@ -98,7 +98,7 @@ in {
       };
       settings.database = {
         type = "postgres";
-        host = "127.0.0.1:${toString psql.port}";
+        host = "127.0.0.1:${toString psql.settings.port}";
         user = grafana.user;
         password = "$__file{${secrets.grafanaDbPassword.path}}";
       };
