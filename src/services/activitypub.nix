@@ -77,7 +77,7 @@ in {
       ensureUsers = [
         {
           name = akkoma.user;
-          ensurePermissions."DATABASE akkoma" = "ALL PRIVILEGES";
+          ensureDBOwnership = true;
         }
       ];
     };
