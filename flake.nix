@@ -197,6 +197,7 @@
             hostname = "hermes.ashwalker.net";
             # remoteBuild = false;
             sshUser = "root";
+            sshOpts = ["-oControlMaster=no"];
             profilesOrder = ["system"];
             profiles = {
               system = {
