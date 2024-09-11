@@ -11,4 +11,5 @@ in {
   "pushPrivateKey.age".publicKeys = keys;
   "jokenKey.age".publicKeys = keys;
   "activitypubDbPassword.age".publicKeys = keys;
+  "meilisearchMasterKey.age".publicKeys = keys;
 }

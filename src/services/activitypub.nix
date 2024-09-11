@@ -115,9 +115,17 @@ in {
             # password = {_secret = secrets.activitypubDbPassword.path;};
             socket_dir = "/run/postgresql";
             port = psql.settings.port;
-            "prepare: :named"."parameters:" = {
-              plan_cache_mode = "force_custom_plan";
-            };
+            # "prepare: :named"."parameters" = {
+            #   plan_cache_mode = "force_custom_plan";
+            # };
+          };
+          "Pleroma.Search" = {
+            module = "Pleroma.Search.Meilisearch";
+          };
+          "Pleroma.Search.Meilisearch" = {
+            url = "http://terra.ashwalker.net:46782";
+            private_key = {_secret = secrets.meilisearchMasterKey.path;};
+            initial_indexing_chunk_size = 100000;
           };
           "Pleroma.Web.Endpoint" = {
             secret_key_base = {_secret = secrets.akkomaEndpointKey.path;};
