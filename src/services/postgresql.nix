@@ -19,7 +19,7 @@ in {
     ];
     services.postgresql = {
       enable = true;
-      package = pkgs.postgresql_14;
+      package = pkgs.postgresql_16;
       extraPlugins = ps: with ps; [];
     };
     services.postgresqlBackup = {
