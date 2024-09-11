@@ -15,14 +15,10 @@ in {
       networkConfig.Address = ["5.161.136.2/32" "2a01:4ff:f0:b30::1/64"];
       routes = [
         {
-          routeConfig = {
-            Gateway = "172.31.1.1";
-          };
+          Gateway = "172.31.1.1";
         }
         {
-          routeConfig = {
-            Gateway = "fe80::1";
-          };
+          Gateway = "fe80::1";
         }
       ];
     };
