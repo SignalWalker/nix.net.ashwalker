@@ -115,6 +115,9 @@ in {
             # password = {_secret = secrets.activitypubDbPassword.path;};
             socket_dir = "/run/postgresql";
             port = psql.settings.port;
+            "prepare: :named"."parameters:" = {
+              plan_cache_mode = "force_custom_plan";
+            };
           };
           "Pleroma.Web.Endpoint" = {
             secret_key_base = {_secret = secrets.akkomaEndpointKey.path;};
