@@ -85,6 +85,10 @@
     #   url = "github:grocy/grocy";
     #   flake = false;
     # };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     self,
@@ -186,6 +190,7 @@
       nixosConfigurations."hermes" = std.nixosSystem {
         system = null; # set in `config.nixpkgs.hostPlatform`
         modules = [
+          inputs.disko.nixosModules.disko
           self.nixosModules."hermes"
           {
             _module.args.nixinate = {

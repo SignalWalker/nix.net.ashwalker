@@ -21,40 +21,40 @@ in {
     boot.kernelModules = [];
     boot.extraModulePackages = [];
 
-    fileSystems."/" = {
-      device = "rpool/root";
-      fsType = "zfs";
-      options = ["zfsutil" "X-mount.mkdir"];
-    };
+    # fileSystems."/" = {
+    #   device = "rpool/root";
+    #   fsType = "zfs";
+    #   options = ["zfsutil" "X-mount.mkdir"];
+    # };
+    #
+    # fileSystems."/home" = {
+    #   device = "rpool/home";
+    #   fsType = "zfs";
+    #   options = ["zfsutil" "X-mount.mkdir"];
+    # };
+    #
+    # fileSystems."/var" = {
+    #   device = "rpool/var";
+    #   fsType = "zfs";
+    #   options = ["zfsutil" "X-mount.mkdir"];
+    # };
+    #
+    # fileSystems."/nix" = {
+    #   device = "rpool/nix";
+    #   fsType = "zfs";
+    #   options = ["zfsutil" "X-mount.mkdir"];
+    # };
+    #
+    # fileSystems."/boot" = {
+    #   device = "/dev/disk/by-uuid/5E2B-7B19";
+    #   fsType = "vfat";
+    # };
+    #
+    # swapDevices = [
+    #   {device = "/dev/disk/by-uuid/7bd607db-4e9f-4b82-8fd1-15ad28b0ce1e";}
+    # ];
 
-    fileSystems."/home" = {
-      device = "rpool/home";
-      fsType = "zfs";
-      options = ["zfsutil" "X-mount.mkdir"];
-    };
-
-    fileSystems."/var" = {
-      device = "rpool/var";
-      fsType = "zfs";
-      options = ["zfsutil" "X-mount.mkdir"];
-    };
-
-    fileSystems."/nix" = {
-      device = "rpool/nix";
-      fsType = "zfs";
-      options = ["zfsutil" "X-mount.mkdir"];
-    };
-
-    fileSystems."/boot" = {
-      device = "/dev/disk/by-uuid/5E2B-7B19";
-      fsType = "vfat";
-    };
-
-    swapDevices = [
-      {device = "/dev/disk/by-uuid/7bd607db-4e9f-4b82-8fd1-15ad28b0ce1e";}
-    ];
-
-    boot.zfs.extraPools = ["rpool"];
+    # boot.zfs.extraPools = ["rpool"];
 
     hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
