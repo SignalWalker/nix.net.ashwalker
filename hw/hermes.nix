@@ -22,43 +22,39 @@ in {
     boot.extraModulePackages = [];
 
     fileSystems."/" = {
-      device = "rpool/nixos/root";
+      device = "rpool/root";
       fsType = "zfs";
       options = ["zfsutil" "X-mount.mkdir"];
     };
 
     fileSystems."/home" = {
-      device = "rpool/nixos/home";
+      device = "rpool/home";
       fsType = "zfs";
       options = ["zfsutil" "X-mount.mkdir"];
     };
 
-    fileSystems."/var/lib" = {
-      device = "rpool/nixos/var/lib";
+    fileSystems."/var" = {
+      device = "rpool/var";
       fsType = "zfs";
       options = ["zfsutil" "X-mount.mkdir"];
     };
 
-    fileSystems."/var/log" = {
-      device = "rpool/nixos/var/log";
+    fileSystems."/nix" = {
+      device = "rpool/nix";
       fsType = "zfs";
       options = ["zfsutil" "X-mount.mkdir"];
     };
 
     fileSystems."/boot" = {
-      device = "bpool/nixos/root";
-      fsType = "zfs";
-      options = ["zfsutil" "X-mount.mkdir"];
-    };
-
-    fileSystems."/boot/efi" = {
-      device = "/dev/disk/by-uuid/7D6B-B145";
+      device = "/dev/disk/by-uuid/5E2B-7B19";
       fsType = "vfat";
     };
 
     swapDevices = [
-      {device = "/dev/zvol/rpool/swap";}
+      {device = "/dev/disk/by-uuid/7bd607db-4e9f-4b82-8fd1-15ad28b0ce1e";}
     ];
+
+    boot.zfs.extraPools = ["rpool"];
 
     hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
