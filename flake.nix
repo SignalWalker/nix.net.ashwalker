@@ -60,6 +60,10 @@
       url = "git+https://akkoma.dev/AkkomaGang/akkoma";
       flake = false;
     };
+    akkoma-fe = {
+      url = "git+https://akkoma.dev/AkkomaGang/akkoma-fe";
+      flake = false;
+    };
     # mail
     simple-nixos-mailserver = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
@@ -122,10 +126,17 @@
         ...
       }: {
         options = with lib; {
-          services.akkoma.src = mkOption {
-            type = types.path;
-            default = inputs.akkoma;
-            readOnly = true;
+          services.akkoma = {
+            src = mkOption {
+              type = types.path;
+              default = inputs.akkoma;
+              readOnly = true;
+            };
+            akkoma-fe-src = mkOption {
+              type = types.path;
+              default = inputs.akkoma-fe;
+              readOnly = true;
+            };
           };
           # services.grocy.src = mkOption {
           #   type = types.path;

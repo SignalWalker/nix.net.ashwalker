@@ -11,7 +11,7 @@ with builtins; let
 in {
   options = with lib; {
     signal.services.matrix = {
-      enable = (mkEnableOption "matrix") // {default = false;};
+      enable = (mkEnableOption "matrix") // {default = true;};
       serverName = mkOption {
         type = types.str;
         readOnly = true;
@@ -124,6 +124,17 @@ in {
         servers = {
           "localhost:${toString conduit.settings.global.port}" = {};
         };
+      };
+    };
+
+    systemd.services.conduit = {
+      serviceConfig = {
+        CPUAccounting = true;
+        CPUQuota = "100%";
+        MemoryAccounting = true;
+        MemoryHigh = "1G";
+        MemoryMax = "2G";
+        MemorySwapMax = "0";
       };
     };
   };

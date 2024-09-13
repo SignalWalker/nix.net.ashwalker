@@ -8,8 +8,10 @@ with builtins; let
   std = pkgs.lib;
   vhost = "social.${config.networking.fqdn}";
   akkoma = config.services.akkoma;
+  port = 40503;
   secrets = config.age.secrets;
   psql = config.services.postgresql;
+  mainVhost = config.services.nginx.virtualHosts."${vhost}";
 in {
   options = with lib; {
     signal.services.activitypub = {
@@ -72,6 +74,10 @@ in {
       file = ./activitypub/secrets/jokenKey.age;
       owner = akkoma.user;
     };
+    age.secrets.meilisearchMasterKey = {
+      file = ./activitypub/secrets/meilisearchMasterKey.age;
+      owner = akkoma.user;
+    };
     services.postgresql = {
       ensureDatabases = ["akkoma"];
       ensureUsers = [
@@ -87,6 +93,47 @@ in {
       initDb = {
         enable = false;
       };
+      # frontends = {
+      #   primary = {
+      #     package = pkgs.akkoma-frontends.akkome-fe.override {src = akkoma.akkoma-fe-src;};
+      #     # package = pkgs.akkoma-frontends.akkoma-fe.overrideAttrs (final: prev: let
+      #     #   src = akkoma.akkoma-fe-src;
+      #     #   offlineCache = pkgs.fetchYarnDeps {
+      #     #     yarnLock = "${src}/yarn.lock";
+      #     #     hash = "sha256-Uet3zdjLdI4qpiuU4CtW2WwWGcFaOhotLLKfnsAUqho=";
+      #     #   };
+      #     # in {
+      #     #   inherit src offlineCache;
+      #     #   version = src.rev;
+      #     #
+      #     #   postPatch = ''
+      #     #     # Build scripts assume to be used within a Git repository checkout
+      #     #     sed -E -i '/^let commitHash =/,/;$/clet commitHash = "${builtins.substring 0 7 src.rev}";' \
+      #     #       build/webpack.prod.conf.js
+      #     #   '';
+      #     #
+      #     #   configurePhase = ''
+      #     #     runHook preConfigure
+      #     #
+      #     #     export HOME="$(mktemp -d)"
+      #     #
+      #     #     yarn config --offline set yarn-offline-mirror ${lib.escapeShellArg offlineCache}
+      #     #     fixup-yarn-lock yarn.lock
+      #     #
+      #     #     yarn install --offline --frozen-lockfile --ignore-platform --ignore-scripts --no-progress --non-interactive
+      #     #
+      #     #     runHook postConfigure
+      #     #   '';
+      #     # });
+      #     name = "akkoma-fe";
+      #     ref = "develop";
+      #   };
+      #   admin = {
+      #     package = pkgs.akkoma-frontends.admin-fe;
+      #     name = "admin-fe";
+      #     ref = "stable";
+      #   };
+      # };
       config = {
         ":pleroma" = {
           ":instance" = {
@@ -102,10 +149,14 @@ in {
             safe_dm_mentions = true;
             external_user_synchronization = true;
             cleanup_attachments = true;
+            upload_limit = 32 * 1024 * 1024;
           };
           ":media_proxy" = {
-            enabled = false;
-            redirect_on_failure = true;
+            enabled = true;
+            proxy_opts = {
+              redirect_on_failure = true;
+            };
+            base_url = "https://cache.${vhost}";
           };
           "Pleroma.Repo" = {
             adapter = "Ecto.Adapters.Postgres";
@@ -123,9 +174,13 @@ in {
             module = "Pleroma.Search.Meilisearch";
           };
           "Pleroma.Search.Meilisearch" = {
-            url = "http://terra.ashwalker.net:46782";
+            url = "http://terra.ashwalker.net:46782/";
             private_key = {_secret = secrets.meilisearchMasterKey.path;};
             initial_indexing_chunk_size = 100000;
+          };
+          ":markup" = {
+            allow_headings = true;
+            allow_tables = true;
           };
           "Pleroma.Web.Endpoint" = {
             secret_key_base = {_secret = secrets.akkomaEndpointKey.path;};
@@ -138,7 +193,7 @@ in {
             };
             http = {
               ip = "127.0.0.1";
-              port = 4000;
+              port = port;
             };
           };
           "Pleroma.Web.WebFinger" = {
@@ -153,6 +208,28 @@ in {
             tls = ":always";
             auth = ":always";
             port = 587;
+          };
+          "Pleroma.Upload" = {
+            base_url = "https://media.${vhost}/media/";
+            # filters = [
+            #   "Pleroma.Upload.Filter.Exiftool.ReadDescription"
+            #   "Pleroma.Upload.Filter.Exiftool.StripMetadata"
+            # ];
+          };
+          ":restrict_unauthenticated" = {
+            timelines = {
+              local = false;
+              federated = true;
+              bubble = true;
+            };
+            profiles = {
+              local = false;
+              remote = false; # so you can see profiles from repeats
+            };
+            activities = {
+              local = false;
+              remote = true;
+            };
           };
         };
         ":web_push_encryption" = {
@@ -183,9 +260,18 @@ in {
     };
 
     services.nginx = {
+      proxyCachePath."akkoma-media-cache" = {
+        enable = true;
+        levels = "1:2";
+        inactive = "720m";
+        maxSize = "10g";
+        useTempPath = false;
+        keysZoneName = "akkoma_media_cache";
+        keysZoneSize = "10m";
+      };
       upstreams."phoenix" = {
         extraConfig = ''
-          server 127.0.0.1:4000 max_fails=5 fail_timeout=60s;
+          server 127.0.0.1:${toString port} max_fails=5 fail_timeout=60s;
         '';
       };
       virtualHosts.${config.networking.fqdn} = {
@@ -198,7 +284,7 @@ in {
         enableACME = config.networking.domain != "local";
         forceSSL = config.networking.domain != "local";
         extraConfig = ''
-          client_max_body_size 16m;
+          client_max_body_size 32m;
           ignore_invalid_headers off;
 
           proxy_http_version 1.1;
@@ -230,6 +316,24 @@ in {
             add_header Referrer-Policy same-origin;
             add_header X-Download-Options noopen;
           '';
+        };
+      };
+      virtualHosts."media.${vhost}" = {
+        inherit (mainVhost) http2 enableACME forceSSL extraConfig;
+        locations."/media" = {
+          inherit (mainVhost.locations."/") recommendedProxySettings extraConfig proxyPass;
+        };
+      };
+      virtualHosts."cache.${vhost}" = {
+        inherit (mainVhost) http2 enableACME forceSSL extraConfig;
+        locations."/proxy" = {
+          inherit (mainVhost.locations."/") recommendedProxySettings proxyPass;
+          extraConfig =
+            mainVhost.locations."/".extraConfig
+            + ''
+              proxy_cache akkoma_media_cache;
+              proxy_cache_lock on;
+            '';
         };
       };
     };

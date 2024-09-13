@@ -39,6 +39,15 @@ in {
         max_wal_size = "4GB";
       };
     };
+
+    systemd.services.postgresql = {
+      serviceConfig = {
+        MemoryAccounting = true;
+        MemoryHigh = "2560M";
+        MemorySwapMax = "0";
+      };
+    };
+
     services.postgresqlBackup = {
       enable = pg.enable;
       location = "/var/backup/postgres";
