@@ -19,8 +19,13 @@ in {
           content = {
             type = "gpt";
             partitions = {
+              boot = {
+                name = "boot";
+                size = "1M";
+                type = "EF02";
+              };
               ESP = {
-                size = "1GiB";
+                size = "1G";
                 type = "EF00";
                 content = {
                   type = "filesystem";
@@ -29,7 +34,8 @@ in {
                 };
               };
               swap = {
-                size = "8GiB";
+                size = "8G";
+                type = "8200";
                 content = {
                   type = "swap";
                   randomEncryption = true;
@@ -60,10 +66,12 @@ in {
             encryption = "on";
             keyformat = "passphrase";
             keylocation = "file:///tmp/rpool.key";
+            mountpoint = "/";
           };
-          mountpoint = "/";
+          # mountpoint = "/";
           postCreateHook = ''
             zfs set keylocation="prompt" "rpool"
+            zfs list -t snapshot -H -o name | grep -E '^rpool@blank$' || zfs snapshot rpool@blank
           '';
           datasets = {
             "home" = {

@@ -21,11 +21,12 @@ in {
     boot.kernelModules = [];
     boot.extraModulePackages = [];
 
-    # fileSystems."/" = {
-    #   device = "rpool/root";
-    #   fsType = "zfs";
-    #   options = ["zfsutil" "X-mount.mkdir"];
-    # };
+    fileSystems."/" = {
+      device = "rpool";
+      fsType = "zfs";
+      options = ["zfsutil" "X-mount.mkdir"];
+    };
+
     #
     # fileSystems."/home" = {
     #   device = "rpool/home";

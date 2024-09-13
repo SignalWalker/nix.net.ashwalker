@@ -14,9 +14,9 @@ in {
     boot.supportedFilesystems = ["zfs"];
     networking.hostId = "fb3ab582";
     boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-    boot.loader.efi.efiSysMountPoint = "/boot/efi";
+    # boot.loader.efi.efiSysMountPoint = "/boot/efi";
     boot.loader.efi.canTouchEfiVariables = false;
-    boot.loader.generationsDir.copyKernels = true;
+    # boot.loader.generationsDir.copyKernels = true;
     boot.loader.grub.efiInstallAsRemovable = true;
     boot.loader.grub.enable = true;
     boot.loader.grub.copyKernels = true;
