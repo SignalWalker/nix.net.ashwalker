@@ -518,11 +518,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1726142087,
-        "narHash": "sha256-uT4TRd3PgreUD5sJaNioVfMemdyWFLoPHqN4AFszGmw=",
+        "lastModified": 1726222338,
+        "narHash": "sha256-KuA8ciNR8qCF3dQaCaeh0JWyQUgEwkwDHr/f49Q5/e8=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "da8406a6ff556b86dc368e96ca8bd81b2704a91a",
+        "rev": "503af483e1b328691ea3a434d331995595fb2e3d",
         "type": "github"
       },
       "original": {
@@ -539,11 +539,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1726036828,
-        "narHash": "sha256-ZQHbpyti0jcAKnwQY1lwmooecLmSG6wX1JakQ/eZNeM=",
+        "lastModified": 1726142087,
+        "narHash": "sha256-uT4TRd3PgreUD5sJaNioVfMemdyWFLoPHqN4AFszGmw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "8a1671642826633586d12ac3158e463c7a50a112",
+        "rev": "da8406a6ff556b86dc368e96ca8bd81b2704a91a",
         "type": "github"
       },
       "original": {
@@ -596,11 +596,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1726071851,
-        "narHash": "sha256-1lqOPLWUSR56Coq0DkoJaYE1ABm8N0ThviW7lwhN404=",
+        "lastModified": 1726190814,
+        "narHash": "sha256-w0EDRIzQO8zHQWUlHC+SWbTdVI2P3wsHIagfjfVt9TE=",
         "owner": "signalwalker",
         "repo": "nix.home.lib",
-        "rev": "098e127fd0445b3e1e79dd3fffc92e81190a31d3",
+        "rev": "45e18a4bd251fbdf6e8520c4733817fff9d87e02",
         "type": "github"
       },
       "original": {
@@ -709,11 +709,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1726042813,
-        "narHash": "sha256-LnNKCCxnwgF+575y0pxUdlGZBO/ru1CtGHIqQVfvjlA=",
+        "lastModified": 1726142289,
+        "narHash": "sha256-Jks8O42La+nm5AMTSq/PvM5O+fUAhIy0Ce1QYqLkyZ4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "159be5db480d1df880a0135ca0bfed84c2f88353",
+        "rev": "280db3decab4cbeb22a4599bd472229ab74d25e1",
         "type": "github"
       },
       "original": {
@@ -827,11 +827,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1726071876,
-        "narHash": "sha256-R2orEysOEO/M2JRHaTuJQax1jfyoNzTNlfOnTdNRXWA=",
+        "lastModified": 1726190822,
+        "narHash": "sha256-NMNv2KrDR1ozH9zauxDMlaOfsz/4JAQ0/VUWDIpv0XM=",
         "owner": "signalwalker",
         "repo": "nix.sys.base",
-        "rev": "497fdb5dae27c348a014f1b6d01ed6bc5ca96b76",
+        "rev": "551235866ef0b32dc0cbd0f9d0fd59450838eb95",
         "type": "github"
       },
       "original": {
