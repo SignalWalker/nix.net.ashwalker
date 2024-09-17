@@ -203,8 +203,8 @@ in {
             enabled = true;
             adapter = "Swoosh.Adapters.SMTP";
             relay = "mail.ashwalker.net";
-            username = "daemon@${config.networking.fqdn}";
-            password = {_secret = secrets.mailPasswordDaemon.path;};
+            # username = "daemon@${config.networking.fqdn}";
+            # password = {_secret = secrets.mailPasswordDaemon.path;};
             tls = ":always";
             auth = ":always";
             port = 587;
@@ -257,6 +257,13 @@ in {
         "favicon.svg" = mkFile akkoma.favicon.svg "favicon.svg";
       };
       nginx = null; # doing this manually
+    };
+
+    systemd.services.akkoma = {
+      serviceConfig = {
+        Restart = "on-failure";
+        RestartSec = "5min";
+      };
     };
 
     services.nginx = {

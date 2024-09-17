@@ -131,10 +131,11 @@ in {
       serviceConfig = {
         CPUAccounting = true;
         CPUQuota = "100%";
-        MemoryAccounting = true;
-        MemoryHigh = "1G";
-        MemoryMax = "2G";
-        MemorySwapMax = "0";
+        Restart = "on-failure";
+        # MemoryAccounting = true;
+        # MemoryHigh = "1G";
+        # MemoryMax = "2G";
+        # MemorySwapMax = "0";
       };
     };
   };

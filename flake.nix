@@ -1,7 +1,7 @@
 {
   description = "NixOS config for ashwalker.net";
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixpkgs-unstable;
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     alejandra = {
       url = "github:kamadorueda/alejandra";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,18 +19,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sysbase = {
-      url = github:signalwalker/nix.sys.base;
+      url = "github:signalwalker/nix.sys.base";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.alejandra.follows = "alejandra";
     };
     homelib = {
-      url = github:signalwalker/nix.home.lib;
+      url = "github:signalwalker/nix.home.lib";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.alejandra.follows = "alejandra";
       inputs.home-manager.follows = "home-manager";
     };
     homebase = {
-      url = github:signalwalker/nix.home.base;
+      url = "github:signalwalker/nix.home.base";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.alejandra.follows = "alejandra";
       inputs.homelib.follows = "homelib";

@@ -42,9 +42,11 @@ in {
 
     systemd.services.postgresql = {
       serviceConfig = {
-        MemoryAccounting = true;
-        MemoryHigh = "2560M";
-        MemorySwapMax = "0";
+        # MemoryAccounting = true;
+        # MemoryHigh = "2560M";
+        # MemorySwapMax = "0";
+        Restart = "on-failure";
+        RestartSec = "5min";
       };
     };
 
