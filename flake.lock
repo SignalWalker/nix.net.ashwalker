@@ -92,10 +92,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1726611615,
-        "narHash": "sha256-bLqI602bypO8fQ0by9Lm6C55od05ZwFVDgo+c9x5XT0=",
+        "lastModified": 1726611708,
+        "narHash": "sha256-fvBcAM9lCoK3/yqvkdvvy720Qcd+Wj0z+fNhlooywYg=",
         "ref": "refs/heads/main",
-        "rev": "d7840e76107c8a09d4861491744b83acb45dc0e9",
+        "rev": "03f7e634b4a67aeff9a12bab56bff1b36831a8ef",
         "revCount": 86,
         "type": "git",
         "url": "https://git.ashwalker.net/Ash/ashwalker.net"
@@ -538,11 +538,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1726611136,
-        "narHash": "sha256-H3XQ8DHc/wtEcztf34IzWW7CPk7RZHTdB6PZd++0yt8=",
+        "lastModified": 1726611255,
+        "narHash": "sha256-/bxaYvIK6/d3zqpW26QFS0rqfd0cO4qreSNWvYLTl/w=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "4974dfb26e1c84d22bfdf943d41a33c9e51209a8",
+        "rev": "d2493de5cd1da06b6a4c3e97f4e7d5dd791df457",
         "type": "github"
       },
       "original": {
