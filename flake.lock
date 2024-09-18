@@ -92,11 +92,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1726674495,
-        "narHash": "sha256-uHG9yfv0HhVGcLTj891sKZd3UBiMTg89D/GWnMgzsGY=",
+        "lastModified": 1726698739,
+        "narHash": "sha256-X9r2nt1sxIkaoRrI7LbKYXa9CCR2KOOFL7JCVCB5cdY=",
         "ref": "refs/heads/main",
-        "rev": "0c9e839a49cee3caba8996f9bba499855df74765",
-        "revCount": 93,
+        "rev": "742232a2c3c6cd45c73ee4f0fa49942657f4c55d",
+        "revCount": 96,
         "type": "git",
         "url": "https://git.ashwalker.net/Ash/ashwalker.net"
       },
