@@ -19,6 +19,7 @@ in {
     services.nginx.virtualHosts."${net.domain}" = {
       enableACME = config.networking.domain != "local";
       addSSL = config.networking.domain != "local";
+      default = true;
     };
   };
   meta = {};
