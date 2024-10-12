@@ -11,10 +11,9 @@ in {
   disabledModules = [];
   imports = [];
   config = {
-    virtualHosts."share.ashwalker.net" = {
+    services.nginx.virtualHosts."share.ashwalker.net" = {
       enableACME = true;
       forceSSL = true;
-      listenAddresses = nginx.publicListenAddresses;
       locations."/" = {
         root = "/var/lib/nginx-fileshare";
         basicAuthFile = "/etc/nginx/fileshare.htpasswd";
