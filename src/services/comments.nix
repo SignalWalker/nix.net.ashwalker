@@ -12,7 +12,7 @@ in {
   options = with lib; {};
   config = {
     age.secrets.comentario = {
-      file = ./comments/comentario.age;
+      file = ./comments/secrets/comentario.age;
       owner = com.user;
       group = com.group;
     };
