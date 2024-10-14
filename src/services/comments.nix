@@ -35,11 +35,12 @@ in {
       forceSSL = true;
     };
     services.postgresql = {
-      ensureDatabases = ["comentario"];
+      ensureDatabases = [com.user];
       ensureUsers = [
         {
           name = com.user;
-          ensurePermissions."DATABASE comentario" = "ALL PRIVILEGES";
+          ensureDBOwnership = true;
+          ensureClauses.login = true;
         }
       ];
     };
