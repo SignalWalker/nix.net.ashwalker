@@ -89,6 +89,11 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    comentario = {
+      url = "git+https://git.ashwalker.net/Ash/nix.pkg.comentario";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs @ {
     self,
@@ -155,6 +160,8 @@
           inputs.ashwalker-net.nixosModules.default
           inputs.funkwhale.nixosModules.default
 
+          inputs.comentario.nixosModules.default
+
           ./nixos-module.nix
 
           ./hw/hermes.nix
@@ -165,6 +172,7 @@
           home-manager.users = self.homeConfigurations;
           nixpkgs.overlays = [
             inputs.agenix.overlays.default
+            inputs.comentario.overlays.default
           ];
 
           services.mediawiki.extensions = {
