@@ -30,9 +30,18 @@ in {
         };
       };
     };
-    services.nginx.virtualHost.${com.virtualHost.domain} = {
+    services.nginx.virtualHosts.${com.virtualHost.domain} = {
       enableACME = true;
       forceSSL = true;
+    };
+    services.postgresql = {
+      ensureDatabases = ["comentario"];
+      ensureUsers = [
+        {
+          name = com.user;
+          ensurePermissions."DATABASE comentario" = "ALL PRIVILEGES";
+        }
+      ];
     };
   };
   meta = {};
