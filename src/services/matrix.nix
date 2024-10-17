@@ -11,7 +11,7 @@ with builtins; let
 in {
   options = with lib; {
     signal.services.matrix = {
-      enable = (mkEnableOption "matrix") // {default = true;};
+      enable = (mkEnableOption "matrix") // {default = false;};
       serverName = mkOption {
         type = types.str;
         readOnly = true;
