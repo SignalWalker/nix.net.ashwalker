@@ -42,11 +42,11 @@
     "akkoma": {
       "flake": false,
       "locked": {
-        "lastModified": 1727221927,
-        "narHash": "sha256-kAnqRjobqcIrxhsVaEi3xRR1eKY/0aK0rfmwNc1a+48=",
+        "lastModified": 1729090726,
+        "narHash": "sha256-yEAPTfTdwrm8+dGlacpCYhQ6+Coif5lcGvOviJ/sMLs=",
         "ref": "refs/heads/develop",
-        "rev": "3c72b48a05921b00e201965ad22b751c5d46bcdf",
-        "revCount": 15788,
+        "rev": "f1018867097e6f293d8b2b5b6935f0a7ebf99bd0",
+        "revCount": 15793,
         "type": "git",
         "url": "https://akkoma.dev/AkkomaGang/akkoma"
       },
@@ -128,11 +128,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728755455,
-        "narHash": "sha256-w7D/8D7a1+ZyiCUEA5GupPxme4Wp7FBFXQYSH0lX1eM=",
+        "lastModified": 1729182646,
+        "narHash": "sha256-HIcrn7wQ4bYPkNLMBjb68K6sviVJd5wZtcgLzIhIxk0=",
         "ref": "refs/heads/main",
-        "rev": "90456fe8f251b8dffa0e957b5ff07573735c034a",
-        "revCount": 201,
+        "rev": "eca177bf9246d4a045143ec7eca74a6b1ea2d331",
+        "revCount": 204,
         "type": "git",
         "url": "https://git.ashwalker.net/Ash/ashwalker.net"
       },
@@ -177,6 +177,44 @@
       "original": {
         "owner": "simple-nixos-mailserver",
         "repo": "blobs",
+        "type": "gitlab"
+      }
+    },
+    "comentario": {
+      "inputs": {
+        "comentario": "comentario_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1729181695,
+        "narHash": "sha256-/ICysQeRTKHAId38gO7mkX7L4LUggjnbWFJrqvwgIZE=",
+        "ref": "refs/heads/main",
+        "rev": "845254ff79c8bd0add69a89e28fc728168e5d6b4",
+        "revCount": 10,
+        "type": "git",
+        "url": "https://git.ashwalker.net/Ash/nix.pkg.comentario"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.ashwalker.net/Ash/nix.pkg.comentario"
+      }
+    },
+    "comentario_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1726311252,
+        "narHash": "sha256-o7NOj6Yy0h7KQb4zrz7o4ukb2+YFl5may64M43JaSvQ=",
+        "owner": "comentario",
+        "repo": "comentario",
+        "rev": "95e3075a2a18af61411cac97dd70e06d0c2e4842",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "comentario",
+        "ref": "v3.10.0",
+        "repo": "comentario",
         "type": "gitlab"
       }
     },
@@ -301,11 +339,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728687662,
-        "narHash": "sha256-D9TChzb00eTG1YWBx8eN2s6lJJnBjB5Y7RpxkAzGvyQ=",
+        "lastModified": 1729099656,
+        "narHash": "sha256-VftVIg7UXTy1bq+tzi1aVYOWl7PQ35IpjW88yMYjjpc=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "bdbdb725d632863bdedb80baabf21327614dd237",
+        "rev": "d7d57edb72e54891fa67a6f058a46b2bb405663b",
         "type": "github"
       },
       "original": {
@@ -614,11 +652,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728726232,
-        "narHash": "sha256-8ZWr1HpciQsrFjvPMvZl0W+b0dilZOqXPoKa2Ux36bc=",
+        "lastModified": 1729171802,
+        "narHash": "sha256-Eip3uI+XeyAfBoQXpkm/F7eG3M7AgvzSyhyJdzxVt74=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "d57112db877f07387ce7104b5ac346ede556d2d7",
+        "rev": "9c1a1c7df49a9b28539ccb509b36d0b81e41391c",
         "type": "github"
       },
       "original": {
@@ -824,11 +862,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1728538411,
-        "narHash": "sha256-f0SBJz1eZ2yOuKUr5CA9BHULGXVSn6miBuUWdTyhUhU=",
+        "lastModified": 1728979988,
+        "narHash": "sha256-GBJRnbFLDg0y7ridWJHAP4Nn7oss50/VNgqoXaf/RVk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b69de56fac8c2b6f8fd27f2eca01dcda8e0a4221",
+        "rev": "7881fbfd2e3ed1dfa315fca889b2cfd94be39337",
         "type": "github"
       },
       "original": {
@@ -860,6 +898,7 @@
         "akkoma": "akkoma",
         "alejandra": "alejandra",
         "ashwalker-net": "ashwalker-net",
+        "comentario": "comentario",
         "conduit": "conduit",
         "deploy-rs": "deploy-rs",
         "disko": "disko",
