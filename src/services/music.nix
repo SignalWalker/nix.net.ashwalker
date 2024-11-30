@@ -7,7 +7,7 @@
 with builtins; let
   std = pkgs.lib;
   vhost = "music.${config.networking.fqdn}";
-  funkwhale = config.services.funkwhale;
+  # funkwhale = config.services.funkwhale;
 in {
   options = with lib; {};
   disabledModules = [];
