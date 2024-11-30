@@ -14,18 +14,18 @@ in {
   imports = [
     # ./music/funkwhale.nix
   ];
-  config = lib.mkIf false {
-    services.funkwhale = {
-      enable = false;
-      dataDir = "/var/lib/funkwhale";
-      hostname = "music.${config.networking.fqdn}";
-      defaultFromEmail = "daemon@${funkwhale.hostname}";
-      api = {
-        mediaRoot = "${funkwhale.dataDir}/media";
-        staticRoot = "/etc/funkwhale/static";
-        # musicPath = "${funkwhale.dataDir}/music";
-      };
-    };
+  config = {
+    # services.funkwhale = {
+    #   enable = false;
+    #   dataDir = "/var/lib/funkwhale";
+    #   hostname = "music.${config.networking.fqdn}";
+    #   defaultFromEmail = "daemon@${funkwhale.hostname}";
+    #   api = {
+    #     mediaRoot = "${funkwhale.dataDir}/media";
+    #     staticRoot = "/etc/funkwhale/static";
+    #     # musicPath = "${funkwhale.dataDir}/music";
+    #   };
+    # };
   };
   meta = {};
 }
