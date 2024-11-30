@@ -14,7 +14,7 @@ in {
   imports = [
     # ./music/funkwhale.nix
   ];
-  config = {
+  config = lib.mkIf false {
     services.funkwhale = {
       enable = false;
       dataDir = "/var/lib/funkwhale";

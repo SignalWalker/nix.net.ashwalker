@@ -50,10 +50,10 @@
     };
 
     # music
-    funkwhale = {
-      url = "github:signalwalker/nix.srv.funkwhale";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # funkwhale = {
+    #   url = "github:signalwalker/nix.srv.funkwhale";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # activitypub
     akkoma = {
@@ -158,7 +158,7 @@
           inputs.agenix.nixosModules.age
           inputs.simple-nixos-mailserver.nixosModules.mailserver
           inputs.ashwalker-net.nixosModules.default
-          inputs.funkwhale.nixosModules.default
+          # inputs.funkwhale.nixosModules.default
 
           inputs.comentario.nixosModules.default
 
