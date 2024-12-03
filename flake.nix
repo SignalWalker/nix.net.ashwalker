@@ -183,14 +183,14 @@
 
           signal.machines.terra.nix.build.enable = lib.mkForce false;
 
-          signal.network.wireguard.networks."wg-signal" = {
+          networking.wireguard.networks."wg-signal" = {
             privateKeyFile = "/var/lib/wireguard/wg-signal.sign";
           };
 
           signal.machine.signalName = "hermes";
 
           systemd.tmpfiles.rules = [
-            "z ${config.signal.network.wireguard.networks.wg-signal.privateKeyFile} 0400 systemd-network systemd-network"
+            "z ${config.networking.wireguard.networks.wg-signal.privateKeyFile} 0400 systemd-network systemd-network"
           ];
         };
       };
