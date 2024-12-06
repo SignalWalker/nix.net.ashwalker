@@ -72,6 +72,16 @@ in {
             User = user;
             Priority = 6;
           }
+          {
+            To = "172.24.86.0/24";
+            User = user;
+            Priority = 6;
+          }
+          {
+            To = "fd24:fad3:8246::0/48";
+            User = user;
+            Priority = 6;
+          }
         ]) [] (config.networking.wireguard.tunneledUsers);
     };
 
