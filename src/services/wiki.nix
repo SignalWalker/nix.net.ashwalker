@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   pkgs,
   lib,
@@ -80,6 +81,7 @@ in {
       '';
       extensions = {
         ParserFunctions = null;
+        CSS = inputs.mediawiki-css;
       };
     };
     services.nginx.virtualHosts.${wiki.reverseProxy.hostName} = {

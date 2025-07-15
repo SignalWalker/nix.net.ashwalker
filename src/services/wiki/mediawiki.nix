@@ -540,7 +540,6 @@ in {
             tryFiles = "$uri $uri/ ${sPath}/rest.php?$query_string";
           };
           locations."/wiki/".extraConfig = "rewrite ^/wiki/(?<pagename>.*)$ ${sPath}/index.php;";
-          locations."/robots.txt" = {};
           locations."= /".return = "301 /wiki/Main_Page";
           locations."/".return = "404";
         };

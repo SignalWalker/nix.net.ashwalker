@@ -72,6 +72,9 @@ in {
       };
       defaultUser = "ash";
       passwordFile = config.age.secrets.rssUserPassword.path;
+      extensions = with pkgs.freshrss-extensions; [
+        auto-ttl
+      ];
     };
     services.nginx.virtualHosts.${rss.hostName} = {
       enableACME = true;

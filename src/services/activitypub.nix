@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   pkgs,
   lib,
@@ -89,7 +90,7 @@ in {
     };
     services.akkoma = {
       enable = true;
-      package = pkgs.akkoma.override {inherit (akkoma) src;}; # option defined in flake.nix
+      package = pkgs.akkoma.overrideAttrs (final: prev: {src = inputs.akkoma;}); # option defined in flake.nix
       initDb = {
         enable = false;
       };

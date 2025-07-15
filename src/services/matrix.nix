@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   pkgs,
   lib,
@@ -49,6 +50,7 @@ in {
   config = lib.mkIf matrix.enable {
     services.matrix-conduit = {
       enable = true;
+      package = inputs.conduit.packages.${pkgs.system}.default;
       settings.global = {
         server_name = matrix.serverName;
         allow_registration = false;

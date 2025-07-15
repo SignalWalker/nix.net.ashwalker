@@ -135,23 +135,6 @@
         ...
       }: {
         options = with lib; {
-          services.akkoma = {
-            src = mkOption {
-              type = types.path;
-              default = inputs.akkoma;
-              readOnly = true;
-            };
-            # akkoma-fe-src = mkOption {
-            #   type = types.path;
-            #   default = inputs.akkoma-fe;
-            #   readOnly = true;
-            # };
-          };
-          # services.grocy.src = mkOption {
-          #   type = types.path;
-          #   default = inputs.grocy-src;
-          #   readOnly = true;
-          # };
         };
         imports = [
           inputs.sysbase.nixosModules.default
@@ -175,12 +158,6 @@
             inputs.comentario.overlays.default
           ];
 
-          services.mediawiki.extensions = {
-            CSS = inputs.mediawiki-css;
-          };
-
-          services.matrix-conduit.package = inputs.conduit.packages.${pkgs.system}.default;
-
           signal.machines.terra.nix.build.enable = lib.mkForce false;
 
           networking.wireguard.networks."wg-signal" = {
@@ -197,6 +174,7 @@
 
       nixosConfigurations."hermes" = std.nixosSystem {
         system = null; # set in `config.nixpkgs.hostPlatform`
+        specialArgs = {inherit inputs;};
         modules = [
           inputs.disko.nixosModules.disko
           self.nixosModules."hermes"
